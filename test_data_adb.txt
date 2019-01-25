@@ -1,0 +1,6 @@
+List of devices attached 89e766e6 device LC587YF08072 unauthorized
+List of devices attached 89e766e6 device LC587YF08072 unauthorized"
+List of devices attached LC625YT01621 device" #ok
+List of devices attached LC625YT01621 unauthorized";#not given dubug info
+
+
