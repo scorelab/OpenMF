@@ -15,7 +15,8 @@ from general_info import DEVICE_MANUF, DEVICE_MODEL
 # Create output directory
 OR_DATE = time.strftime('%Y-%m-%d')
 OR_TIME = time.strftime('%H.%M.%S')
-OUTPUT = "../"+DEVICE_MANUF+"_"+DEVICE_MODEL+"_"+OR_DATE+"_"+OR_TIME+SEP
+OUTPUT_INIT = "../"+DEVICE_MANUF+"_"+DEVICE_MODEL+"_"+OR_DATE+"_"+OR_TIME
+OUTPUT = OUTPUT_INIT+SEP
 try:
 	os.mkdir(OUTPUT)
 	os.mkdir(OUTPUT+SEP+'db')
@@ -30,16 +31,16 @@ DBLS = [
 #'/data/data/com.sec.android.provider.logsprovider/databases/logs.db',
 #'/data/data/com.android.providers.telephony/databases/mmssms.db',
 #'/data/data/com.facebook.katana/databases/fb.db',
-#'/data/data/com.facebook.katana/databases/contacts_db2',
-#'/data/data/com.facebook.katana/databases/threads_db2',
+'/data/data/com.facebook.katana/databases/contacts_db2',
+'/data/data/com.facebook.orca/databases/threads_db2',
 #'/data/data/com.facebook.katana/databases/photos_db',
-#'/data/data/com.whatsapp/databases/wa.db',
-#'/data/data/com.whatsapp/databases/msgstore.db',
+'/data/data/com.whatsapp/databases/wa.db',
+'/data/data/com.whatsapp/databases/msgstore.db',
 #'/data/data/kik.android/databases/kikDatabase.db',
 #'/data/system/gesture.key',
 #'/data/system/cm_gesture.key',
-'/data/system/locksettings.db',
-'/data/system/password.key'
+#'/data/system/locksettings.db',
+#'/data/system/password.key' 
 ]
 
 # DOWNLOADING DATABASES
