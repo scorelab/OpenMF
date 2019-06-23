@@ -26,16 +26,19 @@ except:
 # Database links
 
 DBLS = [
+'/data/data/com.google.android.apps.messaging/databases/bugle_db',
+'/data/data/com.google.android.dialer/databases/dialer.db',
+'/data/data/com.android.providers.contacts/databases/calllog.db',
 #'/data/data/com.android.providers.settings/databases/settings.db',
 #'/data/data/com.android.providers.contacts/databases/contacts2.db',
 #'/data/data/com.sec.android.provider.logsprovider/databases/logs.db',
 #'/data/data/com.android.providers.telephony/databases/mmssms.db',
 #'/data/data/com.facebook.katana/databases/fb.db',
-'/data/data/com.facebook.katana/databases/contacts_db2',
-'/data/data/com.facebook.orca/databases/threads_db2',
+#'/data/data/com.facebook.katana/databases/contacts_db2',
+#'/data/data/com.facebook.orca/databases/threads_db2',
 #'/data/data/com.facebook.katana/databases/photos_db',
-'/data/data/com.whatsapp/databases/wa.db',
-'/data/data/com.whatsapp/databases/msgstore.db',
+#'/data/data/com.whatsapp/databases/wa.db',
+#'/data/data/com.whatsapp/databases/msgstore.db',
 #'/data/data/kik.android/databases/kikDatabase.db',
 #'/data/system/gesture.key',
 #'/data/system/cm_gesture.key',
