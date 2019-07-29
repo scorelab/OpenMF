@@ -1,6 +1,5 @@
 """
 This script is to extract all databases from Android device and store extracted db files.
-Optionally you can specify if you want to index data in solr
 Command used to find common databases - find /data/ -name '*.db'
 
 """
@@ -9,7 +8,7 @@ import os
 from subprocess import Popen, PIPE, STDOUT
 
 from scripts.os_check import ADB, SUC, PERM, SEP
-from scripts.utils import OUTPUT
+from scripts.utils import ROOT_DIR, mkdir
 
 dbs_list_str = Popen([ADB, 'shell', SUC, 'find', '/data/', '-name', '*.db'], stdout=PIPE, stderr=STDOUT)\
     .stdout.read().decode('UTF-8')
@@ -17,6 +16,7 @@ dbs_list_str = dbs_list_str.strip()
 DB_LIST = dbs_list_str.split('\n')
 
 DLLS = []
+OUTPUT = ROOT_DIR + SEP
 
 
 def download_database(db_path):
@@ -34,6 +34,7 @@ def download_database(db_path):
                   stderr=STDOUT).stdout.read()
             Popen([ADB, 'shell', SUC, 'rm', '/data/local/tmp/' + db_name], stdout=PIPE, stderr=STDOUT).stdout.read()
         else:
+            print(OUTPUT + SEP + 'db' + SEP + db_name)
             Popen([ADB, 'pull', db_path, OUTPUT + SEP + 'db' + SEP + db_name], stdout=PIPE, stderr=STDOUT).stdout.read()
         if os.path.isfile(OUTPUT + SEP + 'db' + SEP + db_name):
             fileh = open(OUTPUT + SEP + 'db' + SEP + 'md5sums_all', 'a')
@@ -43,7 +44,11 @@ def download_database(db_path):
             fileh.close()
 
 
-def extract_all_data():
+def extract_all_data(session_name):
+    global OUTPUT
     if 'root' in PERM:
+        OUTPUT = OUTPUT + session_name
+        mkdir(OUTPUT)
+        mkdir(OUTPUT + SEP + 'db')
         for db in DB_LIST:
             download_database(db)

@@ -23,3 +23,7 @@ FILE_NAMES = {
     'phone.contacts': 'phone-contacts.tsv',
     'general.info.device': 'device-general-info.tsv'
 }
+
+
+def mkdir(_dir):
+    os.makedirs(_dir, exist_ok=True)

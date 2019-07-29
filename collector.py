@@ -51,6 +51,7 @@ def print_general_info():
 
 
 FUNC_MAP = {
+    'all': extract_all_data,
     'facebook': store_fb_data,
     'whatsapp': store_wa_data,
     'phone': store_phone_data,
@@ -99,9 +100,9 @@ if __name__ == '__main__':
             print('Incorrectly options are provided, correct way is : ')
             print('collector.py -o facebook whatsapp phone -sn case_007_james-bond')
             sys.exit()
-        # TODO // Other possibility of options is also there but keeping it simple for initial setup
-        if option.__contains__('all'):
-            extract_all_data()
+        if options.__contains__('all'):
+            print('Extracting all common databases ...')
+            extract_all_data(session_name)
         else:
             collect_data(options, session_name)
     else:
