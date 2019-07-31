@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="c3ac4300-6f98-46fb-b67c-f5744c92e434" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/collector.py" beforeDir="false" afterPath="$PROJECT_DIR$/collector.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/extract_all.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/extract_all.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tools/adb" beforeDir="false" afterPath="$PROJECT_DIR$/tools/adb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,6 +24,9 @@
     </option>
     <expand />
     <select />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="OpenMF" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -56,6 +56,9 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/tools" />
     </key>
@@ -113,7 +116,7 @@
       <updated>1563805942517</updated>
       <workItem from="1563805943614" duration="16136000" />
       <workItem from="1564212506431" duration="13663000" />
-      <workItem from="1564404436066" duration="229000" />
+      <workItem from="1564404436066" duration="17641000" />
     </task>
     <servers />
   </component>
