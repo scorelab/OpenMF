@@ -12,18 +12,22 @@ Usage ::
 
 import sys
 
+from data_store.report_helper import generate_pdf_report
 from scripts import dbm
 from scripts.extract_all import extract_all_data
 from scripts.fb_reader import store_fb_data
+from scripts.os_check import SEP
 from scripts.report import REPORT
 from scripts.phone import store_phone_data
 from scripts.wa_reader import store_wa_data
+from utils import ROOT_DIR
+from scripts.io_helper import write_to_file
 
 help_str = """
 Collector is a simple CLI tool to collect data from rooted android device and persist data for analysis 
     collector.py [OPTIONS]
     collector.py --help | -h
-    collector.py --option | -o <space separated options> --session_name <name_for_session_without_spaces>
+    collector.py --option | -o <space separated options> --session_name | -sn <name_for_session_without_spaces>
         Explain - {option}
         0. all : collect all common dbs
         1. general_info : To collect general device information
@@ -35,15 +39,19 @@ Collector is a simple CLI tool to collect data from rooted android device and pe
         
         Explain - {session_name} - {No_Space-In-Name}
         To query the data later on, we can use session_name as a identifier of current session for later use cases
-        
+    collector.py --report | -rp <session_name>
+        Generate a PDF report for a case using session name.
+        Make sure, data extraction has been done for given case.
     Example - 
     collector.py -h
     collector.py --option general_info phone --session_name case_001_john_snow
+    collector.py --report case_001_john_snow
 """
 
 OPTION_KEYS = {"--option", "-o"}
 SESSION_KEYS = {"--session_name", "-sn"}
 HELP_KEYS = {"-h", "--help"}
+REPORT_GEN_KEYS = {"-rp", "--report"}
 
 
 def print_general_info():
@@ -71,6 +79,13 @@ def collect_data(extract_options, current_session_name):
     print(REPORT)
 
 
+def save_report(sn):
+    db_store_path = ROOT_DIR + SEP + sn
+    file_path = db_store_path + SEP + 'report.txt'
+    REPORT.append(["Case Name", sn])
+    write_to_file(file_path, REPORT)
+
+
 if __name__ == '__main__':
     args = sys.argv
     args_set = set(args)
@@ -78,6 +93,9 @@ if __name__ == '__main__':
     if HELP_KEYS & args_set:
         print(help_str)
         sys.exit()
+    elif REPORT_GEN_KEYS & args_set:
+        session_name = args[2]
+        generate_pdf_report(session_name)
     elif len(OPTION_KEYS & args_set) > 0 and len(SESSION_KEYS & args_set) > 0:
         print('Starting data extraction plan for given options')
         arg_iter = iter(args)
@@ -105,6 +123,8 @@ if __name__ == '__main__':
             extract_all_data(session_name)
         else:
             collect_data(options, session_name)
+        save_report(session_name)
+
     else:
         print('Invalid / Not Sufficient options provided')
         print(help_str)
