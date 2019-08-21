@@ -35,9 +35,10 @@ def generate_html_report(session_name):
     html_file_path = ROOT_DIR + SEP + session_name + SEP + 'report' + SEP + 'report.html'
 
     os.makedirs(ROOT_DIR + SEP + session_name + SEP + 'report', exist_ok=True)
-    write_to_file(html_file_path, html)
-
-    return html_file_path
+    if write_to_file(html_file_path, html):
+        return html_file_path
+    else:
+        return None
 
 
 def generate_pdf_report(session_name):

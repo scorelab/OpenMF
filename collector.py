@@ -83,7 +83,7 @@ def save_report(sn):
     db_store_path = ROOT_DIR + SEP + sn
     file_path = db_store_path + SEP + 'report.txt'
     REPORT.append(["Case Name", sn])
-    write_to_file(file_path, REPORT)
+    return write_to_file(file_path, REPORT)
 
 
 if __name__ == '__main__':
@@ -95,7 +95,10 @@ if __name__ == '__main__':
         sys.exit()
     elif REPORT_GEN_KEYS & args_set:
         session_name = args[2]
-        generate_pdf_report(session_name)
+        if generate_pdf_report(session_name):
+            print('Generated report as a PDF successfully for case :: ' + session_name)
+        else:
+            print('Unable to generate PDF report for case :: ' + session_name)
     elif len(OPTION_KEYS & args_set) > 0 and len(SESSION_KEYS & args_set) > 0:
         print('Starting data extraction plan for given options')
         arg_iter = iter(args)
@@ -123,8 +126,10 @@ if __name__ == '__main__':
             extract_all_data(session_name)
         else:
             collect_data(options, session_name)
-        save_report(session_name)
-
+        if save_report(session_name):
+            print('Saved report successfully')
+        else:
+            print('Unable to save report file')
     else:
         print('Invalid / Not Sufficient options provided')
         print(help_str)
