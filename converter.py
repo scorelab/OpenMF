@@ -1,4 +1,5 @@
 import os
+import shutil
 import sqlite3
 import sys
 from scripts.file_helper import write_as_tsv
@@ -58,7 +59,11 @@ if __name__ == '__main__':
         dest_dir = args[2]
         if not os.path.exists(src_path):
             print('Given db file path is incorrect. This filepath doesn\'t exists ::' + src_path)
-        file_dir = os.path.dirname(dest_dir)
+        case_name = src_path.split("/")[-3]
+        folder_name = os.path.splitext(os.path.basename(src_path))[0]
+        file_dir = dest_dir+"/"+case_name+"/"+folder_name
+        if os.path.exists(file_dir):
+            shutil.rmtree(file_dir)
         os.makedirs(file_dir, exist_ok=True)
         convert_to_tsv(src_path, file_dir)
         pass
