@@ -7,12 +7,6 @@ from subprocess import PIPE, STDOUT
 from scripts.os_check import ADB, SEP, SUC, PERM
 from scripts.utils import OUTPUT
 
-try:
-    os.mkdir(OUTPUT)
-    os.mkdir(OUTPUT + SEP + 'db')
-except:
-    sys.exit(" Insufficient permissions to create a folder in this directory!")
-
 # Database links
 
 DBS_LIST = [
