@@ -20,3 +20,25 @@ The OpenMF project is a dedicated software to:
 
 This open source project is an important tool for Digital forensic organization.
 At present OpenMF is only a commmand line tool but we are planing to make a complete web client with additional features like Admin, Management and Extractor. These roles will have different privileges to the tool and as a whole it will become a complete open source forensic tool for Android smartphones which then can be used by any Digital digital forensic investigation organization.
+
+### User Guide
+**Step:1 - Cloning the project.**
+Clone the master branch of OpenMF locally by running `git clone https://github.com/scorelab/OpenMF.git` or download the project by clicking [here](https://github.com/scorelab/OpenMF/archive/master.zip).
+
+**Step:2 - Installing the project dependencies**
+Install the required dependencies of the project by running `pip3 install -r requirements.txt`.
+
+**Step:3 - Extract data from rooted Android device**
+Connect a rooted Android device using a data cable to your system, make sure that you have enabled the USB debugging.
+Once connected, you can run `python3 collector.py --option all --session_name CaseNo1​` or `python3 collector.py -o all -sn CaseNo1`. Please ​note that this script will extract the requested data in `.db` format in the project directory inside `session name` (CaseNo1 for the above command) folder.
+
+**Step:4 - Convert the data `.db` files to readable format like `.tsv/.json`**
+Run `converter.py` and pass three arguments, the first one contains path to .dp file, the second argument contains desired path to store converted files and the last argument contains file type (either `.json` or `.tsv`) for e.g. `python3 converter.py /home/user/Downloads/accounts.db /home/user/data/ json` converts `accounts.db` files in `.json` format.
+
+### Developer Guide
+Follow all the instructions given in the User Guide.
+Explore the project repository. The major files are `collector.py`, `converter.py`, and all the files which are present inside `scripts` folder.
+Also, explore the current [issues](https://github.com/scorelab/OpenMF/issues), and [pull requests](https://github.com/scorelab/OpenMF/pulls).
+
+### Contact information
+Please join the [Gitter channel](https://gitter.im/scorelab/OpenMF) for further discussions.
