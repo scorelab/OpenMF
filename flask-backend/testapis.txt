@@ -1,0 +1,33 @@
+demo jason body to test different apis
+
+//create  post
+    /user/create
+{
+    "email": "example@gamil.com",
+    "password": "1234",
+    "name":"tony stark",
+    "role":"admin"
+}
+//login  post
+    /login
+{
+    "email": "example@gamil.com",
+    "password": "1234",
+    "remember":1
+}
+
+//login  post
+    /logout
+
+//role update  post
+    /user/role-update
+{
+    "email": "example@gamil.com",
+    "role":"extractor"
+}
+//delete-user  post
+    /user/delete
+{
+    "email": "example@gamil.com"
+}
+//total number of users  Get
