@@ -1,4 +1,4 @@
-REST-auth and REST-api for OpenMF
+REST-auth and REST-APIs for OpenMF
 =========
 
 Installation
@@ -21,8 +21,9 @@ Running
 
 To run the server use the following command:
 
-    (venv) $ 
-    (venv) $ 
+    (venv) $ export FLASK_APP = api
+    (venv) $ export FLASK_DEBUG=1
+    (venv) $ flask run
 
 Eithr from a terminal window or from postman you can send requests.
 
