@@ -31,3 +31,29 @@ demo jason body to test different apis
     "email": "example@gamil.com"
 }
 //total number of users  Get
+
+
+{
+    "email": "charitha@gamil.com",
+    "password": "4567",
+    "name":"charitha",
+    "role":"123"
+}
+{
+    "email": "shiv@gamil.com",
+    "password": "1234",
+    "name":"shivanshu",
+    "role":"1"
+}
+{
+    "email": "vivonk@gamil.com",
+    "password": "2345",
+    "name":"vivonk",
+    "role":"12"
+}
+{
+    "email": "wolf@gamil.com",
+    "password": "3456",
+    "name":"wolf",
+    "role":"3"
+}
