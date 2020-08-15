@@ -34,4 +34,7 @@ def create_app():
     from .routes.case import case as case_blueprint
     app.register_blueprint(case_blueprint)
 
+    from .routes.extraction import extraction as extraction_blueprint
+    app.register_blueprint(extraction_blueprint)
+
     return app
