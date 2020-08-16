@@ -5,11 +5,12 @@ import json
 import datetime
 import urllib
 
-from scripts.utils import OUTPUT_INIT, DATA_DIR
-
+from scripts.os_check import SEP
+from scripts.utils import ROOT_DIR, mkdir
+OUTPUT = ROOT_DIR
 # location of databases
-msgstoredb = OUTPUT_INIT + "/db/msgstore.db"
-contactsdb = OUTPUT_INIT + "/db/wa.db"
+msgstoredb = ''
+contactsdb = ''
 
 
 def store_wa_contacts():
@@ -62,7 +63,7 @@ def store_wa_contacts():
 
     sorted_contact_dict = sorted(contacts_dict, key=lambda x: contacts_dict[x][CONTACTS_DISP_NAME_INDX])
 
-    contacts_output_file = DATA_DIR + "wa_contacts.tsv"
+    contacts_output_file = OUTPUT + SEP + 'wa' + SEP + "wa_contacts.tsv"
 
     contacts_file = open(contacts_output_file, "w+", encoding="utf-8")
     contacts_file.write("jid\tnumber\tdisplayName\twhatsappaName\n")
@@ -179,7 +180,7 @@ def store_wa_messages():
     msgstore_cursor.close()
     msgstore_conn.close()
 
-    messages_output_file = DATA_DIR + "messages_wa.tsv"
+    messages_output_file = OUTPUT + SEP + 'msgstore' + SEP + "messages_wa.tsv"
     message_file = open(messages_output_file, "w+", encoding="utf-8")
     message_file.write("key_remote_jid\tkey_from_me\tdata\ttimestamp\tmedia_url\tmedia_wa_type\tmedia_name\t"
                        "remote_resource\treceived_timestamp\n")
@@ -210,6 +211,15 @@ def store_wa_messages():
     print("\n" + str(len(messages_dict.values())) + " messages were processed")
 
 
-def store_wa_data():
+def store_wa_data(session_name):
+    global msgstoredb
+    global contactsdb
+    global OUTPUT
+    OUTPUT = OUTPUT + SEP + 'data' + SEP + session_name
+    msgstoredb = OUTPUT + SEP + "/db/msgstore.db"
+    contactsdb = OUTPUT + SEP + "/db/wa.db"
+    OUTPUT = OUTPUT + SEP + 'tsv'
+    mkdir(OUTPUT+SEP+'wa')
     store_wa_contacts()
+    mkdir(OUTPUT+SEP+'msgstore')
     store_wa_messages()

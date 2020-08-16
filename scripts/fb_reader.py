@@ -5,11 +5,12 @@ import json
 import datetime
 import urllib
 
-from scripts.utils import OUTPUT_INIT
-
+from scripts.os_check import SEP
+from scripts.utils import ROOT_DIR, mkdir
+OUTPUT = ROOT_DIR
 ''' location of databases '''
-threadsdb = OUTPUT_INIT + "/db/threads_db2"
-contactsdb = OUTPUT_INIT + "/db/contacts_db2"
+threadsdb = ''
+contactsdb = ''
 
 
 def store_fb_contacts():
@@ -58,7 +59,7 @@ def store_fb_contacts():
 
     sorted_contact_dict = sorted(contacts_dict, key=lambda x: contacts_dict[x][CONTACTS_DISPLAY_NAME_ID_INDX])
 
-    contacts_output_file = "contacts.tsv"
+    contacts_output_file = OUTPUT + SEP + 'contacts_db2' + SEP + "contacts.tsv"
 
     contacts_file = open(contacts_output_file, "w+", encoding="utf-8")
     contacts_file.write("contact_id\tprofileFbid\tdisplayName\tdisplayNumber\tuniversalNumber\thugePictureUrl\n")
@@ -101,7 +102,6 @@ def store_fb_thread_data():
         sender = "NONE"
 
         textstr = ""
-        sourcestr = ""
 
         try:
             extracted_sender = json.loads(row[MESGS_SENDER_COL_INDX])
@@ -134,7 +134,7 @@ def store_fb_thread_data():
     sorted_messages_dict = sorted(messages_dict, key=lambda x: (
     messages_dict[x][MESGS_THR_ID_INDX], messages_dict[x][MESGS_TIMESTAMP_INDX]))
 
-    messages_output_file = "messages.tsv"
+    messages_output_file = OUTPUT + SEP + 'threads_db2' + SEP + "messages.tsv"
     message_file = open(messages_output_file, "w+", encoding="utf-8")
     message_file.write("msg_id\tthread_id\ttext\tsender\ttimestamp_ms\n")
 
@@ -153,6 +153,15 @@ def store_fb_thread_data():
     print("\n" + str(len(messages_dict.values())) + " messages were processed")
 
 
-def store_fb_data():
+def store_fb_data(session_name):
+    global threadsdb
+    global contactsdb
+    global OUTPUT
+    OUTPUT = OUTPUT + SEP + 'data' + SEP + session_name
+    threadsdb = OUTPUT + SEP + "/db/threads_db2"
+    contactsdb = OUTPUT + SEP + "/db/contacts_db2"
+    OUTPUT = OUTPUT + SEP + 'tsv'
+    mkdir(OUTPUT+SEP+'contacts_db2')
     store_fb_contacts()
+    mkdir(OUTPUT+SEP+'threads_db2')
     store_fb_thread_data()

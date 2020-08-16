@@ -6,7 +6,6 @@ Command used to find common databases - find /data/ -name '*.db'
 import hashlib
 import os
 from subprocess import Popen, PIPE, STDOUT
-
 from scripts.os_check import ADB, SUC, PERM, SEP
 from scripts.utils import ROOT_DIR, mkdir
 
@@ -16,7 +15,7 @@ dbs_list_str = dbs_list_str.strip()
 DB_LIST = dbs_list_str.split('\n')
 
 DLLS = []
-OUTPUT = ROOT_DIR + SEP
+OUTPUT = ROOT_DIR
 
 
 def download_database(db_path):
@@ -47,8 +46,8 @@ def download_database(db_path):
 def extract_all_data(session_name):
     global OUTPUT
     if 'root' in PERM:
-        OUTPUT = OUTPUT + session_name
-        mkdir(OUTPUT)
+        OUTPUT = OUTPUT + SEP + 'data' + SEP + session_name
         mkdir(OUTPUT + SEP + 'db')
         for db in DB_LIST:
+            print('Extracting current db from: ' +db)
             download_database(db)

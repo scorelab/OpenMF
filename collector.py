@@ -20,7 +20,7 @@ from scripts.os_check import SEP
 from scripts.report import REPORT
 from scripts.phone import store_phone_data
 from scripts.wa_reader import store_wa_data
-from utils import ROOT_DIR
+from scripts.utils import ROOT_DIR, mkdir
 from scripts.io_helper import write_to_file
 
 help_str = """
@@ -54,7 +54,7 @@ HELP_KEYS = {"-h", "--help"}
 REPORT_GEN_KEYS = {"-rp", "--report"}
 
 
-def print_general_info():
+def print_general_info(session_name):
     print(REPORT)
 
 
@@ -67,29 +67,31 @@ FUNC_MAP = {
 }
 
 
-def collect_data(extract_options, current_session_name):
+def collect_data(extract_options, session_name):
     print('Options to parse are : ', extract_options)
-    print('Session name : ', current_session_name)
-
-    dbm.start_download_databases()
+    print('Session name : ', session_name)
+    print('Extracting all common databases ...')
+    dbm.start_download_databases(session_name)
+    print('databases extraction completed...')
     for option in extract_options:
         key = option.lower().strip()
         if key in FUNC_MAP:
-            FUNC_MAP[key]()
+            FUNC_MAP[key](session_name)
     print(REPORT)
 
 
-def save_report(sn):
-    db_store_path = ROOT_DIR + SEP + sn
-    file_path = db_store_path + SEP + 'report.txt'
-    REPORT.append(["Case Name", sn])
+def save_report(session_name):
+    db_store_path = ROOT_DIR + SEP + 'data' + SEP + session_name
+    file_path = db_store_path + SEP + 'report' + SEP + 'report.txt'
+    mkdir(db_store_path+ SEP + 'report')
+    REPORT.append(["Case Name", session_name])
     return write_to_file(file_path, REPORT)
 
 
 if __name__ == '__main__':
     args = sys.argv
     args_set = set(args)
-
+    print(HELP_KEYS)
     if HELP_KEYS & args_set:
         print(help_str)
         sys.exit()
@@ -124,6 +126,7 @@ if __name__ == '__main__':
         if options.__contains__('all'):
             print('Extracting all common databases ...')
             extract_all_data(session_name)
+            print('databases extraction completed...')
         else:
             collect_data(options, session_name)
         if save_report(session_name):
