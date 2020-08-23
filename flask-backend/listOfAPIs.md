@@ -22,3 +22,14 @@ Case Related APIs
 6)   -G    http://127.0.0.1:5000/case/open/<case_name>
 7)   -G    http://127.0.0.1:5000/case/list-files/<case_name>/<folder_name>
 8)   -G    http://127.0.0.1:5000/case//list-files/<case_name>/<folder_name>/<file_name>  
+
+Analytics Related APIs
+----------------------
+
+9)   -P    http://127.0.0.1:5000/analytics/query
+
+Extaction Related APIs
+----------------------
+
+10)   -G    http://127.0.0.1:5000/extraction/list_devices
+11)   -P    http://127.0.0.1:5000/extraction/extract_data
