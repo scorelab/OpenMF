@@ -1,13 +1,14 @@
-import sqlite3 as sql
+import sys
 import os
+import sqlite3 as sql
 from flask import Blueprint, render_template, jsonify, request
 import json
-import os
 import re
 import subprocess
 from flask_login import login_required, current_user
 from ..models.models import Case, CaseSchema
 from .. import db
+ROOT_DIR = os.getcwd()
 
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
@@ -40,3 +41,28 @@ def list_devices():
         devices.append(device)
 
     return json.dumps(devices)
+
+@extraction.route('/extract_data', methods=["POST"])
+def extract():
+    req = request.get_json()
+    device_id = str(req['device_id'])
+    case_name = str(req['case_name'])
+    data = str(req['data'])
+    print(data)
+    sys.path.append('/home/cobalt/osp/OpenMF/apiUtility')
+    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport
+    if(data == 'all'):
+        apiExtactAll(case_name)
+    elif(data == 'facebook'):
+        apiExtractFb(case_name)
+    elif(data == 'whatsapp'):
+        apiExtractWa(case_name)
+    elif(data == 'phone'):
+        apiExtractPhone(case_name)
+    elif(data == 'report'):
+        apiReport(case_name)
+    else:
+        return jsonify({'status':409,
+                    'error':"wrong data provided"})
+    return jsonify({'status':200,
+                    'message':"data extraction successfull"})
