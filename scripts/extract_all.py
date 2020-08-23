@@ -8,6 +8,7 @@ import os
 from subprocess import Popen, PIPE, STDOUT
 from scripts.os_check import ADB, SUC, PERM, SEP
 from scripts.utils import ROOT_DIR, mkdir
+from scripts.file_helper import convert_to_tsv
 
 dbs_list_str = Popen([ADB, 'shell', SUC, 'find', '/data/', '-name', '*.db'], stdout=PIPE, stderr=STDOUT)\
     .stdout.read().decode('UTF-8')
@@ -51,3 +52,20 @@ def extract_all_data(session_name):
         for db in DB_LIST:
             print('Extracting current db from: ' +db)
             download_database(db)
+
+def extract_all_data_toTsv(session_name):
+    global OUTPUT
+    if 'root' in PERM:
+        OUTPUT = OUTPUT + SEP + 'data' + SEP + session_name
+        mkdir(OUTPUT + SEP + 'db')
+        file_dir = file_dir = ROOT_DIR + '/data/' + session_name + '/tsv/'
+        src_path = ROOT_DIR + '/data/' + session_name  + '/db/'
+        mkdir(file_dir)
+        for db in DB_LIST:
+            print('Extracting current db from: ' +db)
+            download_database(db)
+            db_name = db.split('/')[-1]
+            try:
+                convert_to_tsv(src_path + db_name, file_dir)
+            except:
+                print("unable to convert "+db)
