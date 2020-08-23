@@ -2,8 +2,7 @@ import os
 import sqlite3
 import sys
 from scripts.file_helper import *
-from scripts.utils import ROOT_DIR, mkdir
-from scripts.os_check import SEP
+from utils import ROOT_DIR, mkdir
 
 
 def get_os_based_sqlite():
@@ -39,15 +38,15 @@ if __name__ == '__main__':
         CaseName = args[1]
         dbName = args[2]
         file_type = args[3]
-        src_path = ROOT_DIR + SEP + 'data' + SEP + CaseName + SEP + 'db' + SEP + dbName
+        src_path = ROOT_DIR + '/data/' + CaseName  + '/db/' + dbName
         if not os.path.exists(src_path):
             print('Given db file path is incorrect. This filepath doesn\'t exists ::' + src_path)
         if file_type == 'json':
-            file_dir = ROOT_DIR + SEP + 'data' + SEP + CaseName + SEP + 'json'
+            file_dir = ROOT_DIR + '/data/' + CaseName + '/json/'
             mkdir(file_dir)
             convert_to_json(src_path, file_dir)
         elif file_type == 'tsv':
-            file_dir = file_dir = ROOT_DIR + SEP + 'data' + SEP + CaseName + SEP + 'tsv'
+            file_dir = file_dir = ROOT_DIR + '/data/' + CaseName + '/tsv/'
             mkdir(file_dir)
             convert_to_tsv(src_path, file_dir)
         pass
