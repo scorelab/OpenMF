@@ -5,6 +5,8 @@ from flask_login import login_required, current_user
 from ..models.models import Case, CaseSchema
 from .. import db
 
+ROOT_DIR = os.getcwd()
+
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 
@@ -32,17 +34,23 @@ def deletecase():
 
 @case.route('/open/<case_name>', methods=["GET"])
 def openCase(case_name):
-    path = '../../../data/'+case_name
+    os.chdir('../../..')
+    path = os.getcwd()+'/data/'+case_name
+    os.chdir(ROOT_DIR)
     files = os.listdir(path)
     return files
 
 @case.route('/list-files/<case_name>/<folder_name>', methods=["GET"])
 def openFolder(case_name, folder_name):
-    path = '../../../data/'+case_name+folder_name
+    os.chdir('../../..')
+    path = os.getcwd()+'/data/'+case_name+'/'+folder_name
+    os.chdir(ROOT_DIR)
     files = os.listdir(path)
     return files
 
 @case.route('/list-files/<case_name>/<folder_name>/<file_name>', methods=["GET"])
 def openFile(case_name, folder_name, file_name):
-    File = '../../../data/'+case_name+folder_name+file_name
+    os.chdir('../../..')
+    File = os.getcwd()+'/data/'+case_name+'/'+folder_name+'/'+file_name
+    os.chdir(ROOT_DIR)
     return File
