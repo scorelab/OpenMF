@@ -19,7 +19,7 @@ def load_list_from_file(filepath):
 
 
 def generate_html_report(session_name):
-    report_file = ROOT_DIR + SEP + session_name + SEP + 'report.txt'
+    report_file = ROOT_DIR + SEP + 'data' + SEP + session_name + SEP + 'report' + SEP + 'report.txt'
     report = load_list_from_file(report_file)
     case_name = None
     for x in report:
@@ -32,9 +32,9 @@ def generate_html_report(session_name):
     body_head = '<center style="font-size:40px;margin:25px;">' + 'Case Name - ' + case_name + '</center>'
     body = body_generator(body_head + table)
     html = wrap_html(header, body)
-    html_file_path = ROOT_DIR + SEP + session_name + SEP + 'report' + SEP + 'report.html'
+    html_file_path = ROOT_DIR + SEP + 'data' + SEP + session_name + SEP + 'report' + SEP + 'report.html'
 
-    os.makedirs(ROOT_DIR + SEP + session_name + SEP + 'report', exist_ok=True)
+    os.makedirs(ROOT_DIR + SEP + 'data' + SEP + session_name + SEP + 'report', exist_ok=True)
     if write_to_file(html_file_path, html):
         return html_file_path
     else:
@@ -43,4 +43,4 @@ def generate_html_report(session_name):
 
 def generate_pdf_report(session_name):
     html_filepath = generate_html_report(session_name)
-    return pdfkit.from_file(html_filepath, ROOT_DIR + SEP + session_name + SEP + 'report' + SEP + 'report.pdf')
+    return pdfkit.from_file(html_filepath, ROOT_DIR + SEP + 'data' + SEP + session_name + SEP + 'report' + SEP + 'report.pdf')

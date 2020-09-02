@@ -5,12 +5,13 @@ import json
 import datetime
 import urllib
 
-from scripts.utils import OUTPUT_INIT, DATA_DIR
-
+from scripts.os_check import SEP
+from scripts.utils import ROOT_DIR, mkdir
+OUTPUT = ROOT_DIR
 # location of databases
-msgsdb = OUTPUT_INIT + "/db/bugle_db"
-contactsdb = OUTPUT_INIT + "/db/dialer.db"
-calllogsdb = OUTPUT_INIT + "/db/calllog.db"
+msgsdb = ''
+contactsdb = ''
+calllogsdb = ''
 
 
 def store_phone_contacts():
@@ -53,7 +54,7 @@ def store_phone_contacts():
 
     sorted_contact_dict = sorted(contacts_dict, key=lambda x: contacts_dict[x][CONTACTS_DISP_NAME_INDX])
 
-    contacts_output_file = DATA_DIR + "phone_contacts.tsv"
+    contacts_output_file = OUTPUT + SEP + "phone_contacts.tsv"
 
     contacts_file = open(contacts_output_file, "w+", encoding="utf-8")
     contacts_file.write("number\tdisplayName\n")
@@ -114,7 +115,7 @@ def store_text_messages():
     msgs_cursor.close()
     msgs_conn.close()
 
-    messages_output_file = DATA_DIR + "messages_conversation.tsv"
+    messages_output_file = OUTPUT + SEP + "messages_conversation.tsv"
     message_file = open(messages_output_file, "w+", encoding="utf-8")
     message_file.write("name\ttext\tsort_timestamp\n")
 
@@ -213,7 +214,7 @@ def store_call_logs():
     CALLLOGS_NUMBER_COL_INDX = 0
     CALLLOGS_TYPE_COL_INDX = 3
 
-    calllogs_output_file = DATA_DIR + "phone_calllogs.tsv"
+    calllogs_output_file = OUTPUT + SEP + "phone_calllogs.tsv"
 
     calllogs_file = open(calllogs_output_file, "w+", encoding="utf-8")
     calllogs_file.write("number\tname\tdate\tduration\ttype\tlocation\n")
@@ -236,7 +237,17 @@ def store_call_logs():
     print("\n" + str(len(calllogs_dict.values())) + " call logs were processed")
 
 
-def store_phone_data():
+def store_phone_data(session_name):
+    global msgsdb
+    global contactsdb
+    global calllogsdb
+    global OUTPUT
+    OUTPUT = OUTPUT + SEP + 'data' + SEP + session_name
+    msgsdb = OUTPUT + SEP + "db/bugle_db"
+    contactsdb = OUTPUT + SEP + "db/dialer.db"
+    calllogsdb = OUTPUT + SEP + "db/calllog.db"
+    OUTPUT = OUTPUT + SEP + 'tsv'
+    mkdir(OUTPUT)
     store_call_logs()
     store_phone_contacts()
     store_text_messages()

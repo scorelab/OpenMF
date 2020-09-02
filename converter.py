@@ -2,7 +2,7 @@ import os
 import sqlite3
 import sys
 from scripts.file_helper import *
-from utils import ROOT_DIR
+from utils import ROOT_DIR, mkdir
 
 
 def get_os_based_sqlite():
@@ -20,9 +20,11 @@ def get_os_based_sqlite():
 def print_help():
     help_str = """
         converter is a simple script to convert DB files to tsv (tab separated value)
-        python converter.py <src-file-path> <destination-folder>
+        python converter.py <case_name> <db_name>
         example : 
-            python converter.py /home/user/Downloads/accounts.db /home/user/data/ json or tsv
+            python converter.py Case#01 wa.db tsv
+                            or
+            python converter.py Case#01 wa.db json
     """
     print(help_str)
 
@@ -33,23 +35,19 @@ if __name__ == '__main__':
         print('Insufficient arguments')
         print_help()
     elif len(args) == 4:
-        src_path = args[1]
-        dest_dir = args[2]
+        CaseName = args[1]
+        dbName = args[2]
         file_type = args[3]
+        src_path = ROOT_DIR + '/data/' + CaseName  + '/db/' + dbName
         if not os.path.exists(src_path):
             print('Given db file path is incorrect. This filepath doesn\'t exists ::' + src_path)
-        case_name = src_path.split("/")[-3]
-        folder_name = os.path.splitext(os.path.basename(src_path))[0]
-        file_dir = dest_dir+"/"+case_name+"/"+folder_name
         if file_type == 'json':
-            file_dir = file_dir+'/'+'json'
-            if not os.path.exists(file_dir):
-                os.makedirs(file_dir, exist_ok=True)
+            file_dir = ROOT_DIR + '/data/' + CaseName + '/json/'
+            mkdir(file_dir)
             convert_to_json(src_path, file_dir)
         elif file_type == 'tsv':
-            file_dir = file_dir+'/'+'tsv'
-            if not os.path.exists(file_dir):
-                os.makedirs(file_dir, exist_ok=True)
+            file_dir = file_dir = ROOT_DIR + '/data/' + CaseName + '/tsv/'
+            mkdir(file_dir)
             convert_to_tsv(src_path, file_dir)
         pass
     else:

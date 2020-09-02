@@ -18,12 +18,15 @@ If you are on Windows, then use the following commands instead:
 
 Running
 -------
+Step1: Create the Database
+Run `python create_database.py`
 
+Step2:Start the backend server
 To run the server use the following command:
 
-    (venv) $ export FLASK_APP = api
-    (venv) $ export FLASK_DEBUG=1
-    (venv) $ flask run
+    (venv) $ `export FLASK_APP=api`
+    (venv) $ `export FLASK_DEBUG=1`
+    (venv) $ `flask run`
 
 Eithr from a terminal window or from postman you can send requests.
 

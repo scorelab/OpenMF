@@ -5,7 +5,9 @@ from subprocess import Popen
 from subprocess import PIPE, STDOUT
 
 from scripts.os_check import ADB, SEP, SUC, PERM
-from scripts.utils import OUTPUT
+from scripts.utils import ROOT_DIR, mkdir
+
+OUTPUT = ROOT_DIR
 
 # Database links
 
@@ -58,7 +60,11 @@ def download_database(db_path):
             fileh.close()
 
 
-def start_download_databases():
+def start_download_databases(session_name):
+    global OUTPUT
     if 'root' in PERM:
+        OUTPUT = OUTPUT + SEP + 'data' + SEP + session_name
+        mkdir(OUTPUT + SEP + 'db')
         for db in DBS_LIST:
+            print('Extracting current db from: ' +db)
             download_database(db)
