@@ -17,7 +17,7 @@ function Hl() {
                 <br />
                 <p className="h5 text-center mb-4">Open Source forensic tool for Android smartphones</p>
                 <div className="text-center">
-                <MDBBtn color="elegant" href="https://github.com/scorelab/OpenMF//wiki">Know More</MDBBtn>
+                <MDBBtn color="elegant" href="https://github.com/scorelab/OpenMF//wiki">Learn More</MDBBtn>
                 </div>
             </form>
             </div>
