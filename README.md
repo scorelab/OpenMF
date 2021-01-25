@@ -19,7 +19,7 @@ The OpenMF project is a dedicated software to:
 3) Produce Analysis report
 
 This open source project is an important tool for Digital forensic organization.
-At present OpenMF is only a commmand line tool but we are planing to make a complete web client with additional features like Admin, Management and Extractor. These roles will have different privileges to the tool and as a whole it will become a complete open source forensic tool for Android smartphones which then can be used by any Digital digital forensic investigation organization.
+At present OpenMF is only a commmand line tool but we are planing to make a complete web client with additional features like Admin, Management and Extractor. These roles will have different privileges to the tool and as a whole it will become a complete open source forensic tool for Android smartphones which then can be used by any Digital forensic investigation organization.
 
 ### User Guide
 **Step:1 - Cloning the project.**\
@@ -33,7 +33,7 @@ Connect a rooted Android device using a data cable to your system, make sure tha
 Once connected, you can run `python3 collector.py --option all --session_name CaseNo1​` or `python3 collector.py -o all -sn CaseNo1`. Please ​note that this script will extract the requested data in `.db` format in the project directory inside `session name` (CaseNo1 for the above command) folder.
 
 **Step:4 - Convert the data `.db` files to readable format like `.tsv/.json`**\
-Run `converter.py` and pass three arguments, the first one contains path to .dp file, the second argument contains desired path to store converted files and the last argument contains file type (either `.json` or `.tsv`) for e.g. `python3 converter.py /home/user/Downloads/accounts.db /home/user/data/ json` converts `accounts.db` files in `.json` format.
+Run `converter.py` and pass three arguments, the first one contains path to .db file, the second argument contains desired path to store converted files and the last argument contains file type (either `.json` or `.tsv`) for e.g. `python3 converter.py /home/user/Downloads/accounts.db /home/user/data/ json` converts `accounts.db` files in `.json` format.
 
 ### Developer Guide
 Follow all the instructions given in the User Guide.
