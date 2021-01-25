@@ -18,12 +18,12 @@ If you are on Windows, then use the following commands instead:
 Running
 -------
 Step1: Change directory to React-Frontend
-Run `cd React-Frontend`
+ `cd React-Frontend`
 
 Step2: Install required dependencies 
-Run `npm install`
+ `npm install`
 
 Step3: Run the react server:
-Run `npm start`
+ `npm start`
 
 And use localhost:3000 to browse.
