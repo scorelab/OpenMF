@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Sb from './components/Management/SideBarManagement';
 import Nvb from './components/Navbar';
-import Ftr from './components/Footer';
+//import Ftr from './components/Footer';
 // import Hl from './components/HomeLogo';
 // import Lf from './components/LoginForm';
 
@@ -10,11 +10,11 @@ import Ftr from './components/Footer';
 
 function App() {
   return (
-    <div className="containerBI">
-    <Nvb />
-    <Sb />
-    <Ftr />
-</div> 
+    <div className='containerBI'>
+      <Nvb />
+      <Sb />
+      {/* <Ftr /> */}
+    </div>
   );
 }
 
