@@ -60,9 +60,3 @@ export default class Sidebar extends Component {
       </div>
     }
   }
-
-/*
-  <div class="font-weight-bold">
-  <p class="text-center">Admin</p>
-</div>
-*/
