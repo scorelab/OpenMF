@@ -1,25 +1,25 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import './App.css';
-import Sb from './components/Management/SideBarManagement';
-import Nvb from './components/Navbar';
-import Ftr from './components/Footer';
-import Alert from './components/Alert';
-// import Hl from './components/HomeLogo';
-// import Lf from './components/LoginForm';
+import { Route, Switch } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage'
 
 import store from './store/store';
-
-// import { MDBContainer, MDBRow, MDBCol} from 'mdbreact';
 
 function App() {
   return (
     <Provider store={store}>
-      <div className='containerBI'>
+      <div className="containerBI">
         <Alert />
-        <Nvb />
-        <Sb />
-        <Ftr />
+        <Switch>
+          <Route path="/login" exact component={LoginPage} />
+          <Route path='/' exact component={HomePage} />
+          <Route path='/about' exact component={AboutPage} />
+          <Route path='/contact' exact component={ContactPage} />
+        </Switch>
       </div>
     </Provider>
   );

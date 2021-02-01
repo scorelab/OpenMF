@@ -28,6 +28,7 @@ code {
 }
 
 .sidebar-link:hover {
+  cursor: pointer;
   border-right: 5px solid dimgray;
   background-color: gainsboro;
 }

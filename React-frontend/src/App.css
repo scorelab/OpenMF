@@ -7,7 +7,7 @@
   }
 
   .Login form {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     max-width: 320px;
   }
 }
@@ -17,4 +17,9 @@
 }
 .dropdown-menu{
   left: -50px !important;
+}
+
+.myLink{
+  text-decoration: none;
+  color: black;
 }
