@@ -1,20 +1,21 @@
 import React from 'react';
 import './App.css';
-import Sb from './components/Management/SideBarManagement';
-import Nvb from './components/Navbar';
-import Ftr from './components/Footer';
-// import Hl from './components/HomeLogo';
-// import Lf from './components/LoginForm';
-
-// import { MDBContainer, MDBRow, MDBCol} from 'mdbreact';
+import { Route, Switch } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage'
 
 function App() {
   return (
     <div className="containerBI">
-    <Nvb />
-    <Sb />
-    <Ftr />
-</div> 
+      <Switch>
+        <Route path="/login" exact component={LoginPage} />
+        <Route path='/' exact component={HomePage} />
+        <Route path='/about' exact component={AboutPage} />
+        <Route path='/contact' exact component={ContactPage} />
+      </Switch>
+    </div>
   );
 }
 

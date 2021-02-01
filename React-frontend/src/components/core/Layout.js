@@ -1,0 +1,21 @@
+import React from 'react';
+import Navbar from './Navbar';
+import Footer from './Footer';
+import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
+import Sidebar from '../Sidebar';
+import '../../App.css'
+
+const Layout = ({ children, sidebarBool = true }) => {
+  return (
+    <div className="containerBI">
+      <Navbar />
+      <MDBRow>
+        <MDBCol md="2">{sidebarBool && <Sidebar />}</MDBCol>
+        <MDBCol md="10"><MDBContainer>{children}</MDBContainer></MDBCol>
+      </MDBRow>
+      <Footer />
+    </div>
+  );
+};
+
+export default Layout;

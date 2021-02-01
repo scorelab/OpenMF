@@ -1,7 +1,6 @@
 import React from 'react';
-import '../App.css';
-import Cpr from'../images/copyright.png';
-import Glogo from'../images/github.png';
+import Cpr from '../../images/copyright.png';
+import Glogo from '../../images/github.png';
 import { Navbar, Nav} from 'react-bootstrap';
 
 function Ftr() {
