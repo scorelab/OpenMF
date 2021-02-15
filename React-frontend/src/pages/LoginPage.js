@@ -5,15 +5,15 @@ import Lf from '../components/LoginForm';
 import { MDBRow, MDBCol } from 'mdbreact';
 import Layout from '../components/core/Layout';
 
-function LoginPage() {
+const LoginPage = () => {
   return (
     <Layout sidebarBool={false}>
       <MDBRow>
-        <MDBCol md="5">
+        <MDBCol md='5'>
           <Hl />
         </MDBCol>
-        <MDBCol md="2"></MDBCol>
-        <MDBCol md="5">
+        <MDBCol md='2'></MDBCol>
+        <MDBCol md='5'>
           <Lf />
         </MDBCol>
       </MDBRow>
@@ -22,6 +22,6 @@ function LoginPage() {
       <br />
     </Layout>
   );
-}
+};
 
 export default LoginPage;
