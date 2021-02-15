@@ -3,6 +3,7 @@ import { LOGIN, LOGOUT, TOGGLE_AUTH_LOADING } from '../actions/auth';
 const initialState = {
   isAuthenticated: false,
   isLoading: false,
+  user: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -13,10 +14,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         isLoading: false,
+        user: payload,
       };
     case LOGOUT:
       return {
         ...state,
+        user: null,
         isAuthenticated: false,
         isLoading: false,
       };
