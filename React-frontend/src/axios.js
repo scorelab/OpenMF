@@ -6,6 +6,4 @@ const axiosInstance = axios.create({
   baseURL: URL,
 });
 
-axiosInstance.defaults.headers['Access-Control-Allow-Origin'] = '*';
-
 export default axiosInstance;

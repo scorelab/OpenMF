@@ -2,12 +2,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy 
 from flask_login import LoginManager 
 from flask_marshmallow import Marshmallow
+from flask_cors import CORS, cross_origin
 
 db = SQLAlchemy()
 ma = Marshmallow()
 
 def create_app():
     app = Flask(__name__)
+    cors = CORS(app)
 
     app.config['SECRET_KEY'] = 'thisismysecretkeydonotstealit'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
