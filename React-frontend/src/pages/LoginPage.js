@@ -1,6 +1,6 @@
 import React from 'react';
 import Hl from '../components/core/HomeLogo';
-import Lf from '../components/LoginForm';
+import LoginForm from '../components/LoginForm';
 
 import { MDBRow, MDBCol } from 'mdbreact';
 import Layout from '../components/core/Layout';
@@ -14,10 +14,9 @@ function LoginPage() {
         </MDBCol>
         <MDBCol md="2"></MDBCol>
         <MDBCol md="5">
-          <Lf />
+          <LoginForm />
         </MDBCol>
       </MDBRow>
-
       <br />
       <br />
     </Layout>

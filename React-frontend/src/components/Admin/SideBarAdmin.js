@@ -11,7 +11,7 @@ export default class Sidebar extends Component {
       <MDBCard >
       <MDBCardTitle>
       <br />
-      <div class="text-center font-weight-bold "><p>Admin</p>
+      <div className="text-center font-weight-bold "><p>Admin</p>
       </div>
       </MDBCardTitle>
       </MDBCard>
@@ -27,7 +27,7 @@ export default class Sidebar extends Component {
             />
           }
         <br />
-        <div class="text-center font-weight-bolder"><p>User <br/> Management</p></div>
+        <div className="text-center font-weight-bolder"><p>User <br/> Management</p></div>
         </MDBBtn>
         <MDBBtn color="mdb-color">{
               <img className="thumbnail-image" 
@@ -37,7 +37,7 @@ export default class Sidebar extends Component {
               />
             }
         <br />
-        <div class="text-center font-weight-bolder"><p>Data <br/> Management</p></div>
+        <div className="text-center font-weight-bolder"><p>Data <br/> Management</p></div>
         </MDBBtn>
         <MDBBtn color="mdb-color">{
               <img className="thumbnail-image" 
@@ -47,7 +47,7 @@ export default class Sidebar extends Component {
               />
             }
         <br />
-        <div class="text-center font-weight-bolder"><p>Assign Role</p></div>
+        <div className="text-center font-weight-bolder"><p>Assign Role</p></div>
         </MDBBtn>
 
       </MDBBtnGroup>

@@ -8,14 +8,14 @@ function Ftr() {
     <div>
       <Navbar fixed="bottom" expand="lg" bg="dark" variant="dark">
       <Nav className="mr-auto">
-        <a class="navbar-brand" href="http://www.scorelab.org/">
+        <a className="navbar-brand" href="http://www.scorelab.org/">
           <img src = {Cpr} height="25" width="25" alt="Copyright"></img>
           {' '}
           SCoRe Lab
         </a>
       </Nav>
       <Nav>
-        <a class="navbar-brand" href="https://github.com/scorelab/OpenMF/">
+        <a className="navbar-brand" href="https://github.com/scorelab/OpenMF/">
         Contact us:{' '}
         <img src = {Glogo} height="25" width="25" alt="Github Logo"></img>
         </a>      

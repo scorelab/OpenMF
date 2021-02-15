@@ -1,5 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
@@ -13,6 +15,7 @@ import store from './store/store';
 function App() {
   return (
     <Provider store={store}>
+    <ToastContainer autoClose={3000} position="bottom-center" />
       <div className="containerBI">
         <Alert />
         <Switch>

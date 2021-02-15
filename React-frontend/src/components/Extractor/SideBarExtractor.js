@@ -9,7 +9,7 @@ export default class Sidebar extends Component {
       <MDBCard >
       <MDBCardTitle>
       <br />
-      <div class="text-center font-weight-bold "><p>Extractor</p>
+      <div className="text-center font-weight-bold "><p>Extractor</p>
       </div>
       </MDBCardTitle>
       </MDBCard>
@@ -25,7 +25,7 @@ export default class Sidebar extends Component {
             />
           }
         <br /><br />
-        <div class="text-center font-weight-bolder"><p>Live<br/>Connected<br/>Devices</p></div>
+        <div className="text-center font-weight-bolder"><p>Live<br/>Connected<br/>Devices</p></div>
         </MDBBtn>
 
       </MDBBtnGroup>

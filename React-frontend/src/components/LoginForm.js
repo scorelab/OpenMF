@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
-
+import { useDispatch, useSelector } from 'react-redux'
+import { loginUser } from '../store/actions/auth';
 const FormPage = () => {
+  const [values, setValues] = useState({
+    email: '',
+    password: '',
+  })
+  const dispatch = useDispatch()
+  const submitHandler = async e => {
+    e.preventDefault();
+    await dispatch(loginUser(values))
+  }
   return (
     <MDBContainer>
       <br />
@@ -17,6 +27,8 @@ const FormPage = () => {
                 label="Your email"
                 icon="envelope"
                 group
+                value={values.email}
+                onChange={(e) => setValues({...values, email: e.target.value})}
                 type="email"
                 validate
                 error="wrong"
@@ -26,6 +38,8 @@ const FormPage = () => {
                 label="Your password"
                 icon="lock"
                 group
+                value={values.password}
+                onChange={(e) => setValues({...values, password: e.target.value})}
                 type="password"
                 validate
               />
@@ -37,7 +51,7 @@ const FormPage = () => {
               </a>
             </p>
             <div className="text-center py-4 mt-3">
-              <MDBBtn color="elegant" size="sm">
+              <MDBBtn onClick={submitHandler} color="elegant" size="sm">
                 Sign In
               </MDBBtn>
             </div>

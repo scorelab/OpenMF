@@ -10,7 +10,7 @@ export default class Sidebar extends Component {
       <MDBCard >
       <MDBCardTitle>
       <br />
-      <div class="text-center font-weight-bold "><p>Management</p>
+      <div className="text-center font-weight-bold "><p>Management</p>
       </div>
       </MDBCardTitle>
       </MDBCard>
@@ -26,7 +26,7 @@ export default class Sidebar extends Component {
             />
           }
         <br />
-        <div class="text-center font-weight-bolder"><p>File <br/> Explorer</p></div>
+        <div className="text-center font-weight-bolder"><p>File <br/> Explorer</p></div>
         </MDBBtn>
         <MDBBtn color="mdb-color">{
               <img className="thumbnail-image" 
@@ -36,7 +36,7 @@ export default class Sidebar extends Component {
               />
             }
         <br />
-        <div class="text-center font-weight-bolder"><p>Analytics</p></div>
+        <div className="text-center font-weight-bolder"><p>Analytics</p></div>
         </MDBBtn>
 
       </MDBBtnGroup>

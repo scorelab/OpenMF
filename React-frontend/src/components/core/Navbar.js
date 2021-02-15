@@ -16,7 +16,7 @@ function Nvb() {
     <div>
       <Navbar expand="lg" bg="dark" variant="dark">
         <Nav className="mr-auto">
-          <Link class="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/">
             <img src={Logo} height="50" width="50" alt="logo"></img>
             OpenMF
           </Link>

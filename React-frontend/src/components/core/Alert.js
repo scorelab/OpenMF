@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 const CustomAlert = () => {
   const alerts = useSelector(state => state.alerts);
-
+  
   if (!alerts) {
     return null;
   }
