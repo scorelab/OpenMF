@@ -2,15 +2,20 @@ import React, {useState} from 'react';
 import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser } from '../store/actions/auth';
+import { Redirect } from 'react-router-dom'
 const FormPage = () => {
   const [values, setValues] = useState({
     email: '',
     password: '',
   })
+  const user = useSelector(state => state.user)
   const dispatch = useDispatch()
   const submitHandler = async e => {
     e.preventDefault();
     await dispatch(loginUser(values))
+  }
+  if(user.user){
+    return <Redirect to='/' />
   }
   return (
     <MDBContainer>
