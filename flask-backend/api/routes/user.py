@@ -24,12 +24,18 @@ def profile():
 
 @user.route('/getUser/<id>', methods=["GET"])
 def getUser(id):
+    user = User.query.filter_by(id=id).first()
+    
+    # Check f user with that id exists
+    if not user:
+        return 'User does not exist', 404
+
     return jsonify({'status':200,
-                    'user_id':current_user.id,
-                    'email':current_user.email,
-                    'name':current_user.name,
-                    'role':current_user.role,
-                    'timestamp':current_user.timestamp})
+                    'user_id':user.id,
+                    'email':user.email,
+                    'name':user.name,
+                    'role':user.role,
+                    'timestamp':user.timestamp})
 
 @user.route('/count', methods=["GET"])
 def count():
