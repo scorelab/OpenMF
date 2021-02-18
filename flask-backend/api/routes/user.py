@@ -50,11 +50,22 @@ def list():
 
 @user.route('/create', methods=['POST'])
 def create_user(): # Add only admin can create functionality, once deployed on actual data base with one master user
-    req = request.get_json()
-    email = str(req['email'])
-    password = str(req['password'])
-    name = str(req['name'])
-    role = ''.join(sorted(str(req['role'])))
+    
+    # if no data is sent at all
+    try:
+        req = request.get_json()
+    except:
+        return 'please provide email and password', 400
+
+    # Check if a key is missing
+    try:    
+        email = str(req['email'])
+        password = str(req['password'])
+        name = str(req['name'])
+        role = ''.join(sorted(str(req['role'])))
+    except KeyError as err:
+        return f'please provide {str(err)}', 400
+
     timestamp = int(time.time())
     
     user = User.query.filter_by(email=email).first()
@@ -71,9 +82,20 @@ def create_user(): # Add only admin can create functionality, once deployed on a
 
 @user.route('/role-update', methods=['POST'])
 def roleupdate():
-    req = request.get_json()
-    email = str(req['email'])
-    newrole = ''.join(sorted(str(req['role'])))
+
+    #if no data is sent at all
+    try:
+        req = request.get_json()
+    except:
+        return 'please provide email and role', 400
+
+    # Check if a key is missing
+    try:
+        email = str(req['email'])
+        newrole = ''.join(sorted(str(req['role'])))
+    except KeyError as err:
+        return f'please provide {str(err)}', 400
+
     user = User.query.filter_by(email=email).first()
     user.role = newrole
     db.session.commit()
@@ -81,8 +103,14 @@ def roleupdate():
 
 @user.route('/delete', methods=['POST'])
 def deleteuser():
-    req = request.get_json()
-    email = str(req['email'])
+
+    # Check if email is provided or not
+    try:
+        req = request.get_json()
+        email = str(req['email'])
+    except:
+        return 'please provide email', 400
+
     user = User.query.filter_by(email=email).first()
     db.session.delete(user)
     db.session.commit()
