@@ -79,11 +79,10 @@ def roleupdate():
     db.session.commit()
     return 'user updated', 202
 
+
 @user.route('/delete', methods=['POST'])
+@login_required
 def deleteuser():
-    req = request.get_json()
-    email = str(req['email'])
-    user = User.query.filter_by(email=email).first()
-    db.session.delete(user)
+    db.session.delete(current_user)
     db.session.commit()
     return 'user deleted', 202
