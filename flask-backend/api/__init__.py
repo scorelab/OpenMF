@@ -21,9 +21,14 @@ def create_app():
 
     from .models.models import User
 
+
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
+
+    @login_manager.unauthorized_handler
+    def unauthorized_handler():
+        return 'You are not authorized to use this route. Please Logged In.', 401
 
     from .userAuthentication.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
