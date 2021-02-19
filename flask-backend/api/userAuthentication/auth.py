@@ -23,7 +23,7 @@ def login_post():
 
     login_user(user, remember=remember)
 
-    return 'user logged in', 406
+    return 'user logged in', 200
 
 @auth.route('/logout')
 @login_required
