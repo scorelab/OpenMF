@@ -25,7 +25,7 @@ const FormPage = () => {
     <MDBContainer>
       <br />
       <MDBCard>
-        <MDBCardBody>
+        <MDBCardBody className='align-center'>
           <form onSubmit={loginHandler}>
             <p className='h4 text-center py-4'>Sign In</p>
             <p className='h7 text-center'>
@@ -59,15 +59,20 @@ const FormPage = () => {
                 name='password'
                 onChange={event => setFormData(event.target)}
               />
-              <MDBInput
-                disabled={isLoading}
-                label='Remember me'
-                type='checkbox'
-                name='remember'
-                value={formData.remember}
-                onChange={event => setFormData(event.target)}
-                group
-              />
+              <div className='d-flex justify-content-center'>
+                <div class='form-check m-0'>
+                  <input
+                    class='form-check-input'
+                    type='checkbox'
+                    name='remember'
+                    value={formData.remember}
+                    onChange={event => setFormData(event.target)}
+                  />
+                  <label class='form-check-label' for='flexCheckDefault'>
+                    Remember Me
+                  </label>
+                </div>
+              </div>
             </div>
             <p className='mt-2 font-small blue-text d-flex justify-content-center pb-3'>
               Forgot
@@ -75,7 +80,7 @@ const FormPage = () => {
                 Password?
               </a>
             </p>
-            <div className='text-center py-4 mt-3'>
+            <div className='text-center py-4'>
               <MDBBtn
                 disabled={isLoading}
                 type='submit'
