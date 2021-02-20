@@ -22,10 +22,18 @@ Step1: Create the Database
 Run `python create_database.py`
 
 Step2:Start the backend server
+(For Linux or Mac)
 To run the server use the following command:
 
     (venv) $ `export FLASK_APP=api`
     (venv) $ `export FLASK_DEBUG=1`
+    (venv) $ `flask run`
+
+(For Windows)
+To run the server use the following command:
+
+    (venv) $ `set FLASK_APP=api`
+    (venv) $ `set FLASK_DEBUG=1`
     (venv) $ `flask run`
 
 Eithr from a terminal window or from postman you can send requests.
