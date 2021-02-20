@@ -105,6 +105,14 @@ def roleupdate():
 @user.route('/delete', methods=['POST'])
 @login_required
 def deleteuser():
-    db.session.delete(current_user)
+    # Check if email is provided or not
+    try:
+        req = request.get_json()
+        email = str(req['email'])
+    except:
+        return 'please provide email', 400
+
+    user = User.query.filter_by(email=email).first()
+    db.session.delete(user)
     db.session.commit()
     return 'user deleted', 202
