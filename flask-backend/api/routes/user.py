@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from ..models.models import User, UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
-
+from sqlalchemy import update
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
@@ -20,6 +20,8 @@ def profile():
                     'name':current_user.name,
                     'role':current_user.role,
                     'timestamp':current_user.timestamp,
+                    'has_admin':current_user.has_admin,
+                    'admin':current_user.admin,
                     'message':'user logged in'})
 
 @user.route('/getUser/<id>', methods=["GET"])
@@ -35,6 +37,8 @@ def getUser(id):
                     'email':user.email,
                     'name':user.name,
                     'role':user.role,
+                    'has_admin':user.has_admin,
+                    'admin':user.admin,
                     'timestamp':user.timestamp})
 
 @user.route('/count', methods=["GET"])
@@ -48,7 +52,7 @@ def list():
     result = users_schema.dump(all_users)
     return jsonify(result)
 
-@user.route('/create', methods=['POST'])
+@user.route('/signup', methods=['POST'])
 def create_user(): # Add only admin can create functionality, once deployed on actual data base with one master user
     req = request.get_json()
     email = str(req['email'])
@@ -68,6 +72,39 @@ def create_user(): # Add only admin can create functionality, once deployed on a
     db.session.commit()
 
     return 'user created', 202
+
+@user.route('/add-user', methods=['POST'])
+@login_required
+def add_users():
+
+    # Check current user is admin or not
+    if(current_user.has_admin == False):
+        req = request.get_json()
+        email = str(req['email'])
+        role = ''.join(sorted(str(req['role'])))
+
+        #search for user
+        user = User.query.filter_by(email=email).first()
+
+        if(user):
+            # user.admin(current_user.email)
+            # db.session.commit()
+            user.admin(current_user.email)
+            print(current_user.email, '###########################')
+            print(user.admin, '#################################')
+            return jsonify({'status':200,
+                    'user_id':user.id,
+                    'email':user.email,
+                    'name':user.name,
+                    'role':user.role,
+                    'has_admin':user.has_admin,
+                    'admin':user.admin,
+                    'timestamp':user.timestamp})
+        return 'User not found', 409
+    return "You can't add users, you are not an admin", 409
+
+
+
 
 @user.route('/role-update', methods=['POST'])
 def roleupdate():
