@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 
@@ -14,11 +14,19 @@ const FormPage = () => {
   };
   const { isLoading } = useSelector(state => state.auth);
   const [formData, setFormData] = useReducer(formReducer, initialFormData);
+  const [passwordShown, setPasswordShown] = useState(false)
+
+  // password  toggle handler
+  const togglePasswordVisibilty = () => {
+    setPasswordShown(passwordShown ? false : true)
+  } 
 
   const loginHandler = async e => {
     e.preventDefault();
-    console.log(formData);
-    dispatch(login(formData));
+    e.target.className += " was-validated"
+    if (formData.email && formData.password){
+      dispatch(login(formData));
+    }
   };
 
   return (
@@ -26,7 +34,11 @@ const FormPage = () => {
       <br />
       <MDBCard>
         <MDBCardBody className='align-center'>
-          <form onSubmit={loginHandler}>
+          <form 
+            className='needs-validation'  
+            onSubmit={loginHandler}
+            noValidate
+          >
             <p className='h4 text-center py-4'>Sign In</p>
             <p className='h7 text-center'>
               {isLoading
@@ -41,12 +53,17 @@ const FormPage = () => {
                 group
                 value={formData.email}
                 type='email'
-                validate
                 error='wrong'
+                required 
                 success='right'
                 name='email'
                 onChange={event => setFormData(event.target)}
-              />
+              >
+                <div className='invalid-feedback'>
+                  Please provide a valid email.
+                </div>
+                <div className='valid-feedback'>Looks good!</div>
+              </MDBInput>
               <MDBInput
                 disabled={isLoading}
                 label='Your password'
@@ -54,11 +71,27 @@ const FormPage = () => {
                 group
                 required
                 value={formData.password}
-                type='password'
-                validate
+                type={passwordShown ? 'text': 'password'}
                 name='password'
                 onChange={event => setFormData(event.target)}
-              />
+              >
+                <div className="invalid-feedback mb-4">
+                  Please provide a password.
+                </div>
+                <div className="valid-feedback">Looks good!</div>
+              </MDBInput>
+              <div class='form-check m-0'>
+                  <input
+                    class='form-check-input'
+                    type='checkbox'
+                    name='remember'
+                    value={passwordShown}
+                    onChange={togglePasswordVisibilty}
+                  />
+                  <label class='form-check-label' htmlFor='flexCheckDefault'>
+                    Show Password
+                  </label>
+                </div>
               <div className='d-flex justify-content-center'>
                 <div class='form-check m-0'>
                   <input
@@ -68,7 +101,7 @@ const FormPage = () => {
                     value={formData.remember}
                     onChange={event => setFormData(event.target)}
                   />
-                  <label class='form-check-label' for='flexCheckDefault'>
+                  <label class='form-check-label' htmlFor='flexCheckDefault'>
                     Remember Me
                   </label>
                 </div>
