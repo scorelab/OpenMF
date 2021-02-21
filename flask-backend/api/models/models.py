@@ -9,7 +9,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
-    role = db.Column(db.String(5))
+    role = db.Column(db.String(20))
     timestamp = db.Column(db.Float)
     has_admin = db.column_property(role != "adimn")
     _admin = db.Column(db.String(100))
@@ -29,7 +29,7 @@ class User(UserMixin, db.Model):
         return 'You are an admin'
 
     @admin.setter
-    def adimn(self, email):
+    def admin(self, email):
         self._admin = email
 
 

@@ -52,7 +52,7 @@ def list():
     result = users_schema.dump(all_users)
     return jsonify(result)
 
-@user.route('/signup', methods=['POST'])
+@user.route('/create', methods=['POST'])
 def create_user(): # Add only admin can create functionality, once deployed on actual data base with one master user
     req = request.get_json()
     email = str(req['email'])
@@ -73,48 +73,84 @@ def create_user(): # Add only admin can create functionality, once deployed on a
 
     return 'user created', 202
 
+
+# Route for admin to add user 
 @user.route('/add-user', methods=['POST'])
 @login_required
 def add_users():
-
-    # Check current user is admin or not
-    if(current_user.has_admin == False):
-        req = request.get_json()
-        email = str(req['email'])
-        role = ''.join(sorted(str(req['role'])))
-
-        #search for user
+    if(current_user.has_admin == False): 
+        try:
+            req = request.get_json()
+            email = str(req['email'])
+            password = str(req['password'])
+            name = str(req['name'])
+            role = ''.join(sorted(str(req['role'])))
+            timestamp = int(time.time())
+        except:
+            return 'Please provide all parameters', 409
         user = User.query.filter_by(email=email).first()
 
-        if(user):
-            # user.admin(current_user.email)
-            # db.session.commit()
-            user.admin(current_user.email)
-            print(current_user.email, '###########################')
-            print(user.admin, '#################################')
-            return jsonify({'status':200,
-                    'user_id':user.id,
-                    'email':user.email,
-                    'name':user.name,
-                    'role':user.role,
-                    'has_admin':user.has_admin,
-                    'admin':user.admin,
-                    'timestamp':user.timestamp})
-        return 'User not found', 409
+        if user:
+            return 'Email address already exists', 409
+        elif role == 'adimn':
+            return 'You cannot create a user of role admin', 409
+
+        new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), role=role, timestamp=timestamp)
+        new_user.admin = current_user.email 
+        db.session.add(new_user)
+        db.session.commit()
+
+        return 'user created', 202
     return "You can't add users, you are not an admin", 409
 
 
+# Route for admin to view all his users
+@user.route('/all-users', methods=['GET'])
+@login_required
+def all_users():
+    if current_user.role == 'adimn':
+        all_users = User.query.filter_by(admin=current_user.email).order_by(User.timestamp).all()
+        result = users_schema.dump(all_users)
+        return jsonify(result)
+    return 'You are not admin', 409
+
+# Route for admin to delete a user
+@user.route('/remove-user', methods=['POST'])
+@login_required
+def remove_user():
+    if current_user.role == 'adimn':
+        try:
+            req = request.get_json()
+            email = str(req['email'])
+        except:
+            return 'Please provide all parameters', 409
+        user = User.query.filter_by(admin=current_user.email).filter_by(email=email).first()
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            return f"User {user.email} removed."
+        return 'User not found.', 409
+    return 'You are not an admin', 409
 
 
+# Route to udate role of an user
 @user.route('/role-update', methods=['POST'])
+@login_required
 def roleupdate():
-    req = request.get_json()
-    email = str(req['email'])
-    newrole = ''.join(sorted(str(req['role'])))
-    user = User.query.filter_by(email=email).first()
-    user.role = newrole
-    db.session.commit()
-    return 'user updated', 202
+    if current_user.role == 'adimn':
+        try: 
+            req = request.get_json()
+            email = str(req['email'])
+            newrole = ''.join(sorted(str(req['role'])))
+        except:
+            return 'Please provide all parameters', 409
+        user = User.query.filter_by(admin=current_user.email).filter_by(email=email).first()
+        if user:
+            user.role = newrole
+            db.session.commit()
+            return f"User {user.email} has role {newrole} now."
+        return 'User not found.', 409
+    return 'You are not an admin.', 409
 
 
 @user.route('/delete', methods=['POST'])
