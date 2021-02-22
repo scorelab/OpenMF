@@ -1,13 +1,18 @@
 from flask_login import UserMixin
 from .. import db, ma
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.sql import case
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
-    role = db.Column(db.String(5))
+    role = db.Column(db.String(20))
     timestamp = db.Column(db.Float)
+    has_admin = db.column_property(role != "adimn")
+    _admin = db.Column(db.String(100))
 
     def __init__(self, email, password, name, role, timestamp):
         self.email = email
@@ -15,6 +20,18 @@ class User(UserMixin, db.Model):
         self.name = name
         self.role = role
         self.timestamp = timestamp
+        self._admin = "Admin not assinged."
+        
+    @hybrid_property
+    def admin(self):
+        if(self.has_admin):
+            return self._admin
+        return 'You are an admin'
+
+    @admin.setter
+    def admin(self, email):
+        self._admin = email
+
 
 class Case(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
