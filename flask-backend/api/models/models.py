@@ -26,7 +26,7 @@ class User(UserMixin, db.Model):
     def admin(self):
         if(self.has_admin):
             return self._admin
-        return 'You are an admin'
+        return 'None'
 
     @admin.setter
     def admin(self, email):
@@ -50,7 +50,7 @@ class Case(UserMixin, db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'email', 'role', 'timestamp')
+        fields = ('name', 'email', 'role', 'timestamp', 'admin')
 
 class CaseSchema(ma.Schema):
     class Meta:
