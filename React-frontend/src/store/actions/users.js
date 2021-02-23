@@ -21,7 +21,7 @@ export const fetchUsers = () => async dispatch => {
 export const addUser = (userData, callback) => async dispatch => {
   try {
     dispatch({ type: TOGGLE_USERS_LOADING, payload: true });
-    const res = await axios.post('/user/create', userData, {
+    const res = await axios.post('/user/add-user', userData, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,7 +40,7 @@ export const deleteUser = (email, toggleModal) => async dispatch => {
   try {
     dispatch({ type: TOGGLE_USERS_LOADING, payload: true });
     const res = await axios.post(
-      '/user/delete',
+      '/user/remove-user',
       { email },
       {
         headers: {
