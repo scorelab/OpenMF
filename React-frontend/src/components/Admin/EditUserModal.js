@@ -14,7 +14,8 @@ import Dropdown from '../core/Dropdown';
 const EditUserModal = ({ isOpen, onToggle }) => {
   const dispatch = useDispatch();
   const email = useSelector(state => state.users.selectedUser);
-  const [role, setRole] = useState('');
+  const options = ['admin', 'extractor', 'management'];
+  const [role, setRole] = useState(options[0]);
 
   const updateUserHandler = () => {
     dispatch(updateUserRole(email, role, onToggle));
@@ -28,7 +29,7 @@ const EditUserModal = ({ isOpen, onToggle }) => {
           name='role'
           value={role}
           label='Select role'
-          options={['admin', 'user']}
+          options={options}
           onChange={event => setRole(event.target.value)}
         />
       </MDBModalBody>

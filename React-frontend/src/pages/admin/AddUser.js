@@ -8,14 +8,15 @@ import Dropdown from '../../components/core/Dropdown';
 
 const AddUser = ({ history }) => {
   const dispatch = useDispatch();
+
+  const { isLoading } = useSelector(state => state.users);
+  const options = ['admin', 'extractor', 'management'];
   const initialFormData = {
     name: '',
     email: '',
     password: '',
-    role: 'admin',
+    role: options[0],
   };
-
-  const { isLoading } = useSelector(state => state.users);
   const [formData, setFormData] = useReducer(formReducer, initialFormData);
 
   const addUserHandler = e => {
@@ -60,7 +61,7 @@ const AddUser = ({ history }) => {
             name='role'
             value={formData.role}
             label='Select role'
-            options={['admin', 'user']}
+            options={options}
             onChange={event => setFormData(event.target)}
           />
           <MDBBtn type='submit'>Save User</MDBBtn>
