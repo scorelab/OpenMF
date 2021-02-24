@@ -12,6 +12,9 @@ User Related APIs
 7)   -P    http://127.0.0.1:5000/user/create
 8)   -P    http://127.0.0.1:5000/user/role-update
 9)   -P    http://127.0.0.1:5000/user/delete   
+10)  -P    http://127.0.0.1:5000/user/add-user
+11)  -G    http://127.0.0.1:5000/user/all-user
+12)  -P    http://127.0.0.1:5000/user/remove-user
 
 Case Related APIs
 -----------------
