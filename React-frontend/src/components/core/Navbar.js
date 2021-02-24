@@ -32,6 +32,11 @@ function Nvb() {
               Login
             </MDBBtn>
           </Link>
+          <Link to="/signup">
+            <MDBBtn outline color="primary">
+              SignUp
+            </MDBBtn>
+          </Link>
           <MDBDropdown>
             <MDBDropdownToggle caret color="dark">
               {
