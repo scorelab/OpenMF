@@ -1,6 +1,6 @@
 import React from 'react';
 import Logo from '../../images/HomeLogo.png';
-import { MDBContainer } from 'mdbreact';
+import { MDBBtn, MDBContainer } from 'mdbreact';
 
 function Hl() {
     return (
@@ -16,7 +16,13 @@ function Hl() {
                 <br />
                 <p className="h5 text-center mb-4">Open Source forensic tool for Android smartphones</p>
                 <div className="text-center">
-                <button color="elegant" href="https://github.com/scorelab/OpenMF//wiki">Know More</button>
+                  <MDBBtn color="elegant">
+                    <a 
+                      style={{color: 'white'}}
+                      href="https://github.com/scorelab/OpenMF//wiki" 
+                      target="_blank" 
+                      rel="noopener noreferrer">Know More</a>
+                  </MDBBtn>
                 </div>
             </form>
             </div>
