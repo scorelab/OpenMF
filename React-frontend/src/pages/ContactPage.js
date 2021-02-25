@@ -5,7 +5,7 @@ import GithubLogo from '../images/github.png';
 import GitterLogo from '../images/gitter.png';
 import ScorelabsLogo from '../images/scorelabs.jpeg';
 
-const AboutPage = () => {
+const ContactPage = () => {
   return (
     <Layout sidebarBool={true} background={false}>
       <div className='p-4 flex text-center'>
@@ -57,4 +57,4 @@ const AboutPage = () => {
   );
 };
 
-export default AboutPage;
+export default ContactPage;
