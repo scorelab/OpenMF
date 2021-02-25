@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 
 const FormPage = () => {
+
+  const [passwordType, setPasswordType] = useState('Password')
+
   return (
     <MDBContainer>
       <br />
@@ -22,13 +25,22 @@ const FormPage = () => {
                 error="wrong"
                 success="right"
               />
-              <MDBInput
-                label="Your password"
-                icon="lock"
-                group
-                type="password"
-                validate
-              />
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <MDBInput
+                  label="Your password"
+                  icon="lock"
+                  group
+                  type={passwordType}
+                  validate
+                  style={{ width: '125%' }}
+                />
+                {
+                  (passwordType == 'Password') ?
+                    (<i class="fas fa-eye  fa-lg" style={{ marginBottom: '30px', cursor: 'pointer' }} onClick={() => { setPasswordType('Text') }}></i>)
+                    :
+                    (<i class="fas fa-eye-slash  fa-lg" style={{ marginBottom: '30px', cursor: 'pointer' }} onClick={() => { setPasswordType('Password') }}></i>)
+                }
+              </div>
             </div>
             <p className="font-small blue-text d-flex justify-content-end pb-3">
               Forgot
