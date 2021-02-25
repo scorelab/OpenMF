@@ -15,7 +15,7 @@ case = Blueprint('case', __name__, url_prefix='/case')
 @case.route('/count', methods=["GET"])
 def count():
     return jsonify({'status':200,
-                    'total_users':Case.query.count()})
+                    'total_cases':Case.query.count()})
 
 @case.route('/list', methods=["GET"])
 def list():
