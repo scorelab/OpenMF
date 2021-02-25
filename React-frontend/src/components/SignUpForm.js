@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'; 
+import { Link, useHistory } from 'react-router-dom'; 
 import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 import axios from 'axios';
 import { setAlert } from '../store/actions/alerts';
@@ -8,6 +8,7 @@ import { setAlert } from '../store/actions/alerts';
 import formReducer from '../utils/formReducer';
 
 const FormPage = () => {
+  const history = useHistory()
   const dispatch = useDispatch();
   const initialFormData = {
     name: '',
@@ -31,14 +32,17 @@ const FormPage = () => {
     e.target.className += " was-validated"
     if (formData.name && formData.email && formData.password){
         try{
-            await axios.post('/create', formData, {
+            await axios.post('/user/create', formData, {
               headers: {
                 'Content-Type': 'application/json',
               }
             });
+            dispatch(setAlert('Success! You have registered', 'success'))
             setSending(false)
+            history.push('/login')
           } catch(error) {
-            dispatch(setAlert('Something went wrong', 'danger'))
+            const errorMsg = error.response.data
+            dispatch(setAlert(errorMsg, 'danger'))
             setSending(false)
         } 
     }

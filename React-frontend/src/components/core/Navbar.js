@@ -34,7 +34,7 @@ function Nvb() {
           </Link>
           <Link to="/signup">
             <MDBBtn outline color="primary">
-              SignUp
+              register
             </MDBBtn>
           </Link>
           <MDBDropdown>
