@@ -92,6 +92,10 @@ def create_user(): # Add only admin can create functionality, once deployed on a
     except KeyError as err:
         return f'please provide {str(err)}', 400
 
+    # Check if role provided is a valid one
+    if role not in ['admin', 'extractor', 'management']:
+        return 'Please provide a valid role', 400
+
     timestamp = int(time.time())
     
     user = User.query.filter_by(email=email).first()
@@ -121,6 +125,11 @@ def add_users():
             timestamp = int(time.time())
         except:
             return 'Please provide all parameters', 409
+        
+        # Check if role provided is a valid one
+        if role not in ['admin', 'extractor', 'management']:
+            return 'Please provide a valid role', 400
+
         user = User.query.filter_by(email=email).first()
 
         if user:
@@ -177,6 +186,11 @@ def roleupdate():
             newrole = ''.join(sorted(str(req['role'])))
         except:
             return 'Please provide all parameters', 409
+        
+        # Check if role provided is a valid one
+        if newrole not in ['admin', 'extractor', 'management']:
+            return 'Please provide a valid role', 400
+
         user = User.query.filter_by(admin=current_user.email).filter_by(email=email).first()
         if user:
             user.role = newrole
