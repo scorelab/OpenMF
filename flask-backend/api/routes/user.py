@@ -188,7 +188,7 @@ def roleupdate():
     return 'You are not an admin.', 409
 
 
-@user.route('/delete', methods=['POST'])
+@user.route('/delete', methods=['DELETE'])
 @login_required
 def deleteuser():
     db.session.delete(current_user)
