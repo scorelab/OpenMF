@@ -1,11 +1,9 @@
 import sqlite3 as sql
 import time
-from flask import Blueprint, render_template, jsonify, request
+from flask import Blueprint, jsonify, request
 from flask_login import login_required, current_user
 from ..models.models import User, UserSchema
-from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
-from sqlalchemy import update
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
@@ -15,25 +13,19 @@ user = Blueprint('user', __name__, url_prefix='/user')
 @login_required
 def profile():
     if(current_user.has_admin): # For user
-        return jsonify({'status':200,
-                        'user_id':current_user.id,
-                        'email':current_user.email,
-                        'name':current_user.name,
-                        'role':current_user.role,
-                        'timestamp':current_user.timestamp,
-                        'admin':current_user.admin,
-                        'message':'user logged in'})
+        response = {
+            'message': 'User logged in',
+            'data': current_user.map(),
+        }
+        return jsonify(response), 200
     # For admin
     admins_user = User.query.filter_by(admin = current_user.email).order_by(User.timestamp).all()
     result = users_schema.dump(admins_user)
-    return jsonify({'status':200,
-                    'user_id':current_user.id,
-                    'email':current_user.email,
-                    'name':current_user.name,
-                    'role':current_user.role,
-                    'timestamp':current_user.timestamp,
-                    'users': result,
-                    'message':'user logged in'})
+    response = {
+        'message': 'User logged in',
+        'data': { **current_user.map(),  'users': result },
+    }
+    return jsonify(response), 200
 
 
 @user.route('/getUser/<id>', methods=["GET"])
@@ -45,23 +37,20 @@ def getUser(id):
         return 'User does not exist', 404
 
     if(user.has_admin): # For user
-        return jsonify({'status':200,
-                        'user_id':user.id,
-                        'email':user.email,
-                        'name':user.name,
-                        'role':user.role,
-                        'timestamp':user.timestamp,
-                        'admin':user.admin})
+        response = {
+            'message': 'User logged in',
+            'data': user.map(),
+        }
+        return jsonify(response), 200
+    
     # For admin
     admins_user = User.query.filter_by(admin = user.email).order_by(User.timestamp).all()
     result = users_schema.dump(admins_user)
-    return jsonify({'status':200,
-                    'user_id':user.id,
-                    'email':user.email,
-                    'name':user.name,
-                    'role':user.role,
-                    'timestamp':user.timestamp,
-                    'users': result})
+    response = {
+        'message': 'User logged in',
+        'data': { **user.map(),  'users': result },
+    }
+    return jsonify(response), 200
 
 @user.route('/count', methods=["GET"])
 def count():
@@ -99,7 +88,7 @@ def create_user(): # Add only admin can create functionality, once deployed on a
     if user:
         return 'Email address already exists', 409
 
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), role=role, timestamp=timestamp)
+    new_user = User(email=email, name=name, password=password, role=role, timestamp=timestamp)
 
     db.session.add(new_user)
     db.session.commit()
@@ -128,7 +117,7 @@ def add_users():
         elif role == 'adimn':
             return 'You cannot create a user of role admin', 409
 
-        new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), role=role, timestamp=timestamp)
+        new_user = User(email=email, name=name, password=password, role=role, timestamp=timestamp)
         new_user.admin = current_user.email 
         db.session.add(new_user)
         db.session.commit()

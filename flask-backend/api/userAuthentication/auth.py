@@ -1,8 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, request
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Blueprint, request, request
 from flask_login import login_user, logout_user, login_required
 from ..models.models import User
-from .. import db
 
 auth = Blueprint('auth', __name__)
 
@@ -25,10 +23,10 @@ def login_post():
 
     user = User.query.filter_by(email=email).first()
 
-    if user is None:
+    if not user:
         return 'unable to authenticate, user not found', 406
 
-    if not check_password_hash(user.password, password):
+    if not user.match_password(password):
         return "unable to authenticate, password doesn't match", 406
 
     login_user(user, remember=remember)
