@@ -1,19 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
+import SidebarTile from './core/SidebarTile';
 
 const Sidebar = () => {
   return (
-    <div className="sidebar-container">
-      <div className="sidebar">
-        <Link className="myLink" to="/">
-          <div className="sidebar-link">Home</div>
-        </Link>
-        <Link className="myLink" to="/about">
-          <div className="sidebar-link">About</div>
-        </Link>
-        <Link className="myLink" to="/contact">
-          <div className="sidebar-link">Contact</div>
-        </Link>
+    <div className='sidebar-container'>
+      <div className='sidebar'>
+        <SidebarTile route='/' icon='fa-home' label='Home' />
+        <SidebarTile route='/about' icon='fa-user' label='About' />
+        <SidebarTile route='/contact' icon='fa-phone' label='Contact' />
+        <SidebarTile route='/admin' icon='fa-users' label='Admin' />
       </div>
     </div>
   );
