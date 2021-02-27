@@ -6,6 +6,8 @@ from ..models.models import User, UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
 from sqlalchemy import update
+from ..helpers.helpers import check_password_strength
+
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
@@ -92,6 +94,10 @@ def create_user(): # Add only admin can create functionality, once deployed on a
     except KeyError as err:
         return f'please provide {str(err)}', 400
 
+    validations = check_password_strength(password)
+    if validations:
+        return 'Weak password. Make sure it contains atleast 1 uppercase letter, 1 digit and 1 special character', 400
+
     timestamp = int(time.time())
     
     user = User.query.filter_by(email=email).first()
@@ -122,6 +128,10 @@ def add_users():
         except:
             return 'Please provide all parameters', 409
         user = User.query.filter_by(email=email).first()
+
+        validations = check_password_strength(password)
+        if validations:
+            return 'Weak password. Make sure it contains atleast 1 uppercase letter, 1 digit and 1 special character', 400
 
         if user:
             return 'Email address already exists', 409
