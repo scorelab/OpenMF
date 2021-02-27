@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../../images/HomeLogo.png';
 import { MDBContainer } from 'mdbreact';
+import { Link } from 'react-router-dom';
 
 function Hl() {
     return (
@@ -16,7 +17,11 @@ function Hl() {
                 <br />
                 <p className="h5 text-center mb-4">Open Source forensic tool for Android smartphones</p>
                 <div className="text-center">
-                <button color="elegant" href = "https://github.com/scorelab/OpenMF/">Know More</button>
+                
+                <a className= "btn block-example rounded-pill border border-dark" color = "elegant"  href="http://www.scorelab.org/">
+                    Know More
+                  </a>
+                
                 </div>
             </form>
             </div>
