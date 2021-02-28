@@ -3,15 +3,17 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import { MDBContainer, MDBRow, MDBCol } from 'mdbreact';
 import Sidebar from '../Sidebar';
-import '../../App.css'
+import '../../App.css';
 
-const Layout = ({ children, sidebarBool = true }) => {
+const Layout = ({ children, sidebarBool = true, background = true }) => {
   return (
-    <div className="containerBI">
+    <div className='containerBI'>
       <Navbar />
-      <MDBRow>
-        <MDBCol md="2">{sidebarBool && <Sidebar />}</MDBCol>
-        <MDBCol md="10"><MDBContainer>{children}</MDBContainer></MDBCol>
+      <MDBRow className={!background ? 'bg-white' : null}>
+        <MDBCol md='2'>{sidebarBool && <Sidebar />}</MDBCol>
+        <MDBCol md={sidebarBool ? '10' : '12'}>
+          <MDBContainer>{children}</MDBContainer>
+        </MDBCol>
       </MDBRow>
       <Footer />
     </div>

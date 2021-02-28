@@ -38,6 +38,13 @@ To run the server use the following command:
 
 Eithr from a terminal window or from postman you can send requests.
 
+**Setting up .env file for Forgot Password Feature**
+
+To enable the forgot password feature, you need to configure the .env file for sending emails through the Flask server.
+
+1. Go to flask-backend directory
+2. Create a .env file and configure it by following the .envsample file.
+
 API Documentation
 -----------------
 [click here](https://github.com/shivanshu1333/My-GSoC-Proposals/blob/master/GSoC'20-SCoReLab-OpenMF.pdf)

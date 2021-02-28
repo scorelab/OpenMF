@@ -4,6 +4,7 @@ import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 
 import { login } from '../store/actions/auth';
 import formReducer from '../utils/formReducer';
+import { Link } from 'react-router-dom';
 
 const FormPage = () => {
   const dispatch = useDispatch();
@@ -14,17 +15,17 @@ const FormPage = () => {
   };
   const { isLoading } = useSelector(state => state.auth);
   const [formData, setFormData] = useReducer(formReducer, initialFormData);
-  const [passwordShown, setPasswordShown] = useState(false)
+  const [passwordShown, setPasswordShown] = useState(false);
 
   // password  toggle handler
   const togglePasswordVisibilty = () => {
-    setPasswordShown(passwordShown ? false : true)
-  } 
+    setPasswordShown(passwordShown ? false : true);
+  };
 
   const loginHandler = async e => {
     e.preventDefault();
-    e.target.className += " was-validated"
-    if (formData.email && formData.password){
+    e.target.className += ' was-validated';
+    if (formData.email && formData.password) {
       dispatch(login(formData));
     }
   };
@@ -34,11 +35,7 @@ const FormPage = () => {
       <br />
       <MDBCard>
         <MDBCardBody className='align-center'>
-          <form 
-            className='needs-validation'  
-            onSubmit={loginHandler}
-            noValidate
-          >
+          <form className='needs-validation' onSubmit={loginHandler} noValidate>
             <p className='h4 text-center py-4'>Sign In</p>
             <p className='h7 text-center'>
               {isLoading
@@ -54,11 +51,10 @@ const FormPage = () => {
                 value={formData.email}
                 type='email'
                 error='wrong'
-                required 
+                required
                 success='right'
                 name='email'
-                onChange={event => setFormData(event.target)}
-              >
+                onChange={event => setFormData(event.target)}>
                 <div className='invalid-feedback'>
                   Please provide a valid email.
                 </div>
@@ -71,27 +67,26 @@ const FormPage = () => {
                 group
                 required
                 value={formData.password}
-                type={passwordShown ? 'text': 'password'}
+                type={passwordShown ? 'text' : 'password'}
                 name='password'
-                onChange={event => setFormData(event.target)}
-              >
-                <div className="invalid-feedback mb-4">
+                onChange={event => setFormData(event.target)}>
+                <div className='invalid-feedback mb-4'>
                   Please provide a password.
                 </div>
-                <div className="valid-feedback">Looks good!</div>
+                <div className='valid-feedback'>Looks good!</div>
               </MDBInput>
               <div class='form-check m-0'>
-                  <input
-                    class='form-check-input'
-                    type='checkbox'
-                    name='remember'
-                    value={passwordShown}
-                    onChange={togglePasswordVisibilty}
-                  />
-                  <label class='form-check-label' htmlFor='flexCheckDefault'>
-                    Show Password
-                  </label>
-                </div>
+                <input
+                  class='form-check-input'
+                  type='checkbox'
+                  name='remember'
+                  value={passwordShown}
+                  onChange={togglePasswordVisibilty}
+                />
+                <label class='form-check-label' htmlFor='flexCheckDefault'>
+                  Show Password
+                </label>
+              </div>
               <div className='d-flex justify-content-center'>
                 <div class='form-check m-0'>
                   <input
@@ -108,10 +103,9 @@ const FormPage = () => {
               </div>
             </div>
             <p className='mt-2 font-small blue-text d-flex justify-content-center pb-3'>
-              Forgot
-              <a href='#!' className='blue-text ml-1'>
-                Password?
-              </a>
+              <Link to='/forgot-password' className='blue-text ml-1'>
+                Forgot Password?
+              </Link>
             </p>
             <div className='text-center py-4'>
               <MDBBtn
