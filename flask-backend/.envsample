@@ -1,0 +1,4 @@
+MAIL_USERNAME=<email>
+MAIL_PASSWORD=<password>
+MAIL_SERVER=<smtpserver>
+MAIL_PORT=<portnumber>
