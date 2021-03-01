@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title>
+            {% if title is defined -%}
+                {{title}}
+            {% else -%}
+                Documentation
+            {% endif -%}
+        </title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                font-family: Verdana, "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+            }
+
+            body {
+                margin: 10px;
+            }
+
+            div.mapping {
+                margin: 20px 20px;
+            }
+
+            .location { font-style: italic; }
+
+            ul.methods:before { content: "Methods: "; }
+            ul.methods li {
+                display: inline;
+                list-style: none;
+            }
+            ul.methods li:after { content: ","; }
+            ul.methods li:last-child:after { content: ""; }
+
+            ul.arguments:before { content: "Arguments: "; }
+            ul.arguments li {
+                display: inline;
+                list-style: none;
+            }
+            ul.arguments .argument { font-style:italic }
+            ul.arguments .default:not(:empty):before { content: "("; }
+            ul.arguments .default:not(:empty):after { content: ")"; }
+            ul.arguments li:after { content: ","; }
+            ul.arguments li:last-child:after { content: ""; }
+
+            ul.property li {
+                display: inline;
+                list-style: none;
+            }
+
+            .docstring:before { content: "Description: "; }
+        </style>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="p-4 bg-dark text-center text-white">
+            <h1 class="display-4">
+                {% if title is defined -%}
+                    {{title}}
+                {% else -%}
+                    Documentation
+                {% endif -%}
+            </h1>
+        </div>
+
+        {% for doc in autodoc %}
+        <div class="mapping card">
+            <div class="card-header">
+                <a id="rule-{{doc.rule|urlencode}}" class="rule"><h2>{{doc.rule|escape}}</h2></a>
+            </div>
+            <div class="card-body">
+                <ul class="methods">
+                    {% for method in doc.methods -%}
+                    <li class="method">{{method}}</li>
+                    {% endfor %}
+                </ul>
+                <ul class="arguments">
+                    {% for arg in doc.args %}
+                    <li>
+                        <span class="argument">{{arg}}</span>
+                        <span class="default">{{doc.defaults[arg]}}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <ul class="property">
+                    {% for prop in doc if prop not in defaults %}
+                    <li class="property">{{prop}}:{{doc[prop]}}</br></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="card-footer">
+                <p class="docstring">{% autoescape false %}{{doc.docstring|urlize|nl2br}}{% endautoescape %}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </body>
+</html>

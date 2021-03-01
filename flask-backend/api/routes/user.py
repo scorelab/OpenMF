@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required, current_user
 from ..models.models import User, UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
-from .. import db
+from .. import db, auto
 from sqlalchemy import update
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
@@ -12,8 +12,12 @@ users_schema = UserSchema(many=True)
 user = Blueprint('user', __name__, url_prefix='/user')
 
 @user.route('/profile', methods=["GET"])
+@auto.doc('user')
 @login_required
 def profile():
+    '''
+    Get profile of current user
+    '''
     if(current_user.has_admin): # For user
         return jsonify({'status':200,
                         'user_id':current_user.id,
@@ -37,7 +41,11 @@ def profile():
 
 
 @user.route('/getUser/<id>', methods=["GET"])
+@auto.doc('user')
 def getUser(id):
+    '''
+    Get user by id
+    '''
     user = User.query.filter_by(id=id).first()
     
     # Check if user with that id exists
@@ -64,19 +72,30 @@ def getUser(id):
                     'users': result})
 
 @user.route('/count', methods=["GET"])
+@auto.doc('user')
 def count():
+    '''
+    Get number of users
+    '''
     return jsonify({'status':200,
                     'total_users':User.query.count()})
 
 @user.route('/list', methods=["GET"])
+@auto.doc('user')
 def list():
+    '''
+    Get list of all users
+    '''
     all_users = User.query.order_by(User.timestamp).all()
     result = users_schema.dump(all_users)
     return jsonify(result)
 
 @user.route('/create', methods=['POST'])
+@auto.doc('user')
 def create_user(): # Add only admin can create functionality, once deployed on actual data base with one master user
-    
+    '''
+    Create a user
+    '''
     # if no data is sent at all
     try:
         req = request.get_json()
@@ -109,8 +128,12 @@ def create_user(): # Add only admin can create functionality, once deployed on a
 
 # Route for admin to add user 
 @user.route('/add-user', methods=['POST'])
+@auto.doc('user')
 @login_required
 def add_users():
+    '''
+    Create a user (Admin Only)
+    '''
     if(current_user.has_admin == False): 
         try:
             req = request.get_json()
@@ -139,8 +162,12 @@ def add_users():
 
 # Route for admin to view all his users
 @user.route('/all-users', methods=['GET'])
+@auto.doc('user')
 @login_required
 def all_users():
+    '''
+    View all users of an admin
+    '''
     if current_user.role == 'adimn':
         all_users = User.query.filter_by(admin=current_user.email).order_by(User.timestamp).all()
         result = users_schema.dump(all_users)
@@ -150,7 +177,11 @@ def all_users():
 # Route for admin to delete a user
 @user.route('/remove-user', methods=['POST'])
 @login_required
+@auto.doc('user')
 def remove_user():
+    '''
+    Delete user of a particular admin
+    '''
     if current_user.role == 'adimn':
         try:
             req = request.get_json()
@@ -168,8 +199,12 @@ def remove_user():
 
 # Route to udate role of an user
 @user.route('/role-update', methods=['POST'])
+@auto.doc('user')
 @login_required
 def roleupdate():
+    '''
+    Update role of a user
+    '''
     if current_user.role == 'adimn':
         try: 
             req = request.get_json()
@@ -187,8 +222,12 @@ def roleupdate():
 
 
 @user.route('/delete', methods=['POST'])
+@auto.doc('user')
 @login_required
 def deleteuser():
+    '''
+    Delete a user
+    '''
     # Check if email is provided or not
     try:
         req = request.get_json()
