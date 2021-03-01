@@ -2,13 +2,16 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 from ..models.models import User
-from .. import db
+from .. import auto
 
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['POST'])
+@auto.doc('auth')
 def login_post():
-
+    '''
+    Log in into an existing account
+    '''
     # if no data is sent at all
     try:
         req = request.get_json()
@@ -36,7 +39,11 @@ def login_post():
     return 'user logged in', 200
 
 @auth.route('/logout')
+@auto.doc('auth')
 @login_required
 def logout():
+    '''
+    Log out the current user
+    '''
     logout_user()
     return 'logged out successfully', 200
