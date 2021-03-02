@@ -6,15 +6,18 @@ function GoogleAuthBtn() {
 
     const responseGoogle = (res ) => {
         console.log(res)
-        console.log(res.profileObj)
+    }
+
+    const errorResponse = (e) =>{
+        console.log(e)
     }
     return (
         <div>
             <GoogleLogin 
-                clientId=''
+                clientId='' 
                 buttonText='Sign with google'
                 onSuccess={responseGoogle}
-                onFailure={responseGoogle}
+                onFailure={errorResponse}
                 cookiePolicy={'single_host_origin'}
             />
         </div>

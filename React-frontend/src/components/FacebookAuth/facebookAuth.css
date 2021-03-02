@@ -1,0 +1,11 @@
+.facebook-button-class{
+    width: 170px;
+    height: 43px;
+    font-size: smaller;
+    background-color: rgb(255, 255, 255);
+    border: .5px solid #f0f0f0;
+    font-weight: 500;
+    color: #444;
+    box-shadow: 0 2px 0 0 #888888;
+    margin-left: 5px;
+  }

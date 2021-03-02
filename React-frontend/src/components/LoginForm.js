@@ -5,6 +5,7 @@ import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
 import { login } from '../store/actions/auth';
 import formReducer from '../utils/formReducer';
 import GoogleAuthBtn from './GoogleAuth/GoogleAuthBtn';
+import FacebookAuthBtn from './FacebookAuth/FacebookAuthBtn';
 
 const FormPage = () => {
   const dispatch = useDispatch();
@@ -114,7 +115,11 @@ const FormPage = () => {
                 Password?
               </a>
             </p>
-              <GoogleAuthBtn className='bg-elegent'/>
+            <hr />
+            <div className='d-flex justify-content-center'>
+              <GoogleAuthBtn />
+              <FacebookAuthBtn />
+            </div>
             <div className='text-center py-4'>
               <MDBBtn
                 disabled={isLoading}
