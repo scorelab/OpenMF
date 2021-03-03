@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, request
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
+from flask_jwt_extended import decode_token
 from ..models.models import User
 from .. import db
 
@@ -40,3 +41,15 @@ def login_post():
 def logout():
     logout_user()
     return 'logged out successfully', 200
+
+@auth.route('/confirm-account/<token>')
+def confirm_account(token):
+    email = decode_token(token)['sub']
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return 'User does not exist', 404
+
+    user.is_verified = True
+    db.session.commit()
+    return 'Account confirmed', 200

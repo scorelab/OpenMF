@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager 
 from flask_marshmallow import Marshmallow
 from flask_cors import CORS, cross_origin
+from dotenv import load_dotenv
+from flask_jwt_extended import JWTManager
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -15,7 +17,13 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+    app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+    jwt = JWTManager(app)
+
     db.init_app(app)
+
+    # Load environment variables
+    load_dotenv()
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -26,7 +34,10 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        user = User.query.get(int(user_id))
+        if user and user.is_verified:
+            return user
+        return None
 
     @login_manager.unauthorized_handler
     def unauthorized_handler():
