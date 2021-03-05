@@ -1,9 +1,15 @@
-import { LOGIN, LOGOUT, TOGGLE_AUTH_LOADING } from '../actions/auth';
+import {
+  LOGIN,
+  LOGOUT,
+  TOGGLE_AUTH_LOADING,
+  AUTHENTICATE,
+} from '../actions/auth';
 
 const initialState = {
   isAuthenticated: false,
   isLoading: false,
   user: null,
+  token: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -14,13 +20,20 @@ const reducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         isLoading: false,
-        user: payload,
+        ...payload,
       };
     case LOGOUT:
       return {
         ...state,
         user: null,
         isAuthenticated: false,
+        isLoading: false,
+      };
+    case AUTHENTICATE:
+      return {
+        ...state,
+        user: payload,
+        isAuthenticated: true,
         isLoading: false,
       };
     case TOGGLE_AUTH_LOADING:
