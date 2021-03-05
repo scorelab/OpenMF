@@ -1,12 +1,20 @@
-import React from 'react'
-import Layout from '../components/core/Layout'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import Layout from '../components/core/Layout';
 
 const HomePage = () => {
-    return (
-        <Layout>
-            <h1>Home Page</h1>
-        </Layout>
-    )
-}
+  const { isAuthenticated, isLoading } = useSelector(state => state.auth);
 
-export default HomePage
+  if (!isLoading && !isAuthenticated) {
+    return <Redirect to='/login' />;
+  }
+
+  return (
+    <Layout>
+      <h1>Home Page</h1>
+    </Layout>
+  );
+};
+
+export default HomePage;
