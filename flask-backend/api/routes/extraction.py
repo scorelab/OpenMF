@@ -13,7 +13,8 @@ ROOT_DIR = os.getcwd()
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 dirname = os.path.dirname(__file__)
-adb_path=os.path.join(dirname, '../../../ExtraResources/adbLinux')
+extract_data_path = os.path.join(dirname, '../../../apiUtility')
+adb_path=os.path.join(dirname, '../../../ExtraResources/adbWindows')
 extraction = Blueprint('extraction', __name__, url_prefix='/extraction')
 
 
@@ -60,7 +61,7 @@ def extract():
     except KeyError as err:
         return f'please provide {str(err)}', 400
 
-    sys.path.append('/home/cobalt/osp/OpenMF/apiUtility')
+    sys.path.append(extract_data_path)
     from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport
     if(data == 'all'):
         apiExtactAll(case_name)
