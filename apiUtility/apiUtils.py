@@ -1,6 +1,5 @@
 import sys
-sys.path.append('/home/cobalt/osp/OpenMF/')
-sys.path.append('/home/cobalt/osp/OpenMF/')
+sys.path.append('../')
 from data_store.report_helper import generate_pdf_report
 from scripts.extract_all import extract_all_data_toTsv
 from scripts.fb_reader import store_fb_data
