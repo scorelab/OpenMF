@@ -14,7 +14,7 @@ case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 dirname = os.path.dirname(__file__)
 extract_data_path = os.path.join(dirname, '../../../apiUtility')
-adb_path=os.path.join(dirname, '../../../ExtraResources/adbWindows')
+adb_path=os.path.join(dirname, '../../../ExtraResources/adbLinux')
 extraction = Blueprint('extraction', __name__, url_prefix='/extraction')
 
 

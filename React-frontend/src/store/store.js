@@ -4,11 +4,13 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import auth from './reducers/auth';
 import alerts from './reducers/alerts';
+import extraction from './reducers/extraction';
 
 // Combine each reducer here
 const rootReducer = combineReducers({
   auth,
   alerts,
+  extraction,
 });
 
 const initialState = {};
