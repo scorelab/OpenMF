@@ -12,16 +12,51 @@ cases_schema = CaseSchema(many=True)
 
 case = Blueprint('case', __name__, url_prefix='/case')
 
+dirname = os.path.dirname(__file__)
+cases_data_path = os.path.join(dirname, '../../../data/')
+
+
 @case.route('/count', methods=["GET"])
 def count():
-    return jsonify({'status':200,
-                    'total_users':Case.query.count()})
+    try:
+        os.chdir('../../..')
+        os.chdir(ROOT_DIR)
+        cases = os.listdir(cases_data_path)
+        print(cases_data_path, cases)
+    except FileNotFoundError as err:
+        # If data folder is not found, return empty list as no cases have been created
+        response = {
+            'success': True,
+            'data': 0,
+        }
+        return jsonify(response), 200
+    response = {
+        'success': True,
+        'data': len(cases),
+    }
+    return jsonify(response), 200
+
 
 @case.route('/list', methods=["GET"])
 def list():
-    all_cases = Case.query.order_by(Case.timestamp).all()
-    result = cases_schema.dump(all_cases)
-    return jsonify(result)
+    try:
+        os.chdir('../../..')
+        os.chdir(ROOT_DIR)
+        cases = os.listdir(cases_data_path)
+        print(cases_data_path, cases)
+    except FileNotFoundError as err:
+        # If data folder is not found, return empty list as no cases have been created
+        response = {
+            'success': True,
+            'data': [],
+        }
+        return jsonify(response), 200
+    response = {
+        'success': True,
+        'data': cases,
+    }
+    return jsonify(response), 200
+
 
 @case.route('/delete', methods=['POST'])
 def deletecase():
@@ -41,6 +76,7 @@ def deletecase():
     db.session.commit()
     return 'case deleted', 202
 
+
 @case.route('/open/<case_name>', methods=["GET"])
 def openCase(case_name):
     os.chdir('../../..')
@@ -49,6 +85,7 @@ def openCase(case_name):
     files = os.listdir(path)
     return files
 
+
 @case.route('/list-files/<case_name>/<folder_name>', methods=["GET"])
 def openFolder(case_name, folder_name):
     os.chdir('../../..')
@@ -56,6 +93,7 @@ def openFolder(case_name, folder_name):
     os.chdir(ROOT_DIR)
     files = os.listdir(path)
     return files
+
 
 @case.route('/list-files/<case_name>/<folder_name>/<file_name>', methods=["GET"])
 def openFile(case_name, folder_name, file_name):
