@@ -22,7 +22,6 @@ def count():
         os.chdir('../../..')
         os.chdir(ROOT_DIR)
         cases = os.listdir(cases_data_path)
-        print(cases_data_path, cases)
     except FileNotFoundError as err:
         # If data folder is not found, return empty list as no cases have been created
         response = {
@@ -43,7 +42,6 @@ def list():
         os.chdir('../../..')
         os.chdir(ROOT_DIR)
         cases = os.listdir(cases_data_path)
-        print(cases_data_path, cases)
     except FileNotFoundError as err:
         # If data folder is not found, return empty list as no cases have been created
         response = {
