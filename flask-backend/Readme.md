@@ -36,7 +36,33 @@ To run the server use the following command:
     (venv) $ `set FLASK_DEBUG=1`
     (venv) $ `flask run`
 
-Eithr from a terminal window or from postman you can send requests.
+Either from a terminal window or from postman you can send requests.
+
+Setting up a rooted device for data extraction
+-------
+There are 2 ways of setting up a device
+
+**1. Using an Actual Rooted Physical Device**
+
+1. Connect a rooted physical device to the system via USB.
+
+2. Turn on USB Debugging in the developer options
+
+**B) Setting up an Emulator**
+
+1. Install Android Studio
+2. Go to AVD Manager
+3. Create a new virtual device using an image that does not have google playstore.
+
+    ![1](https://user-images.githubusercontent.com/45410599/110638417-8cc98900-81d4-11eb-85a0-261789053e8f.png)
+    
+4. Start the virtual device.
+5. To root this device, run the following commands in Command Prompt/Terminal -
+
+    ```
+    adb shell
+    adb root
+    ```
 
 API Documentation
 -----------------
