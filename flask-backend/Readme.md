@@ -91,3 +91,33 @@ API Documentation
 </p>
 
 **<p align="center">Delete User API</p>**
+
+
+
+<p align="center">
+<img src="https://github.com/sachinsom93/temp/blob/master/addusers.jpg?raw=true">
+</p>
+
+**<p align="center">Add user (Only admin can add a user)</p>**
+
+
+<p align="center">
+<img src="https://github.com/sachinsom93/temp/blob/master/roleUpdate.jpg?raw=true">
+</p>
+
+**<p align="center">Update role an user(Only an admin can update role of his user)</p>**
+
+
+<p align="center">
+<img src="https://github.com/sachinsom93/temp/blob/master/removeusers.jpg?raw=true">
+</p>
+
+**<p align="center">Delete a user(Only an admin can delete his users)</p>**
+
+
+<p align="center">
+<img src="https://github.com/sachinsom93/temp/blob/master/allusers.jpg?raw=true">
+</p>
+
+**<p align="center">View all users(Only an admin can view his users)</p>**
+

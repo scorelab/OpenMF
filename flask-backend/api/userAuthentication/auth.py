@@ -8,10 +8,20 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['POST'])
 def login_post():
-    req = request.get_json()
-    email = str(req['email'])
-    password = str(req['password'])
-    remember = True if str(req['remember']) else False
+
+    # if no data is sent at all
+    try:
+        req = request.get_json()
+    except:
+        return 'please provide email and password', 400
+
+    # Check if a key is missing
+    try:
+        email = str(req['email'])
+        password = str(req['password'])
+        remember = True if str(req['remember']) else False
+    except KeyError as err:
+        return f'please provide {str(err)}', 400
 
     user = User.query.filter_by(email=email).first()
 

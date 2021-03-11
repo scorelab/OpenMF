@@ -44,11 +44,22 @@ def list_devices():
 
 @extraction.route('/extract_data', methods=["POST"])
 def extract():
-    req = request.get_json()
-    device_id = str(req['device_id'])
-    case_name = str(req['case_name'])
-    data = str(req['data'])
-    print(data)
+
+    # if no data is provided at all
+    try:
+        req = request.get_json()
+    except:
+        return 'please provide id, case_name and data'
+
+    # If a key is missing
+    try:
+        device_id = str(req['device_id'])
+        case_name = str(req['case_name'])
+        data = str(req['data'])
+        print(data)
+    except KeyError as err:
+        return f'please provide {str(err)}', 400
+
     sys.path.append('/home/cobalt/osp/OpenMF/apiUtility')
     from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport
     if(data == 'all'):
