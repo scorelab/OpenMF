@@ -1,11 +1,12 @@
-import React from 'react';
-import Hl from '../components/core/HomeLogo';
-import Lf from '../components/LoginForm';
+import React , { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 
 import { MDBRow, MDBCol } from 'mdbreact';
-import Layout from '../components/core/Layout';
 import { Redirect } from 'react-router-dom';
+const Layout = React.lazy(() => import('../components/core/Layout'));
+const Hl = React.lazy(() => import('../components/core/HomeLogo'));
+const Lf = React.lazy(() => import('../components/LoginForm'));
+
 
 const LoginPage = () => {
   const { isLoading, isAuthenticated } = useSelector(state => state.auth);
@@ -15,6 +16,7 @@ const LoginPage = () => {
   }
 
   return (
+    <Suspense fallback={<div>Loading...</div>}>
     <Layout sidebarBool={false}>
       <MDBRow>
         <MDBCol md='5'>
@@ -29,6 +31,7 @@ const LoginPage = () => {
       <br />
       <br />
     </Layout>
+    </Suspense>
   );
 };
 
