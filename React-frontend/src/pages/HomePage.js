@@ -1,6 +1,7 @@
 import React , { Suspense } from 'react'
 const Layout = React.lazy(() => import('../components/core/Layout'));
 
+
 const HomePage = () => {
     return (
         <Suspense fallback={<div>Loading...</div>}>

@@ -7,7 +7,6 @@ const Layout = React.lazy(() => import('../components/core/Layout'));
 const Hl = React.lazy(() => import('../components/core/HomeLogo'));
 const Lf = React.lazy(() => import('../components/LoginForm'));
 
-
 const LoginPage = () => {
   const { isLoading, isAuthenticated } = useSelector(state => state.auth);
 

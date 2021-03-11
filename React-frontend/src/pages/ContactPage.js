@@ -6,7 +6,7 @@ const AboutPage = () => {
         <Suspense fallback={<div>Loading...</div>}>
         <Layout sidebarBool={true}>
             <h1>Contact page</h1>
-        </Layout>
+        </Layout> 
         </Suspense>
     )
 }
