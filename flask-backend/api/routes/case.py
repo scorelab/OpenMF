@@ -25,9 +25,18 @@ def list():
 
 @case.route('/delete', methods=['POST'])
 def deletecase():
-    req = request.get_json()
-    case_name = str(req['case_name'])
+    # check if case_name is provided
+    try:
+        req = request.get_json()
+        case_name = str(req['case_name'])
+    except:
+        return 'please provide a case name', 400
+
     case = Case.query.filter_by(case_name=case_name).first()
+
+    if not case:
+        return 'case with that name does not exist', 404
+
     db.session.delete(case)
     db.session.commit()
     return 'case deleted', 202
