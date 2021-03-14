@@ -200,3 +200,36 @@ def deleteuser():
     db.session.delete(user)
     db.session.commit()
     return 'user deleted', 202
+
+
+@user.route('update-email', methods=['PUT'])
+@login_required
+def update_email():
+    try:
+        req = request.get_json()
+        newEmail = str(req['new_email'])
+    except:
+        return 'Please provide all parameters', 409
+
+    # check for new email id
+    if current_user.email != newEmail: 
+        user = User.query.filter_by(email=newEmail).first()
+
+        # check for registered email id
+        if not user: 
+
+            # if user is admin
+            if not current_user.has_admin:
+                admins_user = User.query.filter_by(admin=current_user.email).order_by(User.timestamp).all()
+                for i in admins_user:
+                    i.admin = newEmail
+                current_user.email = newEmail 
+                db.session.commit()
+                return 'Your email address changed', 200
+
+            # if user if not admin
+            current_user.email = newEmail
+            db.session.commit()
+            return 'Your email address is changed', 200
+        return 'Email address is already registered', 409
+    return 'Please provide a new email address', 409
