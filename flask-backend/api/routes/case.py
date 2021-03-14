@@ -23,13 +23,10 @@ def list():
     result = cases_schema.dump(all_cases)
     return jsonify(result)
 
-@case.route('/delete', methods=['POST'])
-def deletecase():
+@case.route('/delete/<case_name>', methods=['DELETE'])
+def deletecase(case_name):
     # check if case_name is provided
-    try:
-        req = request.get_json()
-        case_name = str(req['case_name'])
-    except:
+    if not case_name:
         return 'please provide a case name', 400
 
     case = Case.query.filter_by(case_name=case_name).first()

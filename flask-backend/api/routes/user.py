@@ -144,30 +144,27 @@ def all_users():
     if current_user.role == 'adimn':
         all_users = User.query.filter_by(admin=current_user.email).order_by(User.timestamp).all()
         result = users_schema.dump(all_users)
-        return jsonify(result)
+        return jsonify(result), 200
     return 'You are not admin', 409
 
 # Route for admin to delete a user
-@user.route('/remove-user', methods=['POST'])
+@user.route('/remove-user/<email>', methods=['DELETE'])
 @login_required
-def remove_user():
+def remove_user(email):
     if current_user.role == 'adimn':
-        try:
-            req = request.get_json()
-            email = str(req['email'])
-        except:
+        if not email:
             return 'Please provide all parameters', 409
         user = User.query.filter_by(admin=current_user.email).filter_by(email=email).first()
         if user:
             db.session.delete(user)
             db.session.commit()
-            return f"User {user.email} removed."
+            return f"User {user.email} removed.", 200
         return 'User not found.', 409
     return 'You are not an admin', 409
 
 
-# Route to udate role of an user
-@user.route('/role-update', methods=['POST'])
+# Route to update role of an user
+@user.route('/role-update', methods=['PUT'])
 @login_required
 def roleupdate():
     if current_user.role == 'adimn':
@@ -186,14 +183,11 @@ def roleupdate():
     return 'You are not an admin.', 409
 
 
-@user.route('/delete', methods=['POST'])
+@user.route('/delete/<email>', methods=['DELETE'])
 @login_required
-def deleteuser():
+def deleteuser(email):
     # Check if email is provided or not
-    try:
-        req = request.get_json()
-        email = str(req['email'])
-    except:
+    if not email:
         return 'please provide email', 400
 
     user = User.query.filter_by(email=email).first()
