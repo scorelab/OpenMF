@@ -157,6 +157,8 @@ def remove_user():
             email = str(req['email'])
         except:
             return 'Please provide all parameters', 409
+        if email == current_user.email:
+            return 'Cannot delete your own account', 401
         user = User.query.filter_by(admin=current_user.email).filter_by(email=email).first()
         if user:
             db.session.delete(user)
@@ -186,17 +188,9 @@ def roleupdate():
     return 'You are not an admin.', 409
 
 
-@user.route('/delete', methods=['POST'])
+@user.route('/delete', methods=['DELETE'])
 @login_required
 def deleteuser():
-    # Check if email is provided or not
-    try:
-        req = request.get_json()
-        email = str(req['email'])
-    except:
-        return 'please provide email', 400
-
-    user = User.query.filter_by(email=email).first()
-    db.session.delete(user)
+    db.session.delete(current_user)
     db.session.commit()
     return 'user deleted', 202
