@@ -1,7 +1,7 @@
 import React, { useReducer, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MDBContainer, MDBInput, MDBBtn, MDBCard, MDBCardBody } from 'mdbreact';
-
+import validator from 'validator';
 import { login } from '../store/actions/auth';
 import formReducer from '../utils/formReducer';
 
@@ -24,7 +24,7 @@ const FormPage = () => {
   const loginHandler = async e => {
     e.preventDefault();
     e.target.className += " was-validated"
-    if (formData.email && formData.password){
+    if (formData.email && formData.password && validator.isEmail(formData.email)){
       dispatch(login(formData));
     }
   };
@@ -69,6 +69,8 @@ const FormPage = () => {
                 label='Your password'
                 icon='lock'
                 group
+                error='wrong'
+                success='right'
                 required
                 value={formData.password}
                 type={passwordShown ? 'text': 'password'}
