@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, request
+from flask import Blueprint, render_template, redirect, url_for, request, flash, request, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
+from flask_jwt_extended import create_access_token
 from ..models.models import User
 from .. import db
 
@@ -33,7 +34,14 @@ def login_post():
 
     login_user(user, remember=remember)
 
-    return 'user logged in', 200
+    token = create_access_token(identity=email)
+
+    response = {
+        'token': token,
+        'msg': 'user logged in',
+    }
+
+    return jsonify(response), 200
 
 @auth.route('/logout')
 @login_required
