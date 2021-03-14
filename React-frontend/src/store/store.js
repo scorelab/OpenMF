@@ -3,11 +3,13 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
 import auth from './reducers/auth';
+import users from './reducers/users';
 import alerts from './reducers/alerts';
 
 // Combine each reducer here
 const rootReducer = combineReducers({
   auth,
+  users,
   alerts,
 });
 
