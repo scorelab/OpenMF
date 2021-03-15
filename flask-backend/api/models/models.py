@@ -50,7 +50,7 @@ class Case(UserMixin, db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'email', 'role', 'timestamp', 'admin')
+        fields = ('id', 'name', 'email', 'role', 'timestamp', 'admin')
 
 class CaseSchema(ma.Schema):
     class Meta:

@@ -44,4 +44,7 @@ def create_app():
     from .routes.extraction import extraction as extraction_blueprint
     app.register_blueprint(extraction_blueprint)
 
+    from .routes.rolerequests import rolerequests as rolerequests_blueprint
+    app.register_blueprint(rolerequests_blueprint)
+
     return app
