@@ -1,18 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { MDBContainer, MDBRow } from 'mdbreact';
+import { MDBCol, MDBContainer, MDBInput, MDBRow } from 'mdbreact';
 
 import UsersTable from '../../components/Admin/UsersTable';
-import { fetchUsers, selectUser } from '../../store/actions/users';
+import { fetchUsers, searchUser, selectUser } from '../../store/actions/users';
 import DeleteUserModal from '../../components/Admin/DeleteUserModal';
 import EditUserModal from '../../components/Admin/EditUserModal';
+import Dropdown from '../../components/core/Dropdown';
+import formReducer from '../../utils/formReducer';
 
 const UsersList = () => {
+  const options = ['all', 'admin', 'extractor', 'management'];
+  const initialFormData = {
+    query: '',
+    role: options[0],
+  };
+  const [formData, setFormData] = useReducer(formReducer, initialFormData);
+
   const dispatch = useDispatch();
   const [showDeleteModal, toggleShowDeleteModal] = useState(false);
   const [showEditModal, toggleShowEditModal] = useState(false);
-  const { users, isLoading } = useSelector(state => state.users);
+  const { filteredUsers, isLoading } = useSelector(state => state.users);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -21,13 +30,17 @@ const UsersList = () => {
   const selectUserForDeletion = email => {
     dispatch(selectUser(email));
     toggleShowDeleteModal(true);
-    console.log('Test' + showDeleteModal);
   };
 
   const selectUserForEdit = email => {
     dispatch(selectUser(email));
     toggleShowEditModal(true);
-    console.log('Test' + showEditModal);
+  };
+
+  const searchUserHandler = event => {
+    setFormData(event.target);
+    const data = { ...formData, [event.target.name]: event.target.value };
+    dispatch(searchUser(data.query, data.role));
   };
 
   if (isLoading) {
@@ -44,8 +57,24 @@ const UsersList = () => {
         </Link>
       </MDBRow>
       <hr />
+      <MDBCol size='6'>
+        <Dropdown
+          value={formData.role}
+          name='role'
+          label='User Role'
+          options={options}
+          onChange={searchUserHandler}
+        />
+        <MDBInput
+          name='query'
+          value={formData.query}
+          label='Search by name/email'
+          onChange={searchUserHandler}
+        />
+      </MDBCol>
+      <hr />
       <UsersTable
-        users={users}
+        users={filteredUsers}
         onDelete={selectUserForDeletion}
         onEdit={selectUserForEdit}
       />
