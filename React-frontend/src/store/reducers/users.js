@@ -2,11 +2,13 @@ import {
   FETCH_USERS,
   TOGGLE_USERS_LOADING,
   SET_SELECTED_USER,
+  FILTER_USERS,
 } from '../actions/users';
 
 const initialState = {
   isLoading: false,
   users: [],
+  filteredUsers: [],
   selectedUser: null,
 };
 
@@ -18,6 +20,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         users: payload,
+        filteredUsers: payload,
+      };
+    case FILTER_USERS:
+      return {
+        ...state,
+        filteredUsers: payload,
       };
     case SET_SELECTED_USER:
       return {

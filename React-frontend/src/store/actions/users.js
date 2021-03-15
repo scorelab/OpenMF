@@ -1,7 +1,9 @@
+import store from '../store';
 import axios from '../../axios';
 import { setAlert } from './alerts';
 
 export const FETCH_USERS = 'FETCH_USERS';
+export const FILTER_USERS = 'FILTER_USERS';
 export const SET_SELECTED_USER = 'SET_SELECTED_USER';
 export const TOGGLE_USERS_LOADING = 'TOGGLE_USERS_LOADING';
 
@@ -86,4 +88,29 @@ export const updateUserRole = (email, role, toggleModal) => async dispatch => {
 
 export const selectUser = email => dispatch => {
   dispatch({ type: SET_SELECTED_USER, payload: email });
+};
+
+export const searchUser = (query, userRole) => dispatch => {
+  const users = store.getState().users.users;
+  let filteredUsers;
+  if (userRole === 'all' && !query) {
+    // Neither searching nor filtering
+    filteredUsers = users;
+  } else if (userRole === 'all' && query) {
+    // No filtering only searching
+    filteredUsers = users.filter(
+      user => user.name.startsWith(query) || user.email.startsWith(query)
+    );
+  } else if (userRole !== 'all' && !query) {
+    // No searching only filtering
+    filteredUsers = users.filter(user => user.role === userRole);
+  } else {
+    // Both searching and filtering
+    filteredUsers = users.filter(
+      user =>
+        (user.name.startsWith(query) || user.email.startsWith(query)) &&
+        user.role === userRole
+    );
+  }
+  dispatch({ type: FILTER_USERS, payload: filteredUsers });
 };
