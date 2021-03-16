@@ -200,3 +200,44 @@ def deleteuser():
     db.session.delete(user)
     db.session.commit()
     return 'user deleted', 202
+
+# Route to update of a login user's password
+@user.route('/update-password', methods=['PUT'])
+@login_required
+def update_password():
+    try:
+        req = request.get_json()
+        current_password = str(req['current_password'])
+        new_password = str(req['new_password'])
+    except:
+        return 'Please provide all the parameters', 401
+
+    if not check_password_hash(current_user.password, current_password):
+        return "unable to update, password is wrong", 401
+    
+    # Check if current or new equal or not
+    if current_password == new_password:
+        return 'Please provide a new password', 401
+    current_user.password = generate_password_hash(new_password, method='sha256')
+    db.session.commit()
+    return 'Password updated', 200
+
+
+    
+# Route to update of a login user's name
+@user.route('/update-name', methods=['PUT'])
+@login_required
+def update_name():
+    try:
+        req = request.get_json()
+        new_name = str(req['new_name'])
+    except:
+        return 'Please provide all the parameters', 401
+    
+    # Check if current or new equal or not
+    if current_user.name == new_name:
+        return 'Please provide a new name', 401
+    current_user.name = new_name
+    db.session.commit()
+    return 'Name updated', 200
+    
