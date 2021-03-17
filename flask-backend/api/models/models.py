@@ -12,6 +12,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(20))
     timestamp = db.Column(db.Float)
     has_admin = db.column_property(role != "adimn")
+    is_verified = db.Column(db.Boolean)
     _admin = db.Column(db.String(100))
 
     def __init__(self, email, password, name, role, timestamp):
@@ -21,6 +22,7 @@ class User(UserMixin, db.Model):
         self.role = role
         self.timestamp = timestamp
         self._admin = "Admin not assinged."
+        self.is_verified = False
         
     @hybrid_property
     def admin(self):
@@ -50,7 +52,7 @@ class Case(UserMixin, db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields = ('name', 'email', 'role', 'timestamp', 'admin')
+        fields = ('name', 'email', 'role', 'timestamp', 'admin', 'is_verified')
 
 class CaseSchema(ma.Schema):
     class Meta:

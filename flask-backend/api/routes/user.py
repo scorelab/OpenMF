@@ -6,6 +6,8 @@ from ..models.models import User, UserSchema
 from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
 from sqlalchemy import update
+from ..helpers.mail import send_confirmation_email
+from flask_jwt_extended import create_access_token, decode_token
 user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
@@ -104,7 +106,11 @@ def create_user(): # Add only admin can create functionality, once deployed on a
     db.session.add(new_user)
     db.session.commit()
 
-    return 'user created', 202
+    token = create_access_token(email)
+    url = f'http://localhost:5000/confirm-account/{token}'
+    send_confirmation_email(email, url)
+
+    return 'user created. Please confirm account via email', 202
 
 
 # Route for admin to add user 
@@ -133,7 +139,11 @@ def add_users():
         db.session.add(new_user)
         db.session.commit()
 
-        return 'user created', 202
+        token = create_access_token(email)
+        url = f'http://localhost:5000/confirm-account/{token}'
+        send_confirmation_email(email, url)
+
+        return 'user created. Please confirm account via email', 202
     return "You can't add users, you are not an admin", 409
 
 
