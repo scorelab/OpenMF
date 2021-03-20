@@ -32,6 +32,10 @@ def create_app():
     def unauthorized_handler():
         return 'You are not authorized to use this route. Please Logged In.', 401
 
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return str(e), 404
+
     from .userAuthentication.auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 
