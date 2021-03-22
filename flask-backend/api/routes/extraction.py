@@ -8,6 +8,7 @@ import subprocess
 from flask_login import login_required, current_user
 from ..models.models import Case, CaseSchema
 from .. import db
+from ..helpers.access_decorators import extractor_only
 ROOT_DIR = os.getcwd()
 
 case_schema = CaseSchema()
@@ -18,6 +19,7 @@ extraction = Blueprint('extraction', __name__, url_prefix='/extraction')
 
 
 @extraction.route('/list_devices', methods=["GET"])
+@extractor_only
 def list_devices():
     with open(os.devnull, 'wb') as devnull:
         subprocess.check_call([adb_path, 'start-server'], stdout=devnull,
@@ -43,6 +45,7 @@ def list_devices():
     return json.dumps(devices)
 
 @extraction.route('/extract_data', methods=["POST"])
+@extractor_only
 def extract():
 
     # if no data is provided at all
