@@ -19,7 +19,7 @@ The OpenMF project is a dedicated software to:
 3) Produce Analysis report
 
 This open source project is an important tool for Digital forensic organization.
-At present OpenMF is only a commmand line tool but we are planing to make a complete web client with additional features like Admin, Management and Extractor. These roles will have different privileges to the tool and as a whole it will become a complete open source forensic tool for Android smartphones which then can be used by any Digital forensic investigation organization.
+At present OpenMF is only a command line tool but we are planning to make a complete web client with additional features like Admin, Management and Extractor. These roles will have different privileges to the tool and as a whole it will become a complete open source forensic tool for Android smartphones which then can be used by any Digital forensic investigation organization.
 
 ### User Guide
 **Step:1 - Cloning the project.**\
