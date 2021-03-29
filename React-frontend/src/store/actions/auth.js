@@ -1,5 +1,6 @@
 import axios from '../../axios';
 import { setAlert } from './alerts';
+import history from '../../utils/history';
 
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
@@ -20,6 +21,7 @@ export const login = loginData => async dispatch => {
   }
 };
 
-export const logout = () => dispatch => {
+export const logout = () => async dispatch => {
+  history.push('/login');
   dispatch({ type: LOGOUT });
 };
