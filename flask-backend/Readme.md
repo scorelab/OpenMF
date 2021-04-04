@@ -4,6 +4,22 @@ REST-auth and REST-APIs for OpenMF
 Installation
 ------------
 
+**Using the Script**
+
+*Windows (using Git Bash)*
+
+    $ source init.sh windows
+    
+*Linux*
+
+    $ source init.sh linux
+    
+*Mac*
+
+    $ source init.sh mac
+
+**Setup manually**
+
 After cloning, create a virtual environment and install the requirements. For Linux and Mac users:
 
     $ virtualenv venv
@@ -18,6 +34,23 @@ If you are on Windows, then use the following commands instead:
 
 Running
 -------
+
+**Using the Script**
+
+*Windows (using Git Bash)*
+
+    $ source start.sh windows
+    
+*Linux*
+
+    $ source start.sh linux
+    
+*Mac*
+
+    $ source start.sh mac
+
+**Run manually**
+
 Step1: Create the Database
 Run `python create_database.py`
 
