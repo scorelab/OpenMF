@@ -15,6 +15,8 @@ const FormPage = () => {
   const { isLoading } = useSelector(state => state.auth);
   const [formData, setFormData] = useReducer(formReducer, initialFormData);
   const [passwordShown, setPasswordShown] = useState(false)
+  const [isValidEmail, setIsValidEmail] = useState(true)
+  const [isValidPassword, setIsValidPassword] = useState(true)
 
   // password  toggle handler
   const togglePasswordVisibilty = () => {
@@ -24,11 +26,29 @@ const FormPage = () => {
   const loginHandler = async e => {
     e.preventDefault();
     e.target.className += " was-validated"
-    if (formData.email && formData.password){
+    console.log(formData)
+    if (formData.email !== "" && formData.password !== ""){
       dispatch(login(formData));
     }
   };
 
+  const validateEmail = e => {
+    if(e.target.checkValidity()){
+      setFormData(e.target);
+      setIsValidEmail(true);
+    }else{
+      setIsValidEmail(false)
+    }
+  };
+
+  const validatePasword = e => {
+    if(e.target.checkValidity()){
+      setFormData(e.target);
+      setIsValidPassword(true);
+    }else{
+      setIsValidPassword(false);
+    }
+  }
   return (
     <MDBContainer>
       <br />
@@ -51,14 +71,15 @@ const FormPage = () => {
                 label='Your email'
                 icon='envelope'
                 group
-                value={formData.email}
                 type='email'
                 error='wrong'
                 required 
                 success='right'
                 name='email'
-                onChange={event => setFormData(event.target)}
+                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+                onChange={validateEmail}
               >
+                {!isValidEmail && (<span className='invalid-input'>Please provide a valid email.</span>)}
                 <div className='invalid-feedback'>
                   Please provide a valid email.
                 </div>
@@ -70,11 +91,15 @@ const FormPage = () => {
                 icon='lock'
                 group
                 required
-                value={formData.password}
                 type={passwordShown ? 'text': 'password'}
+                minLength={6}
+                maxLength={64}
+                pattern="^[^\s].[a-zA-Z0-9/_]+$"
                 name='password'
-                onChange={event => setFormData(event.target)}
+                onChange={validatePasword}
+                // onChange={event => setFormData(event.target)}
               >
+                {!isValidPassword && (<span className='invalid-input'>Must be between 6-64 characters.</span>)}
                 <div className="invalid-feedback mb-4">
                   Please provide a password.
                 </div>
@@ -115,7 +140,7 @@ const FormPage = () => {
             </p>
             <div className='text-center py-4'>
               <MDBBtn
-                disabled={isLoading}
+                disabled={isLoading || formData.email === "" || formData.password === "" || !isValidEmail || !isValidPassword}
                 type='submit'
                 color='elegant'
                 size='sm'>
