@@ -37,6 +37,7 @@ def profile():
 
 
 @user.route('/getUser/<id>', methods=["GET"])
+@login_required
 def getUser(id):
     user = User.query.filter_by(id=id).first()
     
