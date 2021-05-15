@@ -191,14 +191,16 @@ def roleupdate():
 @user.route('/delete', methods=['POST'])
 @login_required
 def deleteuser():
-    # Check if email is provided or not
-    try:
-        req = request.get_json()
-        email = str(req['email'])
-    except:
-        return 'please provide email', 400
+    if current_user.role == 'adimn':
+        # Check if email is provided or not
+        try:
+            req = request.get_json()
+            email = str(req['email'])
+        except:
+            return 'please provide email', 400
 
-    user = User.query.filter_by(email=email).first()
-    db.session.delete(user)
-    db.session.commit()
-    return 'user deleted', 202
+        user = User.query.filter_by(email=email).first()
+        db.session.delete(user)
+        db.session.commit()
+        return 'user deleted', 202
+    return 'You are not an admin.', 409
