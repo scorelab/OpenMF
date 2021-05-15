@@ -64,11 +64,13 @@ def getUser(id):
                     'users': result})
 
 @user.route('/count', methods=["GET"])
+@login_required
 def count():
     return jsonify({'status':200,
                     'total_users':User.query.count()})
 
 @user.route('/list', methods=["GET"])
+@login_required
 def list():
     all_users = User.query.order_by(User.timestamp).all()
     result = users_schema.dump(all_users)
