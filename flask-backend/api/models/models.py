@@ -2,6 +2,7 @@ from flask_login import UserMixin
 from .. import db, ma
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.sql import case
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class User(UserMixin, db.Model):
@@ -10,17 +11,30 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
     role = db.Column(db.String(20))
-    timestamp = db.Column(db.Float)
+    timestamp = db.Column(db.Float) 
     has_admin = db.column_property(role != "adimn")
     _admin = db.Column(db.String(100))
 
     def __init__(self, email, password, name, role, timestamp):
         self.email = email
-        self.password = password
+        self.password = generate_password_hash(password, method='sha256')
         self.name = name
         self.role = role
         self.timestamp = timestamp
         self._admin = "Admin not assinged."
+
+    def match_password(self, password):
+        return check_password_hash(self.password, password)
+
+    def map(self):
+        return {
+            'user_id':self.id,
+            'email':self.email,
+            'name':self.name,
+            'role':self.role,
+            'timestamp':self.timestamp,
+            'admin':self.admin
+        }
         
     @hybrid_property
     def admin(self):

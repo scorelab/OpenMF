@@ -3,7 +3,6 @@ import time
 from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required, current_user
 from ..models.models import User, UserSchema
-from werkzeug.security import generate_password_hash, check_password_hash
 from .. import db
 from sqlalchemy import text
 
