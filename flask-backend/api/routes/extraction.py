@@ -12,9 +12,17 @@ ROOT_DIR = os.getcwd()
 
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
-dirname = os.path.dirname(__file__)
-adb_path=os.path.join(dirname, '../../../ExtraResources/adbLinux')
+dirname = os.path.abspath(os.path.dirname(__file__))
 extraction = Blueprint('extraction', __name__, url_prefix='/extraction')
+
+# Assigning adb path accourding to os
+OS_TYPE = sys.platform
+if OS_TYPE == 'linux' or OS_TYPE == 'linux2':
+    adb_path=os.path.join(dirname, '../../../tools/adb')
+elif OS_TYPE== 'win32':
+    adb_path=os.path.join(dirname, '../../../tools/adb.exe')
+elif OS_TYPE== 'darwin':
+    adb_path=os.path.join(dirname, '../../../tools/adb_mac')
 
 
 @extraction.route('/list_devices', methods=["GET"])
@@ -60,7 +68,7 @@ def extract():
     except KeyError as err:
         return f'please provide {str(err)}', 400
 
-    sys.path.append('/home/cobalt/osp/OpenMF/apiUtility')
+    sys.path.append(dirname + '../../../../apiUtility')
     from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport
     if(data == 'all'):
         apiExtactAll(case_name)
