@@ -1,7 +1,8 @@
 import sys
 import os
-dirname = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(dirname + '../')
+path = os.getcwd()
+ROOT_PATH = os.path.dirname(path)
+sys.path.append(ROOT_PATH)
 from data_store.report_helper import generate_pdf_report
 from scripts.extract_all import extract_all_data_toTsv
 from scripts.fb_reader import store_fb_data
