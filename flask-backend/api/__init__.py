@@ -1,21 +1,23 @@
-from flask import Flask 
-from flask_sqlalchemy import SQLAlchemy 
-from flask_login import LoginManager 
-from flask_marshmallow import Marshmallow
-from flask_cors import CORS, cross_origin
+import os
+from flask import Flask
+from flask_login import LoginManager
+from flask_cors import CORS
 
-db = SQLAlchemy()
-ma = Marshmallow()
+from .config import get_config
+from .extansions import db, ma, migrate
+from .models.models import User, Case
+
 
 def create_app():
+    """
+    FLask Appication
+    """
     app = Flask(__name__)
-    cors = CORS(app)
-
-    app.config['SECRET_KEY'] = 'thisismysecretkeydonotstealit'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    CORS(app)
+    app.config.from_object(get_config(os.environ.get("FLASK_ENV")))
 
     db.init_app(app)
+    migrate.init_app(app, db)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -44,4 +46,14 @@ def create_app():
     from .routes.extraction import extraction as extraction_blueprint
     app.register_blueprint(extraction_blueprint)
 
+    register_shell_context(app)
     return app
+
+
+def register_shell_context(app):
+    """
+    Add/register a shell session
+    """
+    def shell():
+        return {"db":db, "User": User, "case": Case}
+    app.shell_context_processor(shell)
