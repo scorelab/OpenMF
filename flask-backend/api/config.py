@@ -31,6 +31,7 @@ class TestingConfig(BaseConfig):
 
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
+    DEBUG=True
     TOKEN_EXPIRE_MINUTES = 15
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", SQLITE_DEV)
 
