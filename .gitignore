@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#extracted data
+/data
+
 # C extensions
 *.so
 
@@ -105,6 +108,4 @@ ENV/
 
 # SQLite data
 flask-backend/api/db.sqlite3
-
-#data
-data/
+*.db
