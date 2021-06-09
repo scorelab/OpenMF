@@ -1,7 +1,8 @@
 import sys
 import os
-dirname = os.path.abspath(os.path.dirname(__file__))
-sys.path.append(dirname + '../')
+path = os.getcwd()
+ROOT_PATH = os.path.dirname(path)
+sys.path.append(ROOT_PATH)
 from data_store.report_helper import generate_pdf_report
 from scripts.extract_all import extract_all_data_toTsv
 from scripts.fb_reader import store_fb_data
@@ -13,6 +14,7 @@ from scripts.report import REPORT
 from scripts.utils import ROOT_DIR, mkdir
 from scripts.os_check import SEP
 from scripts.io_helper import write_to_file
+from scripts.message import store_sms_data, store_sms_messages
 
 
 
@@ -36,6 +38,10 @@ def apiExtractFb(case_name):
 def apiExtractWa(case_name):
     dbm.start_download_databases(case_name)
     store_wa_data(case_name)
+
+def apiExtractSMS(case_name):
+    dbm.start_download_databases(case_name)
+    store_sms_data(case_name)
 
 def apiExtractPhone(case_name):
     dbm.start_download_databases(case_name)

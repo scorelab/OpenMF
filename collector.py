@@ -22,6 +22,7 @@ from scripts.phone import store_phone_data
 from scripts.wa_reader import store_wa_data
 from scripts.utils import ROOT_DIR, mkdir
 from scripts.io_helper import write_to_file
+from scripts.message import store_sms_data
 
 help_str = """
 Collector is a simple CLI tool to collect data from rooted android device and persist data for analysis 
@@ -63,7 +64,8 @@ FUNC_MAP = {
     'facebook': store_fb_data,
     'whatsapp': store_wa_data,
     'phone': store_phone_data,
-    'general_info': print_general_info
+    'message': store_sms_data,
+    'general_info': print_general_info,
 }
 
 

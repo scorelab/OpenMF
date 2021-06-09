@@ -105,3 +105,6 @@ ENV/
 
 # SQLite data
 flask-backend/api/db.sqlite3
+
+#data
+data/

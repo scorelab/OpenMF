@@ -19,6 +19,7 @@ DBS_LIST = [
     '/data/data/com.android.providers.contacts/databases/contacts2.db',
     '/data/data/com.sec.android.provider.logsprovider/databases/logs.db',
     '/data/data/com.android.providers.telephony/databases/mmssms.db',
+    '/dbdata/databases/com.android.providers.telephony/databases/mmssms.db',
     '/data/data/com.facebook.katana/databases/fb.db',
     '/data/data/com.facebook.katana/databases/contacts_db2',
     '/data/data/com.facebook.orca/databases/threads_db2',
@@ -29,7 +30,12 @@ DBS_LIST = [
     '/data/system/gesture.key',
     '/data/system/cm_gesture.key',
     '/data/system/locksettings.db',
-    '/data/system/password.key'
+    '/data/system/password.key',
+    '/data/data/com.android.contacts/databases/contacts.db',
+    '/data/data/com.samsung.advp.imssettings/databases/ims.db',
+    '/data/data/com.sec.android.app.myfiles/databases/myfiles.db',
+    '/data/data/com.wsomacp/databases/wsomacp.db',
+    '/data/data/com.google.android.apps.docs/appdocs.db',
 ]
 
 # DOWNLOADING DATABASES

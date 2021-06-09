@@ -69,13 +69,15 @@ def extract():
         return f'please provide {str(err)}', 400
 
     sys.path.append(dirname + '../../../../apiUtility')
-    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport
+    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS
     if(data == 'all'):
         apiExtactAll(case_name)
     elif(data == 'facebook'):
         apiExtractFb(case_name)
     elif(data == 'whatsapp'):
         apiExtractWa(case_name)
+    elif(data == 'message'):
+        apiExtractSMS(case_name)
     elif(data == 'phone'):
         apiExtractPhone(case_name)
     elif(data == 'report'):
