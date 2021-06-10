@@ -31,11 +31,7 @@ DBS_LIST = [
     '/data/system/cm_gesture.key',
     '/data/system/locksettings.db',
     '/data/system/password.key',
-    '/data/data/com.android.contacts/databases/contacts.db',
-    '/data/data/com.samsung.advp.imssettings/databases/ims.db',
     '/data/data/com.sec.android.app.myfiles/databases/myfiles.db',
-    '/data/data/com.wsomacp/databases/wsomacp.db',
-    '/data/data/com.google.android.apps.docs/appdocs.db',
 ]
 
 # DOWNLOADING DATABASES
