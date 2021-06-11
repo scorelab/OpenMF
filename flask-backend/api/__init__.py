@@ -40,7 +40,7 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        user = Admin.query.get(int(user_id)) or Extractor.qeury.get(int(user_id)) or Management.query.get(int(user_id))
+        user = Admin.query.get(int(user_id)) or Extractor.query.get(int(user_id)) or Management.query.get(int(user_id))
         return user
 
     @login_manager.unauthorized_handler
