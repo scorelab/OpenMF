@@ -1,202 +1,469 @@
-import sqlite3 as sql
-import time
-from flask import Blueprint, render_template, jsonify, request
+"""
+Routes related to users(admin, extractor and management).
+"""
+
+from flask import Blueprint, jsonify, request
+from flask.helpers import make_response
 from flask_login import login_required, current_user
-from ..models.models import User, UserSchema
-from werkzeug.security import generate_password_hash, check_password_hash
-from .. import db
-from sqlalchemy import update
-user_schema = UserSchema()
-users_schema = UserSchema(many=True)
+
+from api.models.admin import Admin
+from api.models.extractor import Extractor
+from api.models.management import Management
+from api.schema.admin import AdminSchema
+from api.schema.extractor import ExtractorSchema
+from api.schema.management import ManagementSchema
+from api.extansions import db
+
+
+admin_schema = AdminSchema()
+admins_schema = AdminSchema(many=True)
+management_schema = ManagementSchema()
+managements_schema = ManagementSchema(many=True)
+extractor_schema = ExtractorSchema()
+extractors_schema = ExtractorSchema(many=True)
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
 @user.route('/profile', methods=["GET"])
 @login_required
 def profile():
-    if(current_user.has_admin): # For user
-        return jsonify({'status':200,
-                        'user_id':current_user.id,
-                        'email':current_user.email,
-                        'name':current_user.name,
-                        'role':current_user.role,
-                        'timestamp':current_user.timestamp,
-                        'admin':current_user.admin,
-                        'message':'user logged in'})
-    # For admin
-    admins_user = User.query.filter_by(admin = current_user.email).order_by(User.timestamp).all()
-    result = users_schema.dump(admins_user)
-    return jsonify({'status':200,
-                    'user_id':current_user.id,
-                    'email':current_user.email,
-                    'name':current_user.name,
-                    'role':current_user.role,
-                    'timestamp':current_user.timestamp,
-                    'users': result,
-                    'message':'user logged in'})
+    """
+    This route gives profile detail.
+    """
+    if(current_user.role == "admin"):
+        try:
+            extractor_members = extractors_schema.dump(current_user.extractor_members)
+            management_members = managements_schema.dump(current_user.management_members)
+            response = {
+                "success": True,
+                "message": "admin user fetched.",
+                "user": admin_schema.dump(current_user),
+                "extractor_members": extractor_members,
+                "management_members": management_members
+            }
+            return make_response(jsonify(response)), 201
+        except:
+            response = {
+                "success": False,
+                "message": "Unable to find user, something went wrong."
+            }
+            return make_response(jsonify(response)), 201
+
+    elif(current_user.role == "extractor"):
+        response = {
+            "success": True,
+            "message": "extractor user fetched.",
+            "user": extractor_schema.dump(current_user)
+        }
+        return make_response(jsonify(response)), 201
+
+    response = {
+            "success": True,
+            "message": "management user fetched.",
+            "user": extractor_schema.dump(current_user)
+        }
+    return make_response(jsonify(response)), 201
 
 
-@user.route('/getUser/<id>', methods=["GET"])
+@user.route('/getAdmin/<int:id>', methods=["GET"])
+@login_required
 def getUser(id):
-    user = User.query.filter_by(id=id).first()
-    
+    """
+    This handles searching an admin by id.
+    """
+    if id == current_user.id:
+        response = {
+            "success": False,
+            "message": "You can't search yourself."
+        }
+        return make_response(jsonify(response)), 404
+
+    user = Admin.query.filter_by(id=id).first()
+
     # Check if user with that id exists
     if not user:
-        return 'User does not exist', 404
+        response = {
+            "success": False,
+            "message": "Admin does not exist."
+        }
+        return make_response(jsonify(response))
 
-    if(user.has_admin): # For user
-        return jsonify({'status':200,
-                        'user_id':user.id,
-                        'email':user.email,
-                        'name':user.name,
-                        'role':user.role,
-                        'timestamp':user.timestamp,
-                        'admin':user.admin})
-    # For admin
-    admins_user = User.query.filter_by(admin = user.email).order_by(User.timestamp).all()
-    result = users_schema.dump(admins_user)
-    return jsonify({'status':200,
-                    'user_id':user.id,
-                    'email':user.email,
-                    'name':user.name,
-                    'role':user.role,
-                    'timestamp':user.timestamp,
-                    'users': result})
+    try:
+        extractor_members = extractors_schema.dump(user.extractor_members)
+        management_members = managements_schema.dump(user.management_members)
+        response = {
+            "success": True,
+            "message": "Admin user fetched.",
+            "user": admin_schema.dump(user),
+            "extractor_members": extractor_members,
+            "management_members": management_members
+        }
+        return make_response(jsonify(response)), 201
+    except:
+        response = {
+            "success": False,
+            "message": "Unable to find user, something went wrong."
+        }
+        return make_response(jsonify(response)), 201
 
-@user.route('/count', methods=["GET"])
-def count():
-    return jsonify({'status':200,
-                    'total_users':User.query.count()})
 
-@user.route('/list', methods=["GET"])
-def list():
-    all_users = User.query.order_by(User.timestamp).all()
-    result = users_schema.dump(all_users)
-    return jsonify(result)
+@user.route('/getExtractor/<int:id>', methods=["GET"])
+def get_extractor(id):
+    """
+    This handles searching an extractor by id.
+    """
+    user = Extractor.query.filter_by(id=id).first()
+
+    # Check if user with that id exists
+    if not user:
+        response = {
+            "success": False,
+            "message": "Admin does not exist."
+        }
+        return make_response(jsonify(response))
+
+    response = {
+        "success": True,
+        "message": "Extractor fetched.",
+        "user": extractor_schema.dump(user),
+        "admin": admin_schema.dump(user.admin),
+    }
+    return make_response(jsonify(response))
+
+
+@user.route('/getManagement/<int:id>', methods=["GET"])
+def get_management(id):
+    """
+    This handles searching a management member by id.
+    """
+    user = Management.query.filter_by(id=id).first()
+
+    # Check if user with that id exists
+    if not user:
+        response = {
+            "success": False,
+            "message": "Management member does not exist."
+        }
+        return make_response(jsonify(response))
+
+    response = {
+        "success": True,
+        "message": "Management member fetched.",
+        "user": management_schema.dump(user),
+        "admin": admin_schema.dump(user.admin),
+    }
+    return make_response(jsonify(response))
+
 
 @user.route('/create', methods=['POST'])
-def create_user(): # Add only admin can create functionality, once deployed on actual data base with one master user
-    
+def create_user():
+    """
+    This will only create a new admin.
+    """
     # if no data is sent at all
     try:
         req = request.get_json()
     except:
-        return 'please provide email and password', 400
+        response = {
+            "success": False,
+            "message": "Please provide email and password"
+        }
+        return make_response(jsonify(response))
 
     # Check if a key is missing
-    try:    
+    try:
         email = str(req['email'])
         password = str(req['password'])
         name = str(req['name'])
-        role = ''.join(sorted(str(req['role'])))
     except KeyError as err:
-        return f'please provide {str(err)}', 400
+        response = {
+            "success": False,
+            "message": f'please provide {str(err)}'
+        }
+        return make_response(jsonify(response)), 400
 
-    timestamp = int(time.time())
-    
-    user = User.query.filter_by(email=email).first()
+    # Check if already present in db
+    user = Admin.query.filter_by(email=email).first()
 
     if user:
-        return 'Email address already exists', 409
+        response = {
+            "success": False,
+            "message": "Email address already exists"
+        }
+        return make_response(jsonify(response)), 409
 
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), role=role, timestamp=timestamp)
+    new_admin = Admin(name=name, email=email, password=password)
 
-    db.session.add(new_user)
-    db.session.commit()
+    db.session.add(new_admin)
+    try:
+        db.session.commit()
+    except Exception as e:
+        response = {
+            "success": False,
+            "message": e
+        }
+        return make_response(jsonify(response)), 409
 
-    return 'user created', 202
+    response = {
+        "success": True,
+        "message": "User created."
+    }
+    return make_response(jsonify(response)), 200
 
 
-# Route for admin to add user 
+
+# Route for admin to add user
 @user.route('/add-user', methods=['POST'])
 @login_required
 def add_users():
-    if(current_user.has_admin == False): 
+    """
+    This will be used by admin
+    to create new/add new member.
+    """
+    if(current_user.role == 'admin'):
         try:
             req = request.get_json()
             email = str(req['email'])
             password = str(req['password'])
             name = str(req['name'])
-            role = ''.join(sorted(str(req['role'])))
-            timestamp = int(time.time())
+            role = str(req['role'])
         except:
-            return 'Please provide all parameters', 409
-        user = User.query.filter_by(email=email).first()
+            response = {
+                "success": False,
+                "message": "Please provide all parameters"
+            }
+            return make_response(jsonify(response)), 409
 
-        if user:
-            return 'Email address already exists', 409
-        elif role == 'adimn':
-            return 'You cannot create a user of role admin', 409
+        # For creating extractor member
+        if role == "extractor":
+            extractor = Extractor.query.filter_by(email=email).first()
+            if extractor:
+                response = {
+                    "success": False,
+                    "message": "Extractor member already exists."
+                }
+                return make_response(response(jsonify(response))), 409
+            new_extractor = Extractor(name=name, email=email, password=password, admin=current_user)
+            db.session.add(new_extractor)
+            try:
+                db.session.commit()
+            except Exception as e:
+                response = {
+                    "success": False,
+                    "message": e
+                }
+                return make_response(jsonify(response))
+            response = {
+                "success": True,
+                "message": "Extractor member created."
+            }
+            return make_response(jsonify(response)), 200
 
-        new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), role=role, timestamp=timestamp)
-        new_user.admin = current_user.email 
-        db.session.add(new_user)
-        db.session.commit()
+        # For creating management member
+        elif role == "management":
+            management = Management.query.filter_by(email=email).first()
+            if management:
+                response = {
+                    "success": False,
+                    "message": "Extractor member already exists."
+                }
+                return make_response(response(jsonify(response))), 409
+            new_management = Management(name=name, email=email, password=password, admin=current_user)
+            db.session.add(new_management)
+            try:
+                db.session.commit()
+            except Exception as e:
+                response = {
+                    "success": False,
+                    "message": e
+                }
+                return make_response(jsonify(response))
+            response = {
+                "success": True,
+                "message": "Management member created."
+            }
+            return make_response(jsonify(response)), 200
 
-        return 'user created', 202
-    return "You can't add users, you are not an admin", 409
+        # For non-valid role
+        else:
+            response = {
+                "success": False,
+                "message": "Please provide a valid role."
+            }
+            return make_response(jsonify(response)), 409
+
+    else:
+        response = {
+            "success": False,
+            "message": "Only an admin can use this route."
+        }
+        return make_response(jsonify(response)), 404
 
 
 # Route for admin to view all his users
 @user.route('/all-users', methods=['GET'])
 @login_required
 def all_users():
-    if current_user.role == 'adimn':
-        all_users = User.query.filter_by(admin=current_user.email).order_by(User.timestamp).all()
-        result = users_schema.dump(all_users)
-        return jsonify(result)
-    return 'You are not admin', 409
+    """
+    This handles listing of all members of an admin.
+    """
+    if(current_user.role == "admin"):
+        extractors = Extractor.query.filter_by(admin_id=current_user.id).filter_by(role="extractor").all()
+        managements = Management.query.filter_by(admin_id=current_user.id).filter_by(role="management").all()
 
-# Route for admin to delete a user
-@user.route('/remove-user', methods=['POST'])
+        extractors_json = extractors_schema.dump(extractors)
+        managements_json = managements_schema.dump(managements)
+        response = {
+            "success": True,
+            "message": "Extractor and management members fetched.",
+            "extractor_members": extractors_json,
+            "management_members": managements_json,
+        }
+        return make_response(jsonify(response)), 200
+    response = {
+        "success": False,
+        "message": "Only an admin can use this route."
+    }
+    return make_response(jsonify(response)), 404
+
+
+# Route to udate role of an user
+@user.route('/role-update', methods=['PUT'])
 @login_required
-def remove_user():
-    if current_user.role == 'adimn':
+def roleupdate():
+    """
+    This handles role updation.
+    """
+    if current_user.role == 'admin':
+        try:
+            req = request.get_json()
+            email = str(req['email'])
+            password = str(req['password'])
+            new_role = str(req['new_role'])
+        except:
+            response = {
+                "success": False,
+                "message": "Please provide all parameters"
+            }
+            return make_response(jsonify(response)), 409
+
+        if new_role == "extractor":
+            user = Management.query.filter_by(admin=current_user).filter_by(email=email).first()
+            if not user:
+                response = {
+                    "success": False,
+                    "message": f"{email} is not a management member."
+                }
+                return make_response(jsonify(response))
+
+            if not user.check_password(password):
+                response = {
+                    "success": False,
+                    "message": "wrong password."
+                }
+                return make_response(jsonify(response)), 409
+
+            new_extractor = Extractor(name=user.name, email=user.email, password=password, admin=user.admin)
+            db.session.add(new_extractor)
+            db.session.delete(user)
+            db.session.commit()
+            response = {
+                "success": True,
+                "message": f"User {user.email} has changed to {new_role}."
+            }
+            return make_response(jsonify(response)), 200
+
+        elif new_role == "management":
+            user = Extractor.query.filter_by(admin=current_user).filter_by(email=email).first()
+            if not user:
+                response = {
+                    "success": False,
+                    "message": f"{email} is not a extractor member."
+                }
+                return make_response(jsonify(response))
+
+            if not user.check_password(password):
+                response = {
+                    "success": False,
+                    "message": "wrong password."
+                }
+                return make_response(jsonify(response)), 409
+
+            new_management = Management(name=user.name, email=user.email,password=password, admin=user.admin)
+            db.session.add(new_management)
+            db.session.delete(user)
+            db.session.commit()
+            response = {
+                "success": True,
+                "message": f"User {user.email} has changed to {new_role}."
+            }
+            return make_response(jsonify(response)), 200
+
+        else:
+            response = {
+                "success": False,
+                "message": "Please provide a valid role."
+            }
+            return make_response(jsonify(response)), 409
+    response = {
+        "success": False,
+        "message": "Only admin can use this route."
+    }
+    return make_response(jsonify(response)), 404
+
+
+@user.route('/delete-user', methods=['DELETE'])
+@login_required
+def deleteuser():
+    """
+    This will be used by admin
+    to delete any member's account
+    """
+    # Check if email is provided or not
+    if current_user.role == "admin":
         try:
             req = request.get_json()
             email = str(req['email'])
         except:
-            return 'Please provide all parameters', 409
-        user = User.query.filter_by(admin=current_user.email).filter_by(email=email).first()
-        if user:
-            db.session.delete(user)
-            db.session.commit()
-            return f"User {user.email} removed."
-        return 'User not found.', 409
-    return 'You are not an admin', 409
+            response = {
+                "success": False,
+                "message": "Please provide email address of member."
+            }
+            return make_response(jsonify(response)), 409
+
+        user = Extractor.query.filter_by(admin=current_user).filter_by(email=email).first() or Management.query.filter_by(admin=current_user).filter_by(email=email).first()
+
+        if not user:
+            response = {
+                "success": False,
+                "message": "User not found.",
+            }
+            return make_response(jsonify(response))
+        db.session.delete(user)
+        db.session.commit()
+        response = {
+            "success": True,
+            "message": "User deleted."
+        }
+        return make_response(jsonify(response)), 200
+
+    response = {
+        "success": False,
+        "message": "Only admin can use this route."
+    }
+    return make_response(jsonify(response)), 404
 
 
-# Route to udate role of an user
-@user.route('/role-update', methods=['POST'])
+@user.route('/delete', methods=["DELETE"])
 @login_required
-def roleupdate():
-    if current_user.role == 'adimn':
-        try: 
-            req = request.get_json()
-            email = str(req['email'])
-            newrole = ''.join(sorted(str(req['role'])))
-        except:
-            return 'Please provide all parameters', 409
-        user = User.query.filter_by(admin=current_user.email).filter_by(email=email).first()
-        if user:
-            user.role = newrole
-            db.session.commit()
-            return f"User {user.email} has role {newrole} now."
-        return 'User not found.', 409
-    return 'You are not an admin.', 409
-
-
-@user.route('/delete', methods=['POST'])
-@login_required
-def deleteuser():
-    # Check if email is provided or not
-    try:
-        req = request.get_json()
-        email = str(req['email'])
-    except:
-        return 'please provide email', 400
-
-    user = User.query.filter_by(email=email).first()
-    db.session.delete(user)
+def delete():
+    """
+    This route will handle user deletion.
+    """
+    db.session.delete(current_user)
     db.session.commit()
-    return 'user deleted', 202
+    response = {
+        "success": True,
+        "message": "User deleted."
+    }
+    return make_response(jsonify(response)), 200
