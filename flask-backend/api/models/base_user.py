@@ -2,19 +2,19 @@
 Class definition for Base User Model.
 """
 from flask import current_app
+from flask_login import UserMixin
 from api.extansions import db, bcrypt
 
 from uuid import uuid4
 
 
-class BaseUser(db.Model):
+class BaseUser(UserMixin, db.Model):
     """ Class definition for Base User Model."""
     __abstract__=True
     name = db.Column(db.String(255), nullable=False, unique=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password_hash = db.Column(db.String(255), nullable=False)
     varified = db.Column(db.Boolean, default=False)
-    logged_in = db.Column(db.Boolean, default=False)
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
     public_id = db.Column(db.String(255), nullable=False, default=lambda: str(uuid4()))

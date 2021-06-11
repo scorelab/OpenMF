@@ -9,13 +9,16 @@ class Extractor(BaseUser):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     role = db.Column(db.String(255), default="extractor")
     admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"))
+    extracted_cases = db.relationship("Case", backref="extractor", lazy=True)
+    assinged_tasks = db.relationship("Task", backref="extractor", lazy=True)
 
-    def __init__(self, name, email, password, admin):
+    def __init__(self, name, email, password, admin, role="extractor"):
         """
         Constructor for extractor user model.
         """
         super().__init__(name, email,password)
         self.admin = admin
+        self.role = role
 
     def __repr__(self):
         """
