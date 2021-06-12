@@ -37,6 +37,7 @@ def profile():
 
 
 @user.route('/getUser/<id>', methods=["GET"])
+@login_required
 def getUser(id):
     user = User.query.filter_by(id=id).first()
     
@@ -64,11 +65,13 @@ def getUser(id):
                     'users': result})
 
 @user.route('/count', methods=["GET"])
+@login_required
 def count():
     return jsonify({'status':200,
                     'total_users':User.query.count()})
 
 @user.route('/list', methods=["GET"])
+@login_required
 def list():
     all_users = User.query.order_by(User.timestamp).all()
     result = users_schema.dump(all_users)
@@ -189,14 +192,16 @@ def roleupdate():
 @user.route('/delete', methods=['POST'])
 @login_required
 def deleteuser():
-    # Check if email is provided or not
-    try:
-        req = request.get_json()
-        email = str(req['email'])
-    except:
-        return 'please provide email', 400
+    if current_user.role == 'adimn':
+        # Check if email is provided or not
+        try:
+            req = request.get_json()
+            email = str(req['email'])
+        except:
+            return 'please provide email', 400
 
-    user = User.query.filter_by(email=email).first()
-    db.session.delete(user)
-    db.session.commit()
-    return 'user deleted', 202
+        user = User.query.filter_by(email=email).first()
+        db.session.delete(user)
+        db.session.commit()
+        return 'user deleted', 202
+    return 'You are not an admin.', 409
