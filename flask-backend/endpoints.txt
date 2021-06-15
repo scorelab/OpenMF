@@ -1,5 +1,6 @@
 Endpoint                 Methods  Rule
 -----------------------  -------  ------------------------------------------------------
+analytics.execute_query  POST     /analytics/query
 auth.login_post          POST     /login
 auth.logout              GET      /logout
 case.count               GET      /case/count
@@ -13,11 +14,11 @@ extraction.list_devices  GET      /extraction/list_devices
 static                   GET      /static/<path:filename>
 user.add_users           POST     /user/add-user
 user.all_users           GET      /user/all-users
-user.count               GET      /user/count
 user.create_user         POST     /user/create
-user.deleteuser          POST     /user/delete
-user.getUser             GET      /user/getUser/<id>
-user.list                GET      /user/list
+user.delete              DELETE   /user/delete
+user.deleteuser          DELETE   /user/delete-user
+user.getUser             GET      /user/getAdmin/<int:id>
+user.get_extractor       GET      /user/getExtractor/<int:id>
+user.get_management      GET      /user/getManagement/<int:id>
 user.profile             GET      /user/profile
-user.remove_user         POST     /user/remove-user
-user.roleupdate          POST     /user/role-update
+user.roleupdate          PUT      /user/role-update

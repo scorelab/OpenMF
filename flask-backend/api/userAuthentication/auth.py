@@ -1,8 +1,15 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash, request
-from werkzeug.security import generate_password_hash, check_password_hash
+"""
+Authentication Route for User.
+"""
+
+from flask import Blueprint, request, jsonify
+from flask.helpers import make_response
 from flask_login import login_user, logout_user, login_required
-from ..models.models import User
-from .. import db
+from api.models.admin import Admin
+from api.models.extractor import Extractor
+from api.models.management import Management
+from api.extansions import db
+
 
 auth = Blueprint('auth', __name__)
 
@@ -13,30 +20,72 @@ def login_post():
     try:
         req = request.get_json()
     except:
-        return 'please provide email and password', 400
-
+        response = {
+            "success": False,
+            "message": "Please provide email, password and role."
+        }
+        return make_response(jsonify(response)), 400
     # Check if a key is missing
     try:
         email = str(req['email'])
         password = str(req['password'])
+        role = str(req['role'])
         remember = True if str(req['remember']) else False
     except KeyError as err:
-        return f'please provide {str(err)}', 400
+        response = {
+            "success": False,
+            "message": f'please provide {str(err)}'
+        }
+        return make_response(jsonify(response)), 400
+    try:
+        if role == "admin":
+            user = Admin.query.filter_by(email=email).first()
+        elif role == "extractor":
+            user = Extractor.query.filter_by(email=email).first()
+        elif role == "management":
+            user = Management.query.filter_by(email=email).first()
+        else:
+            response = {
+                "success": False,
+                "message": "Unable to authenticate, please provide a valid role.",
+            }
+            return make_response(jsonify(response)), 406
+        if user is None:
+            response = {
+                "success": False,
+                "message": "Unable to authenticate, user not found.",
+            }
+            return make_response(jsonify(response))
+        if not user.check_password(password):
+            response = {
+                "success": False,
+                "message": "Unable to authenticate, password doesn't match.",
+            }
+            return make_response(jsonify(response)), 406
 
-    user = User.query.filter_by(email=email).first()
 
-    if user is None:
-        return 'unable to authenticate, user not found', 406
+        login_user(user, remember=remember)
 
-    if not check_password_hash(user.password, password):
-        return "unable to authenticate, password doesn't match", 406
+        response = {
+            "success": True,
+            "message": "Authenticated, user logged in."
+        }
+        return make_response(jsonify(response)), 200
+    except Exception as e:
+        print(e)
+        response = {
+            "success": False,
+            "message": "Unable to authenticate, something went wrong."
+        }
+        return make_response(jsonify(response)), 406
 
-    login_user(user, remember=remember)
-
-    return 'user logged in', 200
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return 'logged out successfully', 200
+    response = {
+        "success": True,
+        "message": "user logged out successfully."
+    }
+    return make_response(jsonify(response)), 200
