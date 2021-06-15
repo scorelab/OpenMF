@@ -2,8 +2,9 @@ import sqlite3 as sql
 import os
 from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required, current_user
-from ..models.models import Case, CaseSchema
-from .. import db
+from api.models.case import Case
+from api.schema.case import CaseSchema
+from api.extansions import db
 
 ROOT_DIR = os.getcwd()
 
