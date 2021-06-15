@@ -18,22 +18,25 @@ If you are on Windows, then use the following commands instead:
 
 Running
 -------
-Step1: Upgrade database using the migrations file
+Step!: Set up FLASK_APP
+(For Linux or Mac)
+```sh
+(venv) $ `export FLASK_APP=api`
+```
+
+(For Windows)
+```sh
+(venv) $ `set FLASK_APP=api`
+```
+
+Step2: Upgrade database using the migrations file
 Run `flask db upgrade`
 
 Step2:Start the backend server
-(For Linux or Mac)
 To run the server use the following command:
-
-    (venv) $ `export FLASK_APP=api`
-    (venv) $ `flask run`
-
-(For Windows)
-To run the server use the following command:
-
-    (venv) $ `set FLASK_APP=api`
-    (venv) $ `flask run`
-
+```sh
+(venv) $ `flask run`
+```
 Eithr from a terminal window or from postman you can send requests.
 
 API Documentation

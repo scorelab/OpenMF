@@ -1,12 +1,25 @@
 import os
 from flask import Flask
+from flask.helpers import make_response
+from flask.json import jsonify
 from flask_login import LoginManager
 from flask_cors import CORS
 
 from .config import get_config
-from .extansions import db, ma, migrate
-from .models.models import User, Case
+from .extansions import db, ma, migrate, bcrypt
 
+from api.models.admin import Admin
+from api.models.extractor import Extractor
+from api.models.management import Management
+from api.models.case import Case
+from api.models.task import Task
+
+from api.userAuthentication.auth import auth as auth_blueprint
+from api.routes.user import user as user_blueprint
+from api.routes.analytics import analytics as analytics_blueprint
+from api.routes.case import case as case_blueprint
+from api.routes.extraction import extraction as extraction_blueprint
+from api.routes.data import data as data_blueprint
 
 def create_app():
     """
@@ -16,47 +29,54 @@ def create_app():
     CORS(app)
     app.config.from_object(get_config(os.environ.get("FLASK_ENV")))
 
+    # Register extenstions
     db.init_app(app)
     migrate.init_app(app, db)
+    ma.init_app(app)
 
-    login_manager = LoginManager()
+    # FlaskLogin configuration
+    login_manager = LoginManager(app)
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
 
-    from .models.models import User
-
-
     @login_manager.user_loader
     def load_user(user_id):
-        return User.query.get(int(user_id))
+        user = Admin.query.get(int(user_id)) or Extractor.query.get(int(user_id)) or Management.query.get(int(user_id))
+        return user
 
     @login_manager.unauthorized_handler
     def unauthorized_handler():
-        return 'You are not authorized to use this route. Please Logged In.', 401
+        response = {
+            "success": False,
+            "message": "You are not authorized to use this route. Please Logged In."
+        }
+        return make_response(jsonify(response)), 401
 
-    from .userAuthentication.auth import auth as auth_blueprint
+    # Register routes
     app.register_blueprint(auth_blueprint)
-
-    from .routes.user import user as user_blueprint
     app.register_blueprint(user_blueprint)
-
-    from .routes.case import case as case_blueprint
+    app.register_blueprint(analytics_blueprint)
     app.register_blueprint(case_blueprint)
-
-    from .routes.data import data as data_blueprint
+    
     app.register_blueprint(data_blueprint)
-
-    from .routes.extraction import extraction as extraction_blueprint
     app.register_blueprint(extraction_blueprint)
 
+    # Register a shell context
     register_shell_context(app)
     return app
 
 
 def register_shell_context(app):
     """
-    Add/register a shell session
+    Add/register a shell context session.
     """
     def shell():
-        return {"db":db, "User": User, "case": Case}
+        return {
+            "db":db,
+            "Admin": Admin,
+            "Extractor": Extractor,
+            "Management": Management,
+            "Case": Case,
+            "Task": Task
+        }
     app.shell_context_processor(shell)
