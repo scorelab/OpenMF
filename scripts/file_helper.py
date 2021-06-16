@@ -21,6 +21,7 @@ def write_as_tsv(filepath, columns, rows):
 
 def convert_to_tsv(db_path, tsv_file_path):
     connection = sqlite3.connect(db_path)
+    connection.text_factory = lambda b: b.decode(errors='ignore')
     cursor = connection.cursor()
     cursor.execute('SELECT name FROM sqlite_master WHERE type = "table"')
     tables = []

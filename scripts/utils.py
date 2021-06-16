@@ -22,6 +22,7 @@ FILE_NAMES = {
     'phone.messages': 'phone-messages.tsv',
     'phone.contacts': 'phone-contacts.tsv',
     'message.sms': 'message-sms.tsv',
+    'browser.history': 'browser-history.tsv',
     'general.info.device': 'device-general-info.tsv'
 }
 

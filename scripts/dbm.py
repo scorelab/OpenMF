@@ -32,6 +32,10 @@ DBS_LIST = [
     '/data/system/locksettings.db',
     '/data/system/password.key',
     '/data/data/com.sec.android.app.myfiles/databases/myfiles.db',
+    '/data/data/com.android.chrome/app_chrome/Default/History',
+    '/data/data/com.android.chrome/app_chrome/Default/Cookies',
+    '/data/data/com.android.browser/databases/webview.db',
+    '/data/data/com.android.browser/databases/browser.db',
 ]
 
 # DOWNLOADING DATABASES

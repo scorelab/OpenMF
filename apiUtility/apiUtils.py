@@ -15,7 +15,7 @@ from scripts.utils import ROOT_DIR, mkdir
 from scripts.os_check import SEP
 from scripts.io_helper import write_to_file
 from scripts.message import store_sms_data, store_sms_messages
-
+from scripts.browser import store_browser_history_data, store_browser_history
 
 
 def save_report(case_name):
@@ -39,6 +39,10 @@ def apiExtractWa(case_name):
     dbm.start_download_databases(case_name)
     store_wa_data(case_name)
 
+def apiExtractBrowser(case_name):
+    dbm.start_download_databases(case_name)
+    store_browser_history_data(case_name)
+
 def apiExtractSMS(case_name):
     dbm.start_download_databases(case_name)
     store_sms_data(case_name)
@@ -46,4 +50,5 @@ def apiExtractSMS(case_name):
 def apiExtractPhone(case_name):
     dbm.start_download_databases(case_name)
     store_phone_data(case_name)
+
 

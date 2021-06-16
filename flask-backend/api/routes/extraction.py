@@ -71,7 +71,7 @@ def extract():
         return f'please provide {str(err)}', 400
 
     sys.path.append(dirname + '../../../../apiUtility')
-    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS
+    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS, apiExtractBrowser
     if(data == 'all'):
         apiExtactAll(case_name)
     elif(data == 'facebook'):
@@ -82,6 +82,8 @@ def extract():
         apiExtractSMS(case_name)
     elif(data == 'phone'):
         apiExtractPhone(case_name)
+    elif(data == 'browser'):
+        apiExtractBrowser(case_name)
     elif(data == 'report'):
         apiReport(case_name)
     else:
