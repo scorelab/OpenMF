@@ -4,11 +4,17 @@ Authentication Route for User.
 
 from flask import Blueprint, request, jsonify
 from flask.helpers import make_response
-from flask_login import login_user, logout_user, login_required
 from api.models.admin import Admin
 from api.models.extractor import Extractor
 from api.models.management import Management
+from api.models.token_blacklist import BlacklistedToken
 from api.extansions import db
+from api.helpers.auth import (
+    _create_auth_successfull_response
+)
+from api.utils.jwt_decorators import (
+    token_required
+)
 
 
 auth = Blueprint('auth', __name__)
@@ -64,11 +70,34 @@ def login_post():
             return make_response(jsonify(response)), 406
 
 
-        login_user(user, remember=remember)
+        access_token = user.encode_access_token()
+        response = _create_auth_successfull_response(
+            access_token=access_token,
+            message="Successfully logged in.",
+            status_code=200,
+        )
+        return response
 
+    except Exception as e:
+        print(e)
+        response = {
+            "success": False,
+            "message": "Unable to authenticate, something went wrong."
+        }
+        return make_response(jsonify(response)), 501
+
+
+@auth.route('/logout')
+@token_required
+def logout():
+    try:
+        access_token = logout.token
+        blacklisted_token = BlacklistedToken(token=access_token)
+        db.session.add(blacklisted_token)
+        db.session.commit()
         response = {
             "success": True,
-            "message": "Authenticated, user logged in."
+            "message": "user logged out successfully."
         }
         return make_response(jsonify(response)), 200
     except Exception as e:
@@ -77,15 +106,4 @@ def login_post():
             "success": False,
             "message": "Unable to authenticate, something went wrong."
         }
-        return make_response(jsonify(response)), 406
-
-
-@auth.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    response = {
-        "success": True,
-        "message": "user logged out successfully."
-    }
-    return make_response(jsonify(response)), 200
+        return make_response(jsonify(response)), 501
