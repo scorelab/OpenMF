@@ -19,6 +19,7 @@ from api.routes.user import user as user_blueprint
 from api.routes.analytics import analytics as analytics_blueprint
 from api.routes.case import case as case_blueprint
 from api.routes.extraction import extraction as extraction_blueprint
+from api.routes.data import data as data_blueprint
 
 def create_app():
     """
@@ -56,6 +57,8 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(analytics_blueprint)
     app.register_blueprint(case_blueprint)
+    
+    app.register_blueprint(data_blueprint)
     app.register_blueprint(extraction_blueprint)
 
     # Register a shell context

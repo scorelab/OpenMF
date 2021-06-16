@@ -21,6 +21,7 @@ FILE_NAMES = {
     'phone.calllogs': 'phone-calllogs.tsv',
     'phone.messages': 'phone-messages.tsv',
     'phone.contacts': 'phone-contacts.tsv',
+    'message.sms': 'message-sms.tsv',
     'general.info.device': 'device-general-info.tsv'
 }
 
