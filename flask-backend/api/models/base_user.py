@@ -2,13 +2,18 @@
 Class definition for Base User Model.
 """
 from flask import current_app
-from flask_login import UserMixin
+# from flask_login import UserMixin
+import jwt
+
 from api.extansions import db, bcrypt
+from api.utils.result import Result
+from api.models.token_blacklist import BlacklistedToken
 
 from uuid import uuid4
+from datetime import datetime, timezone, timedelta
 
 
-class BaseUser(UserMixin, db.Model):
+class BaseUser(db.Model):
     """ Class definition for Base User Model."""
     __abstract__=True
     name = db.Column(db.String(255), nullable=False, unique=False)
@@ -56,3 +61,67 @@ class BaseUser(UserMixin, db.Model):
         return (
             f"<User email={self.email}, public_id={self.public_id}"
         )
+
+    @classmethod
+    def find_by_email(cls, email):
+        return cls.query.filter_by(email=email).first()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return cls.query.get(id)
+
+    @classmethod
+    def find_by_pubic_id(cls, public_id):
+        return cls.query.filter_by(public_id=public_id)
+
+    def encode_access_token(self):
+        """
+        Generating jwt access tokens.
+        """
+        now = datetime.now(timezone.utc)
+        token_age_h = current_app.config.get("TOKEN_EXPIRE_HOURS")
+        token_age_min = current_app.config.get("TOKEN_EXPIRE_MINUTES")
+        expires = now + timedelta(hours=token_age_h, minutes=token_age_min)
+        if current_app.config.get("TESIING"):
+            expires = now + timedelta(seconds=5)
+        payload = dict(exp=expires, iat=now, sub=self.public_id, role=self.role)
+        key = current_app.config.get("SECRET_KEY")
+        return jwt.encode(payload, key, algorithm="HS256")
+
+    @staticmethod
+    def decode_access_token(access_token):
+        """
+        Decodes the access token.
+        """
+        if isinstance(access_token, bytes):
+            access_token = access_token.decode("ascii")
+        if access_token.startswith("Bearer"):
+            split = access_token.split("Bearer")
+            access_token = split[1].strip()
+        try:
+            key = current_app.config.get("SECRET_KEY")
+            payload = jwt.decode(access_token, key, algorithms="HS256")
+
+        except jwt.ExpiredSignatureError:
+            error = "Access token expired, Please login again."
+            return Result.Fail(error_message=error)
+
+        except jwt.InvalidTokenError:
+            error = "Invalid token. Please  log in again."
+            return Result.Fail(error_message=error)
+
+        if BlacklistedToken.check_blacklist(access_token):
+            error = "Token blacklisted. Please try to log in again."
+            return Result.Fail(error_message=error)
+
+        # Following keys would be accessible
+        # to decorated functinos
+        user_dict = dict(
+            public_id=payload["sub"],
+            role = payload["role"],
+            token=access_token,
+            expires_at=payload["exp"],
+        )
+
+        return Result.Ok(value=user_dict)
+

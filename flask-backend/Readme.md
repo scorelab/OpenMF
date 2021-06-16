@@ -18,7 +18,7 @@ If you are on Windows, then use the following commands instead:
 
 Running
 -------
-Step!: Set up FLASK_APP
+Step 1: Set up FLASK_APP
 (For Linux or Mac)
 ```sh
 (venv) $ `export FLASK_APP=api`
@@ -29,10 +29,10 @@ Step!: Set up FLASK_APP
 (venv) $ `set FLASK_APP=api`
 ```
 
-Step2: Upgrade database using the migrations file
+Step 2: Upgrade database using the migrations file
 Run `flask db upgrade`
 
-Step2:Start the backend server
+Step 3:Start the backend server
 To run the server use the following command:
 ```sh
 (venv) $ `flask run`

@@ -2,7 +2,6 @@ import os
 from flask import Flask
 from flask.helpers import make_response
 from flask.json import jsonify
-from flask_login import LoginManager
 from flask_cors import CORS
 
 from .config import get_config
@@ -33,24 +32,6 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
-
-    # FlaskLogin configuration
-    login_manager = LoginManager(app)
-    login_manager.login_view = 'auth.login'
-    login_manager.init_app(app)
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        user = Admin.query.get(int(user_id)) or Extractor.query.get(int(user_id)) or Management.query.get(int(user_id))
-        return user
-
-    @login_manager.unauthorized_handler
-    def unauthorized_handler():
-        response = {
-            "success": False,
-            "message": "You are not authorized to use this route. Please Logged In."
-        }
-        return make_response(jsonify(response)), 401
 
     # Register routes
     app.register_blueprint(auth_blueprint)
