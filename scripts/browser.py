@@ -1,4 +1,3 @@
-from sqlite3.dbapi2 import Row
 import sys
 import sqlite3
 import os
@@ -45,7 +44,6 @@ def store_browser_history():
     BROWSER_VISITS_FROM_VISIT = 8
     BROWSER_VISITS_DURATION = 9
     BROWSER_VISITS_TRANSITION = 10
-    # BROWSER_VISITS_ID = 11
 
     browser_dict = {}
 
@@ -63,7 +61,6 @@ def store_browser_history():
         visits_from_visit = " "
         visits_duration = " "
         visits_transition = " "
-        # visits_id = " "
 
         if row[BROWSER_URLS_ID] is not None:
             urls_id = str(row[BROWSER_URLS_ID])
@@ -87,8 +84,7 @@ def store_browser_history():
             visits_duration = str(row[BROWSER_VISITS_DURATION])
         if row[BROWSER_VISITS_TRANSITION] is not None:
             visits_transition = str(row[BROWSER_VISITS_TRANSITION])
-        # if row[BROWSER_VISITS_ID] is not None:
-        #     visits_id = row[BROWSER_VISITS_ID]
+            
 
         browser_dict[row[0]] = (urls_id,urls,urls_title,urls_visit_count,urls_typed_count,urls_last_visit_time,urls_hidden,visits_time,visits_from_visit,visits_duration,visits_transition)
 
@@ -99,7 +95,7 @@ def store_browser_history():
     browser_output_file = OUTPUT + SEP + "history.tsv"
     browser_file = open(browser_output_file, "w+", encoding="utf-8")
     browser_file.write(
-        "urls_id\turls\turls_title\turls_visit_count\turls_typed_count\turls_last_visit_time\turls_hidden\tvisits_time\tvisits_from_visit\tvisits_duration\tvisits_transition\tvisits_id\n")
+        "urls_id\turls\turls_title\turls_visit_count\turls_typed_count\turls_last_visit_time\turls_hidden\tvisits_time\tvisits_from_visit\tvisits_duration\tvisits_transition\n")
 
     for index in browser_dict:
         browser_file.write(browser_dict[index][BROWSER_URLS_ID] +
