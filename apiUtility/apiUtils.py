@@ -16,7 +16,7 @@ from scripts.os_check import SEP
 from scripts.io_helper import write_to_file
 from scripts.message import store_sms_data, store_sms_messages
 
-
+from scripts.bluetooth import store_bluetooth_data,store_btopp
 
 def save_report(case_name):
     db_store_path = ROOT_DIR + SEP + 'data' + SEP + case_name
@@ -47,3 +47,6 @@ def apiExtractPhone(case_name):
     dbm.start_download_databases(case_name)
     store_phone_data(case_name)
 
+def apiExtractBluetooth(case_name):
+    dbm.start_download_databases(case_name)
+    store_bluetooth_data(case_name)
