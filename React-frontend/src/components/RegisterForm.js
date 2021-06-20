@@ -20,8 +20,9 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import logo from '../images/logo.png';
 
-import { authDefault, login } from '../store/actions/auth';
+import { authDefault, signUp } from '../store/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -49,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.extraLight,
         margin: theme.spacing(1.5, 0),
         '&:hover': {
-          backgroundColor: theme.palette.primary.light
+            backgroundColor: theme.palette.primary.light
         }
     }
 }))
@@ -57,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 
 function RegisterPage() {
     const classes = useStyles()
+    const history = useHistory()
     var homeURL = `${window.location.protocol}\\\\${window.location.host}/`
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
@@ -67,10 +69,10 @@ function RegisterPage() {
     }, [dispatch])
 
     // states
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [role, setRole] = useState('admin')
-    const [remember, setRemember] = useState(true)
+    const [accept, setAccept] = useState(true)
     const [showPassword, setShowPassword] = useState(false)
     const handleClickShowPassword = () => setShowPassword(!showPassword)
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
@@ -83,7 +85,7 @@ function RegisterPage() {
                 </Avatar>
 
                 <Typography component="h1" variant="h5">
-                    Login
+                    Register | Sign Up
                 </Typography>
 
                 <Typography variant="body1" align="center" color="error">
@@ -91,6 +93,20 @@ function RegisterPage() {
                 </Typography>
 
                 <form className={classes.form} noValidate>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required={true}
+                        fullWidth={true}
+                        id="username"
+                        label="username"
+                        name="username"
+                        autoFocus
+                        className={classes.inputs}
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                    />
+
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -104,7 +120,6 @@ function RegisterPage() {
                         type="email"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
-                        autoFocus
                     />
 
                     <TextField
@@ -135,22 +150,10 @@ function RegisterPage() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required={true}
-                        fullWidth={true}
-                        id="role"
-                        label="role"
-                        name="role"
-                        autoComplete="role"
-                        className={classes.inputs}
-                        value={role}
-                        onChange={e => setRole(e.target.value)}
-                    />
+
                     <FormControlLabel
-                        control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} color="primary"/>}
-                        label={<Typography variant="body2">Remember</Typography>}
+                        control={<Checkbox checked={accept} onChange={e => setAccept(e.target.checked)} color="primary"/>}
+                        label={<Typography variant="body2">I accept the Terms of Use & Privacy Policy</Typography>}
                     />
 
                     <Button
@@ -158,22 +161,17 @@ function RegisterPage() {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled={ auth.isLoading ||!email || !password || !role}
-                        onClick={() => dispatch(login(email, password, role, remember))}
+                        disabled={!username || !email || !password || !accept || auth.isLoading}
+                        onClick={() => dispatch(signUp(username, email, password, "admin", history))}
                     >
-                        Login
+                        Sign Up | Register
                     </Button>
                 </form>
 
                 <Grid container>
                     <Grid item style={{margin: 'auto'}}>
-                        <Link component={RouterLink} to="/register" variant="body2">
-                            {"Don't have accont? Register"}
-                        </Link>
-                    </Grid>
-                    <Grid item style={{margin: 'auto'}}>
-                        <Link component={RouterLink} to="#" variant="body2" >
-                            {"Forget password ?"}
+                        <Link component={RouterLink} to="/login" variant="body2">
+                            {'Already have account? Login'}
                         </Link>
                     </Grid>
                 </Grid>
