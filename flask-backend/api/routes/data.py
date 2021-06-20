@@ -20,3 +20,9 @@ def sms(case_name):
     File = cases_data_path +  case_name + "/tsv/" + "sms.tsv"
     os.chdir(ROOT_DIR)
     return File
+
+@data.route('/<case_name>/bluetooth',methods = ["GET"])
+def bluetooth(case_name):
+    File = cases_data_path + case_name + "/tsv/" + "bluetooth.tsv"
+    os.chdir(ROOT_DIR)
+    return File
