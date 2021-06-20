@@ -24,6 +24,8 @@ from scripts.utils import ROOT_DIR, mkdir
 from scripts.io_helper import write_to_file
 from scripts.message import store_sms_data
 from scripts.browser import store_browser_history_data
+from scripts.bluetooth import store_bluetooth_data
+
 
 help_str = """
 Collector is a simple CLI tool to collect data from rooted android device and persist data for analysis 
@@ -68,6 +70,7 @@ FUNC_MAP = {
     'message': store_sms_data,
     'browser': store_browser_history_data,
     'general_info': print_general_info,
+    'bluetooth': store_bluetooth_data,
 }
 
 

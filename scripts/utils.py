@@ -23,6 +23,7 @@ FILE_NAMES = {
     'phone.contacts': 'phone-contacts.tsv',
     'message.sms': 'message-sms.tsv',
     'browser.history': 'browser-history.tsv',
+    'bluetooth.btopp': 'bluetooth-bluetooth.tsv',
     'general.info.device': 'device-general-info.tsv'
 }
 

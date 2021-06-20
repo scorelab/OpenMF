@@ -71,7 +71,10 @@ def extract():
         return f'please provide {str(err)}', 400
 
     sys.path.append(dirname + '../../../../apiUtility')
-    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS, apiExtractBrowser
+ 
+
+    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS, apiExtractBrowser, apiExtractBluetooth
+
     if(data == 'all'):
         apiExtactAll(case_name)
     elif(data == 'facebook'):
@@ -86,6 +89,8 @@ def extract():
         apiExtractBrowser(case_name)
     elif(data == 'report'):
         apiReport(case_name)
+    elif(data == 'bluetooth'):
+        apiExtractBluetooth(case_name)
     else:
         return jsonify({'status':409,
                     'error':"wrong data provided"})

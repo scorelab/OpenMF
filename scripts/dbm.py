@@ -36,6 +36,7 @@ DBS_LIST = [
     '/data/data/com.android.chrome/app_chrome/Default/Cookies',
     '/data/data/com.android.browser/databases/webview.db',
     '/data/data/com.android.browser/databases/browser.db',
+    '/data/data/com.android.bluetooth/databases/btopp.db',
 ]
 
 # DOWNLOADING DATABASES
