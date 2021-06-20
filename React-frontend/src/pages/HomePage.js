@@ -1,10 +1,11 @@
 import React from 'react'
 import Layout from '../components/core/Layout'
+import HomeLogo from '../components/core/HomeLogo';
 
 const HomePage = () => {
     return (
-        <Layout>
-            <h1>Home Page</h1>
+        <Layout sidebarBool={false}>
+            <HomeLogo />
         </Layout>
     )
 }

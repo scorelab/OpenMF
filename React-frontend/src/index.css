@@ -12,6 +12,10 @@ code {
     monospace;
 }
 
+body::-webkit-scrollbar{
+  display: none;
+}
+
 .sidebar-container {
   width: 200px;
   background-color: gray;

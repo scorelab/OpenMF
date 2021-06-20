@@ -3,10 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     Grid,
 } from '@material-ui/core';
-import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+
 import logo from '../images/logo.png';
-import LoginForm from '../components/LoginForm';
+import RegisterForm from '../components/RegisterForm';
 import Layout from '../components/core/Layout';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,25 +39,19 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }))
-function LoginPage() {
+function RegisterPage() {
     const classes = useStyles()
-
-    const { isLoading, isAuthenticated } = useSelector(state => state.auth);
-
-    if (!isLoading && isAuthenticated) {
-        return <Redirect to='/' />;
-    }
 
     return (
         <Layout sidebarBool={false} background={false}>
             <Grid container component="main" className={classes.root}>
                 <Grid item xs={false} sm={false} md={7} className={classes.image}/>
                 <Grid item xs={12} sm={12} md={5} className={classes.form}>
-                    <LoginForm />
+                    <RegisterForm />
                 </Grid>
             </Grid>
         </Layout>
     )
 }
 
-export default LoginPage
+export default RegisterPage
