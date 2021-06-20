@@ -61,7 +61,7 @@ def login_post():
                 "success": False,
                 "message": "Unable to authenticate, user not found.",
             }
-            return make_response(jsonify(response))
+            return make_response(jsonify(response)), 404
         if not user.check_password(password):
             response = {
                 "success": False,
@@ -87,7 +87,7 @@ def login_post():
         return make_response(jsonify(response)), 501
 
 
-@auth.route('/logout')
+@auth.route('/logout', methods=['POST'])
 @token_required
 def logout():
     try:

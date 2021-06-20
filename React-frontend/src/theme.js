@@ -6,10 +6,15 @@ import { red } from '@material-ui/core/colors';
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: '#556cd6'
+            main: "#264d2c",
+            light: "#36623c",
+            extraLight: "#2b7935"
         },
         secondary: {
             main: "#19857b"
+        },
+        text: {
+            main: "#fff"
         },
         error: {
             main: red.A700
@@ -17,7 +22,8 @@ const theme = createMuiTheme({
         background: {
             default: "#fff"
         }
-    }
+    },
+    spacing: 10
 })
 
 export default theme
