@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }))
-function RegisterPage() {
+function LoginPage() {
     const classes = useStyles()
 
     const { isLoading, isAuthenticated } = useSelector(state => state.auth);
@@ -61,4 +61,4 @@ function RegisterPage() {
     )
 }
 
-export default RegisterPage
+export default LoginPage

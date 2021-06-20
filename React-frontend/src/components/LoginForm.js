@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function RegisterPage() {
+function LoginForm() {
     const classes = useStyles()
     var homeURL = `${window.location.protocol}\\\\${window.location.host}/`
     const auth = useSelector(state => state.auth)
@@ -190,4 +190,4 @@ function RegisterPage() {
     )
 }
 
-export default RegisterPage
+export default LoginForm
