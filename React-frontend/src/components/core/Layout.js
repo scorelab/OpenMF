@@ -36,9 +36,7 @@ export default function LayoutMain ({ children, sidebarBool=true, background=tru
             </Grid>
           </>:
           <>
-            <Grid item xs={12} sm={12} md={12} lg={12}>
-              {children}
-            </Grid>
+            {children}
           </>
         }
         </Grid>

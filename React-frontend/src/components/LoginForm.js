@@ -57,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
 
 function LoginForm() {
     const classes = useStyles()
-    var homeURL = `${window.location.protocol}\\\\${window.location.host}/`
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
@@ -177,14 +176,6 @@ function LoginForm() {
                         </Link>
                     </Grid>
                 </Grid>
-                <Button
-                    fullWidth
-                    onClick={() => { window.open(homeURL, '_self') }}
-                    color="default"
-                    className={classes.submit}
-                >
-                    Back to home
-                </Button>
             </Card>
         </Container>
     )

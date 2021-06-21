@@ -59,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 function RegisterPage() {
     const classes = useStyles()
     const history = useHistory()
-    var homeURL = `${window.location.protocol}\\\\${window.location.host}/`
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
@@ -175,14 +174,6 @@ function RegisterPage() {
                         </Link>
                     </Grid>
                 </Grid>
-                <Button
-                    fullWidth
-                    onClick={() => { window.open(homeURL, '_self') }}
-                    color="default"
-                    className={classes.submit}
-                >
-                    Back to home
-                </Button>
             </Card>
         </Container>
     )

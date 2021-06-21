@@ -8,10 +8,10 @@ const theme = createMuiTheme({
         primary: {
             main: "#264d2c",
             light: "#36623c",
-            extraLight: "#2b7935"
+            extraLight: "#32cd32"
         },
         secondary: {
-            main: "#19857b"
+            main: "#19857b",
         },
         text: {
             main: "#fff"
@@ -20,6 +20,7 @@ const theme = createMuiTheme({
             main: red.A700
         },
         background: {
+            light: "#f0f0f0",
             default: "#fff"
         }
     },

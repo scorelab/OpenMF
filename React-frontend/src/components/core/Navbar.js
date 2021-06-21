@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import {
   AppBar,
@@ -11,20 +11,25 @@ import {
   IconButton,
   Menu,
   Fade,
-  MenuItem
+  MenuItem,
+  Dialog,
+  DialogContent,
+  DialogActions
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
-import logo from '../../images/logo.png';
+import logo from '../../images/logo2.png';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/actions/auth';
+import RegisterForm from '../RegisterForm';
+import LoginForm from '../LoginForm';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     height: '10vh',
     borderBottom: `1px solid ${theme.palette.divider}`,
-    backgroundColor: '#000',
+    backgroundColor: '#0f0f0f',
     color: '#fff',
     position: 'fixed',
   },
@@ -33,7 +38,16 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarTitle: {
     flexGrow: 1,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    '&:hover': {
+      backgroundColor: '#000',
+      TextDecoration: 'none'
+    }
+  },
+  toolbarTitleLink: {
+    '&:hover': {
+      color: '#fff',
+    }
   },
   link: {
     margin: theme.spacing(1, 1.5),
@@ -49,8 +63,11 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(3.7),
     borderColor: theme.palette.primary.extraLight,
     '&:hover': {
-      backgroundColor: theme.palette.primary.extraLight,
+      backgroundColor: '#000',
       color: '#fff'
+    },
+    '&:focus': {
+      outline: 'none'
     }
   },
   small: {
@@ -68,6 +85,20 @@ const useStyles = makeStyles((theme) => ({
       backgroundSize: 'contain',
       backgroundRepeat:'no-repeat',
       zIndex: 999,
+    },
+    '&::before': {
+      position: 'absolute',
+      content: '" "',
+      left: theme.spacing(3),
+      top: theme.spacing(2),
+      width: theme.spacing(6),
+      height: theme.spacing(2),
+      backgroundColor: '#fff',
+      zIndex: 998
+    },
+    '&:hover': {
+      backgroundColor: '#000',
+      borderColor: '#000',
     },
     '&:onFocus': {
       border: 'none',
@@ -90,6 +121,8 @@ export function Header () {
   const dispatch = useDispatch()
   const [anchorEl, setAnchorEl] = React.useState(null)
   const auth = useSelector(state => state.auth)
+  const [openLogin, setOpenLogin] = useState(false)
+  const [openSignUp, setOpenSignUp] = useState(false)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -99,6 +132,18 @@ export function Header () {
     setAnchorEl(null)
   }
 
+  const handleOpenLogin = () => {
+    setOpenLogin(true)
+  }
+  const handleCloseLogin = () => {
+    setOpenLogin(false)
+  }
+  const handleOpenSignUp = () => {
+    setOpenSignUp(true)
+  }
+  const handleCloseSignUp = () => {
+    setOpenSignUp(false)
+  }
   return (
     <>
       {/* Display logo */}
@@ -113,7 +158,7 @@ export function Header () {
         noWrap
         className={classes.toolbarTitle}
       >
-        <Link color="inherit" to="/" component={RouterLink}>
+        <Link color="inherit" to="/" component={RouterLink} className={classes.toolbarTitleLink}>
           OpenMF
         </Link>
       </Typography>
@@ -206,26 +251,50 @@ export function Header () {
         (!auth.isAuthenticated ? (
         <>
           <Button
-            size="small"
-            component={RouterLink}
-            to="/login"
-            color="primary"
-            className={classes.button}
             variant="outlined"
+            className={classes.button}
+            onClick={handleOpenLogin}
+            disableRipple
+            disableTouchRipple
           >
             Login
           </Button>
-
+          <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
+            <DialogContent >
+              <LoginForm />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={handleCloseLogin}
+                color="primary"
+                disableRipple
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
           <Button
-            size="small"
-            component={RouterLink}
-            to="/register"
-            color="primary"
             variant="outlined"
             className={classes.button}
+            disableRipple
+            onClick={handleOpenSignUp}
           >
             Register
           </Button>
+          <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
+            <DialogContent >
+              <RegisterForm />
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={handleCloseSignUp}
+                color="primary"
+                disableRipple
+              >
+                Cancel
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>)
           : (<>
 
