@@ -1,4 +1,3 @@
-import sqlite3 as sql
 import os
 from flask import Blueprint, render_template, jsonify, request
 from flask_login import login_required, current_user
@@ -17,12 +16,19 @@ cases_data_path = os.path.join(dirname, '../../../data/')
 
 @data.route('/<case_name>/sms',methods = ["GET"])
 def sms(case_name):
+    
     File = cases_data_path +  case_name + "/tsv/" + "sms.tsv"
     os.chdir(ROOT_DIR)
     return File
-
+@data.route('/<case_name>/browsers',methods = ["GET"])
+def browsers(case_name):
+    File = cases_data_path + case_name + "/tsv/" + "history.tsv"
+    os.chdir(ROOT_DIR)
+    return File
+ 
 @data.route('/<case_name>/bluetooth',methods = ["GET"])
 def bluetooth(case_name):
     File = cases_data_path + case_name + "/tsv/" + "bluetooth.tsv"
     os.chdir(ROOT_DIR)
     return File
+
