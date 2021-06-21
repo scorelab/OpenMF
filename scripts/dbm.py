@@ -32,6 +32,7 @@ DBS_LIST = [
     '/data/system/locksettings.db',
     '/data/system/password.key',
     '/data/data/com.sec.android.app.myfiles/databases/myfiles.db',
+    '/data/data/com.android.bluetooth/databases/btopp.db',
 ]
 
 # DOWNLOADING DATABASES
