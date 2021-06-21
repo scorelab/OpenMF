@@ -36,8 +36,8 @@ DBS_LIST = [
     '/data/data/com.android.chrome/app_chrome/Default/Cookies',
     '/data/data/com.android.browser/databases/webview.db',
     '/data/data/com.android.browser/databases/browser.db',
-    '/data/data/com.opera.browser/app_opera/saved_pages',
-    '/data/data/org.mozilla.firefox/files/mozilla/xxxxxxxx.default'
+    '/data/data/com.opera.browser/app_opera/History',
+    '/data/data/org.mozilla.firefox/databases/browser.db'
     '/data/data/com.android.bluetooth/databases/btopp.db',
 ]
 
