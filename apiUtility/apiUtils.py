@@ -17,6 +17,7 @@ from scripts.io_helper import write_to_file
 from scripts.message import store_sms_data, store_sms_messages
 from scripts.browser import store_browser_history_data, store_browser_history
 from scripts.bluetooth import store_bluetooth_data,store_btopp
+from scripts.location import store_location_data,store_saved_location,store_searched_location
 
 
 def save_report(case_name):
@@ -55,4 +56,8 @@ def apiExtractPhone(case_name):
 def apiExtractBluetooth(case_name):
     dbm.start_download_databases(case_name)
     store_bluetooth_data(case_name)
+
+def apiExtractLocation(case_name):
+    dbm.start_download_databases(case_name)
+    store_location_data(case_name)
 

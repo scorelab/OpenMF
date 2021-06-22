@@ -37,8 +37,10 @@ DBS_LIST = [
     '/data/data/com.android.browser/databases/webview.db',
     '/data/data/com.android.browser/databases/browser.db',
     '/data/data/com.opera.browser/app_opera/History',
-    '/data/data/org.mozilla.firefox/databases/browser.db'
+    '/data/data/org.mozilla.firefox/databases/browser.db',
     '/data/data/com.android.bluetooth/databases/btopp.db',
+    '/data/data/com.google.android.apps.maps/databases/gmm_storage.db',
+    '/data/data/com.google.android.apps.maps/databases/gmm_myplaces.db',
 ]
 
 # DOWNLOADING DATABASES

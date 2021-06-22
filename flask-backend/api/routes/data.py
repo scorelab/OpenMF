@@ -32,3 +32,9 @@ def bluetooth(case_name):
     os.chdir(ROOT_DIR)
     return File
 
+@data.route('/<case_name>/location',methods = ["GET"])
+def location(case_name):
+    File1 = cases_data_path + case_name + "/tsv/" + "savedlocation.tsv"
+    File2 = cases_data_path + case_name + "/tsv/" + "searchedlocation.tsv"
+    os.chdir(ROOT_DIR)
+    return jsonify(File1, File2)
