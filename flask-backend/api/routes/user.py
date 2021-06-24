@@ -14,7 +14,7 @@ from api.extansions import db
 from api.helpers.users import get_current_user
 from api.utils.jwt_decorators import (
     token_required,
-    admin_token_required
+    admin_token_required,
 )
 
 
@@ -67,6 +67,7 @@ def profile():
             "user": extractor_schema.dump(current_user)
         }
     return make_response(jsonify(response)), 201
+
 
 
 @user.route('/getAdmin/<int:id>', methods=["GET"])

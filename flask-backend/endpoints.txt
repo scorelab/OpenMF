@@ -5,6 +5,7 @@ auth.login_post          POST     /login
 auth.logout              POST     /logout
 case.count               GET      /case/count
 case.deletecase          POST     /case/delete
+case.extracted_cases     GET      /case/extracted-cases
 case.list                GET      /case/list
 case.openCase            GET      /case/open/<case_name>
 case.openFile            GET      /case/list-files/<case_name>/<folder_name>/<file_name>
