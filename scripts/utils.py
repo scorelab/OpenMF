@@ -24,6 +24,7 @@ FILE_NAMES = {
     'message.sms': 'message-sms.tsv',
     'browser.history': 'browser-history.tsv',
     'bluetooth.btopp': 'bluetooth-bluetooth.tsv',
+    'media.external': 'media-mediadata.tsv',
     'general.info.device': 'device-general-info.tsv'
 }
 

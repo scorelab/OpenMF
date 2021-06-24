@@ -37,8 +37,9 @@ DBS_LIST = [
     '/data/data/com.android.browser/databases/webview.db',
     '/data/data/com.android.browser/databases/browser.db',
     '/data/data/com.opera.browser/app_opera/History',
-    '/data/data/org.mozilla.firefox/databases/browser.db'
+    '/data/data/org.mozilla.firefox/databases/browser.db',
     '/data/data/com.android.bluetooth/databases/btopp.db',
+    '/data/data/com.android.providers.media/databases/external.db',
 ]
 
 # DOWNLOADING DATABASES
