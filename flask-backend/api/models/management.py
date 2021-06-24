@@ -9,7 +9,7 @@ class Management(BaseUser):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     role = db.Column(db.String(255), default="management")
     admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"))
-    assinged_tasks = db.relationship("Task", backref="management", lazy=True)
+    assigned_tasks = db.relationship("Task", backref="management", lazy=True)
 
     def __init__(self, name, email, password, admin, role="management"):
         """

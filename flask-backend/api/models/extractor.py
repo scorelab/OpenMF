@@ -10,7 +10,7 @@ class Extractor(BaseUser):
     role = db.Column(db.String(255), default="extractor")
     admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"))
     extracted_cases = db.relationship("Case", backref="extractor", lazy=True)
-    assinged_tasks = db.relationship("Task", backref="extractor", lazy=True)
+    assigned_tasks = db.relationship("Task", backref="extractor", lazy=True)
 
     def __init__(self, name, email, password, admin, role="extractor"):
         """
