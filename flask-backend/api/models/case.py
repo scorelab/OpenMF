@@ -10,14 +10,15 @@ class Case(UserMixin, db.Model):
     __tablename__ = "case"
     id = db.Column(db.Integer, primary_key=True)
     case_name = db.Column(db.String(100), unique=True)
-    data_size = db.Column(db.String(100))
+    data_size = db.Column(db.String(100), default="none")
     extracted_on = db.Column(db.DateTime, default=db.func.now())
     extractor_id =  db.Column(db.Integer, db.ForeignKey("extractor.id"))
     data_path = db.Column(db.String(100))
+    device_id = db.Column(db.String(100))
 
-    def __init__(self, case_name, data_size, data_path, extractor):
+    def __init__(self, case_name, device_id, data_path, extractor):
         self.case_name = case_name
-        self.data_size = data_size
+        self.device_id = device_id
         self.extractor = extractor
         self.data_path = data_path
 
