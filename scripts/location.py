@@ -4,6 +4,8 @@ import os
 import json
 import datetime
 import urllib
+import base64
+import re
 
 
 from scripts import dbm
@@ -173,7 +175,8 @@ def store_searched_location():
         if row[SEARCHED_KEY_DATA] is not None:
             key_data = (row[SEARCHED_KEY_DATA])
             
-
+            
+           
         searched_location_dict[row[0]] = (key_pri,key_sec,key_data)
 
         row = searched_location_cursor.fetchone()
@@ -189,17 +192,23 @@ def store_searched_location():
     for index in searched_location_dict:
 
         key_data = (searched_location_dict[index][SEARCHED_KEY_DATA])
+        #print(key_data,"\n")
         
-        key_data = key_data.decode('windows-1252', 'ignore')
+        key_data = str(key_data)
         key_data = key_data.replace("\r\n", " ")
         key_data = key_data.replace("\n", " ")
      
         
+        #print(key_data)
+        key_string = " "
+        for letters in key_data:
+            if letters in (map(chr, range(97, 123)) or map(chr, range(65, 91))):
+                key_string += str(letters)
 
         searched_location_file.write(
                     searched_location_dict[index][SEARCHED_KEY_PRI] + \
             "\t" + searched_location_dict[index][SEARCHED_KEY_SEC] + \
-            "\t" + str(key_data) + "\n"
+            "\t" + str(key_string) + "\n"
         )
 
     print("\n" + str(len(searched_location_dict.values())) +
