@@ -155,12 +155,6 @@ def store_searched_location():
 
 
     records = searched_location_cursor.fetchall()
-
-    # SEARCHED_KEY_PRI = 0
-
-    # SEARCHED_KEY_SEC = 1
-    
-    # SEARCHED_KEY_DATA = 2
     
     
 
@@ -170,7 +164,7 @@ def store_searched_location():
     searched_location_output_file = OUTPUT + SEP + "searchedlocation.tsv"
     searched_location_file = open(searched_location_output_file, "w+", encoding="utf-8")
 
-    searched_location_file.write("key_pre\tkey_sec\tkey_data\tsearched\n")
+    searched_location_file.write("key_pre\tkey_sec\tkey_data\n")
     for row in records:
         key_pri = row[0]
         key_sec = row[1]
@@ -186,11 +180,6 @@ def store_searched_location():
         searched_location_dict[row[0]] = (key_pri, key_sec, key_data)
         searched_location_file.write(key_pri + "\t" +key_sec+"\t["+str(key_data)+"]\n")
 
-
-    
-
-
-    
 
     searched_location_cursor.close()
     searched_location_conn.close()
