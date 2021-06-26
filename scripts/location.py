@@ -143,76 +143,61 @@ def store_searched_location():
     q = {
         59: '''SELECT * FROM gmm_storage_table'''
     }
-    
+    searched_location_cursor = searched_location_conn.cursor()
     searched_location_query = q[59]
 
-    searched_location_cursor = searched_location_conn.cursor()
+    
     searched_location_cursor.execute(searched_location_query)
 
     '''
     _key_pri	_key_sec	_data
     '''
 
-    SEARCHED_KEY_PRI = 0
-    SEARCHED_KEY_SEC = 1
-    SEARCHED_KEY_DATA = 2
+
+    records = searched_location_cursor.fetchall()
+
+    # SEARCHED_KEY_PRI = 0
+
+    # SEARCHED_KEY_SEC = 1
+    
+    # SEARCHED_KEY_DATA = 2
+    
+    
 
     searched_location_dict = {}
 
-    row = searched_location_cursor.fetchone()
-
-    while row:
-        key_pri = " "
-        key_sec = " "
-        key_data = " "
-
-        if row[SEARCHED_KEY_PRI] is not None:
-            key_pri = str(row[SEARCHED_KEY_PRI])
-        
-        if row[SEARCHED_KEY_SEC] is not None:
-            key_sec = str(row[SEARCHED_KEY_SEC])
-        
-        if row[SEARCHED_KEY_DATA] is not None:
-            key_data = (row[SEARCHED_KEY_DATA])
-            
-            
-           
-        searched_location_dict[row[0]] = (key_pri,key_sec,key_data)
-
-        row = searched_location_cursor.fetchone()
-
-    searched_location_cursor.close()
-    searched_location_conn.close()
 
     searched_location_output_file = OUTPUT + SEP + "searchedlocation.tsv"
     searched_location_file = open(searched_location_output_file, "w+", encoding="utf-8")
 
-    searched_location_file.write("key_pre\tkey_sec\tkey_data\n")
-
-    for index in searched_location_dict:
-
-        key_data = (searched_location_dict[index][SEARCHED_KEY_DATA])
-        #print(key_data,"\n")
+    searched_location_file.write("key_pre\tkey_sec\tkey_data\tsearched\n")
+    for row in records:
+        key_pri = row[0]
+        key_sec = row[1]
+        key_data = row[2]
         
-        key_data = str(key_data)
-        key_data = key_data.replace("\r\n", " ")
-        key_data = key_data.replace("\n", " ")
-     
-        
-        #print(key_data)
-        key_string = " "
+        key_data = key_data.decode('windows-1252','ignore')
+        final_letters = " "
         for letters in key_data:
             if letters in (map(chr, range(97, 123)) or map(chr, range(65, 91))):
-                key_string += str(letters)
+                final_letters += str(letters)
+        key_data = final_letters
 
-        searched_location_file.write(
-                    searched_location_dict[index][SEARCHED_KEY_PRI] + \
-            "\t" + searched_location_dict[index][SEARCHED_KEY_SEC] + \
-            "\t" + str(key_string) + "\n"
-        )
+        searched_location_dict[row[0]] = (key_pri, key_sec, key_data)
+        searched_location_file.write(key_pri + "\t" +key_sec+"\t["+str(key_data)+"]\n")
 
-    print("\n" + str(len(searched_location_dict.values())) +
-            " searched location data were processed")
+
+    
+
+
+    
+
+    searched_location_cursor.close()
+    searched_location_conn.close()
+
+    
+
+    print("\n" + " searched location data were processed\n")
 
 
 
