@@ -25,6 +25,7 @@ FILE_NAMES = {
     'browser.history': 'browser-history.tsv',
     'bluetooth.btopp': 'bluetooth-bluetooth.tsv',
     'location.gmm_myplaces': 'location-savedlocation.tsv',
+    'media.external': 'media-mediadata.tsv',
     'general.info.device': 'device-general-info.tsv'
 }
 

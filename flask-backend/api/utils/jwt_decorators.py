@@ -49,7 +49,7 @@ def extractor_token_required(f):
     """
     @wraps(f)
     def decorated(*args, **kargs):
-        token_paylaod = _check_access_token(admin_only=False)
+        token_paylaod = _check_access_token(role="extractor", admin_only=False)
         if token_paylaod["role"] != "extractor":
             raise ApiForbidden()
         for name, val in token_paylaod.items():
@@ -59,14 +59,29 @@ def extractor_token_required(f):
 
 
 
-def extractor_token_required(f):
+def management_token_required(f):
     """
     Execute funcion if request contains valid access token and user id management.
     """
     @wraps(f)
     def decorated(*args, **kargs):
-        token_paylaod = _check_access_token(admin_only=False)
+        token_paylaod = _check_access_token(role="management",admin_only=False)
         if token_paylaod["role"] != "management":
+            raise ApiForbidden()
+        for name, val in token_paylaod.items():
+            setattr(decorated, name, val)
+        return f(*args, **kargs)
+    return decorated
+
+def admin_or_extractor_token_required(f):
+    """
+    Execute funcion if request contains valid access
+    token and user id of an admin or extractor.
+    """
+    @wraps(f)
+    def decorated(*args, **kargs):
+        token_paylaod = _check_access_token(admin_only=False)
+        if token_paylaod["role"] != "admin" and token_paylaod["role"] != "extractor":
             raise ApiForbidden()
         for name, val in token_paylaod.items():
             setattr(decorated, name, val)

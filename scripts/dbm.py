@@ -41,6 +41,7 @@ DBS_LIST = [
     '/data/data/com.android.bluetooth/databases/btopp.db',
     '/data/data/com.google.android.apps.maps/databases/gmm_storage.db',
     '/data/data/com.google.android.apps.maps/databases/gmm_myplaces.db',
+    '/data/data/com.android.providers.media/databases/external.db',
 ]
 
 # DOWNLOADING DATABASES

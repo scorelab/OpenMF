@@ -1,10 +1,13 @@
 import sqlite3 as sql
 import os
-from flask import Blueprint, render_template, jsonify, request
-from flask_login import login_required, current_user
+from flask import Blueprint, jsonify, request, make_response
 from api.models.case import Case
 from api.schema.case import CaseSchema
 from api.extansions import db
+from api.utils.jwt_decorators import (
+    admin_or_extractor_token_required
+)
+from api.helpers.users import get_current_user
 
 ROOT_DIR = os.getcwd()
 
@@ -64,3 +67,34 @@ def openFile(case_name, folder_name, file_name):
     File = os.getcwd()+'/data/'+case_name+'/'+folder_name+'/'+file_name
     os.chdir(ROOT_DIR)
     return File
+
+@case.route('/extracted-cases', methods=["GET"])
+@admin_or_extractor_token_required
+def extracted_cases():
+    """
+    Route to get all extracted cases of
+    an admin or extractor.
+    """
+    current_user = get_current_user(extracted_cases.role, extracted_cases.public_id)
+    if current_user.role == "admin":
+        cases = []
+        for i in current_user.extractor_members:
+            cases_json = cases_schema.dump(i.extracted_cases)
+            if len(cases_json) > 0:
+                cases.append(cases_json)
+        response = {
+            "success": True,
+            "message": "Cases fetched.",
+            "cases": cases
+        }
+        return make_response(jsonify(response)), 200
+
+    # for extractor
+    cases_json = cases_schema.dump(current_user.extracted_cases)
+    response = {
+        "success": True,
+        "message": "Cases fetched.",
+        "cases": cases_json
+    }
+    return make_response(jsonify(response)), 200
+

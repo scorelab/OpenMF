@@ -10,7 +10,7 @@ class Admin(BaseUser):
     role = db.Column(db.String(255), default="admin")
     extractor_members = db.relationship("Extractor", backref="admin", cascade="all, delete, delete-orphan", lazy=True)
     management_members = db.relationship("Management", backref="admin", cascade="all, delete, delete-orphan", lazy=True)
-    assinged_tasks = db.relationship("Task", backref="admin", cascade="all, delete, delete-orphan", lazy=True)
+    assigned_tasks = db.relationship("Task", backref="admin", cascade="all, delete, delete-orphan", lazy=True)
 
     def __init__(self, name, email, password):
         """
