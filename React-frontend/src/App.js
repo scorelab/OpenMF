@@ -10,6 +10,7 @@ import Alert from './components/core/Alert';
 import { loadUser } from './store/actions/auth';
 import MemberList from './pages/admin/MemberList';
 import CircularProgress from '@material-ui/core/CircularProgress'
+import NotFound from './pages/NotFound';
 
 
 
@@ -37,7 +38,7 @@ function PrivateRoute ({component: Component, ...rest}) {
 }
 
 // Public routes accessible to all users.
-function PublicRoute ({ component: Component, restricted, nav, ...rest }) {
+function PublicRoute ({ component: Component, restricted, ...rest }) {
   const auth = useSelector(state => state.auth)
   const dispatch = useDispatch()
 
@@ -48,8 +49,6 @@ function PublicRoute ({ component: Component, restricted, nav, ...rest }) {
       return <CircularProgress style={{ margin: '50vh 50vw' }} />
     } else if (auth.isAuthenticated && restricted) {
       return <Redirect to="/" />
-    } else if (nav) {
-      return (<Component {...props} />)
     } else {
       return <Component {...props} />
     }
@@ -67,6 +66,7 @@ function App() {
           <PublicRoute path='/contact' exact component={ContactPage} />
           <PrivateRoute path='/admin' component={AdminPage} />
           <PrivateRoute path='/list-members' component={MemberList} />
+          <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
   );
