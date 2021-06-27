@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { loadUser } from '../store/actions/auth';
+import React from 'react';
+import { useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
   Drawer,
   Typography,
@@ -21,6 +21,7 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 // styles
@@ -68,19 +69,23 @@ const useStyles = makeStyles((theme) => ({
     color: '#404040',
     fontWeight: '600',
     fontSize: theme.spacing(1.3),
+  },
+  activeItem: {
+    backgroundColor: '#f4f4f4'
   }
 }))
 
 
 function Sidebar() {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  const history = useHistory()
+  const location = useLocation()
   const auth = useSelector(state => state.auth)
 
   // User management related list items(For Admin)
-  const userManagementItems = [ ['All Members', <SupervisorAccountIcon color="secondary"/>],
-                                ['Add Member', <PersonAddIcon color="secondary"/>],
-                                ['Search User', <SearchIcon color="secondary" />]
+  const userManagementItems = [ ['All Members', <SupervisorAccountIcon color="secondary"/>, "/list-members"],
+                                ['Add Member', <PersonAddIcon color="secondary"/>, "/create-member"],
+                                ['Search User', <SearchIcon color="secondary" />, "/"]
                               ]
 
   // Task Management related list items(For Admin)
@@ -96,12 +101,6 @@ function Sidebar() {
                       ['Contact', <ContactSupportIcon color="secondary"/>],
                       ['About', <InfoIcon color="secondary"/>]
                     ]
-
-  // Loading User
-  useEffect(() => {
-    dispatch(loadUser())
-  }, [dispatch])
-
 
   return (
     <Drawer
@@ -144,9 +143,16 @@ function Sidebar() {
       <Divider />
       <List>
         {userManagementItems.map((item, index) => (
-          <ListItem button key={item[0]}>
+          <ListItem
+            button
+            key={item[0]}
+            className={(location.pathname === item[2]) ? classes.activeItem : null}
+          >
             <ListItemIcon>{item[1]}</ListItemIcon>
-            <ListItemText primary={item[0]}/>
+            <ListItemText
+              primary={item[0]}
+              onClick={() => history.push(item[2])}
+            />
           </ListItem>
         ))}
       </List>

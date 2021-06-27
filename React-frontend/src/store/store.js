@@ -5,12 +5,14 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import auth from './reducers/auth';
 import users from './reducers/users';
 import alerts from './reducers/alerts';
+import admin from './reducers/admin';
 
 // Combine each reducer here
 const rootReducer = combineReducers({
   auth,
   users,
   alerts,
+  admin
 });
 
 const initialState = {};
