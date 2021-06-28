@@ -27,7 +27,7 @@ import LoginForm from '../LoginForm';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    height: '10vh',
+    height: '8vh',
     borderBottom: `1px solid ${theme.palette.divider}`,
     backgroundColor: '#0f0f0f',
     color: '#fff',

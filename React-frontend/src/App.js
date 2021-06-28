@@ -9,7 +9,7 @@ import AdminPage from './pages/admin/AdminPage';
 import Alert from './components/core/Alert';
 import { loadUser } from './store/actions/auth';
 import MemberList from './pages/admin/MemberList';
-import CircularProgress from '@material-ui/core/CircularProgress'
+import CircularProgress from '@material-ui/core/CircularProgress';
 import NotFound from './pages/NotFound';
 
 
