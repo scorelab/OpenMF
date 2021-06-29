@@ -1,7 +1,8 @@
 import {
     FETCH_MEMBERS,
     FETCH_MEMBERS_SUCCESSFULL,
-    FETCH_MEMBERS_FAILED
+    FETCH_MEMBERS_FAILED,
+    SELECT_USER
 } from '../types/admin';
 
 
@@ -11,6 +12,7 @@ const inittialState = {
     isLoading: false,
     extractors: [],
     managements: [],
+    selected_user : null,
     error: null
 }
 
@@ -37,6 +39,11 @@ const adminReducer = (state = inittialState, action) => {
                 extractors: payload.extractors,
                 managements: payload.managements,
                 error: null
+            }
+        case SELECT_USER:
+            return {
+                ...state,
+                selected_user: payload.user
             }
         default:
             return state

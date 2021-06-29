@@ -6,13 +6,15 @@ import auth from './reducers/auth';
 import users from './reducers/users';
 import alerts from './reducers/alerts';
 import admin from './reducers/admin';
+import extractor from './reducers/extractor';
 
 // Combine each reducer here
 const rootReducer = combineReducers({
   auth,
   users,
   alerts,
-  admin
+  admin,
+  extractor
 });
 
 const initialState = {};

@@ -3,7 +3,8 @@ import { setAlert } from './alerts';
 import {
     FETCH_MEMBERS,
     FETCH_MEMBERS_SUCCESSFULL,
-    FETCH_MEMBERS_FAILED
+    FETCH_MEMBERS_FAILED,
+    SELECT_USER
 } from '../types/admin';
 
 
@@ -66,4 +67,11 @@ export const fetchMembers = () => (dispatch, getState) => {
             payload: {error: 'User Not Authenticated.'}
         })
     }
+}
+
+export const selectUser = (user) => (dispatch, getState) => {
+    dispatch({
+        type: SELECT_USER,
+        payload: {user: user}
+    })
 }
