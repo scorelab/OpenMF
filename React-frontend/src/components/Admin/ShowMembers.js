@@ -4,8 +4,12 @@ import {
     Container,
     Typography,
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import {DataGrid} from '@material-ui/data-grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useDispatch } from 'react-redux';
+import { selectUser } from '../../store/actions/admin';
+import { fetch_extracted_cases } from '../../store/actions/extractor';
 
 
 
@@ -48,6 +52,10 @@ const useStyle = makeStyles((theme) => ({
 
 function ShowMembers({ extractors, managements, isLoading }) {
     const classes = useStyle()
+    const history = useHistory()
+    const dispatch = useDispatch()
+
+    // Row definition for extractor members
     const extractorRows = extractors.map((member, index) => (
         {
             id: index+1,
@@ -58,6 +66,7 @@ function ShowMembers({ extractors, managements, isLoading }) {
         }
     ))
 
+    // Row definition for management members
     const managementRows = managements.map((member, index) => (
         {
             id: index+1,
@@ -68,9 +77,22 @@ function ShowMembers({ extractors, managements, isLoading }) {
         }
     ))
 
+
     function handleCellClick(gridCellParam){
-        console.log(gridCellParam.row)
+
+        // Dispatch selected user
+        dispatch(selectUser(gridCellParam.row))
+
+        // Dispatch extracted cases
+        // Only if role is extractor
+        if(gridCellParam.row.role === "extractor"){
+            dispatch(fetch_extracted_cases(gridCellParam.row.email))
+        }
+
+        // Redireect to member deails
+        history.push('/list-members/member/'+gridCellParam.row.id)
     }
+
     return (
         <Container className={classes.root}>
             <Typography component="h1" variant="h5" className={classes.title}>
