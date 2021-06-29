@@ -1,3 +1,17 @@
+'''
+Routes related keyword search
+
+1) API: http://127.0.0.1:5000/keyword/search
+
+This API will give file path of searched keyword.
+method = ["POST"]
+{
+    "keyword": "keyword"
+}
+'''
+
+
+
 import sys
 import os
 import sqlite3 as sql
@@ -27,12 +41,13 @@ PATH_TO_TSV = 'tsv/'
 cases_data_path = os.path.join(dirname,DATA_PATH)
 
 
-'''
-    checkword() is a bool function which returns true if
-    keyword found in path given else returns false.
-'''
+
 
 def checkword(pathname, keyword):
+    '''
+    checkword() is a bool function which returns true if
+    keyword found in path given else returns false.
+    '''
 
     open_path_file = open(pathname, "r")
     read_path_file = open_path_file.read()
@@ -46,20 +61,20 @@ def checkword(pathname, keyword):
 
     return False
 
-'''
+
+def searchkeyword(keyword):
+    '''
     searchkeyword() iterates over the data and checks if the keyword
     is present in that file or not via checkword() function.
 
-'''
-def searchkeyword(keyword):
+    '''
 
     case_list = []
-    #print(cases_data_path," case_data_path")
+    
 
     for subdir, dirs, files in os.walk(cases_data_path):
-        #print(subdir , " subdir")
-        #print(dirs, " dir")
-        #print(files, " files")
+        
+
 
         for filename in files:
             filepath = subdir + "/" + filename
@@ -78,8 +93,7 @@ def searchkeyword(keyword):
                         if keyword found in filepath then added to case_list
                     '''
                     case_list.append(filepath)
-                    # print(filepath, "\n")
-                    # print(case_list)
+                    
 
     
     return case_list
@@ -101,14 +115,13 @@ def search():
 
         keyword = str(req['keyword'])
 
-        #print(keyword)
     except Exception as e:
 
         print(e)
 
         return 'Please provide keyword', 400
 
-    # print(dirname)
+ 
 
     caselist = searchkeyword(keyword)
 
