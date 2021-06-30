@@ -1,3 +1,10 @@
+/*
+    Functional component to list
+    all the members(extractor and management)
+    of an admin.
+*/
+
+
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -6,10 +13,9 @@ import {
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import {DataGrid} from '@material-ui/data-grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { useDispatch } from 'react-redux';
 import { selectUser } from '../../store/actions/admin';
-import { fetch_extracted_cases } from '../../store/actions/extractor';
+import { extractor_default, fetch_extracted_cases } from '../../store/actions/extractor';
 
 
 
@@ -22,7 +28,9 @@ const columns = [
     { field: 'varified', headerName: 'Varified', flex:1}
 
 ]
-// styles
+
+
+// custom styles
 const useStyle = makeStyles((theme) => ({
     root: {
         marginTop: '10vh',
@@ -50,7 +58,7 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 
-function ShowMembers({ extractors, managements, isLoading }) {
+function ShowMembers({ extractors, managements}) {
     const classes = useStyle()
     const history = useHistory()
     const dispatch = useDispatch()
@@ -89,6 +97,13 @@ function ShowMembers({ extractors, managements, isLoading }) {
             dispatch(fetch_extracted_cases(gridCellParam.row.email))
         }
 
+        // Dispatch management related stuff
+        // But first set the extractor state
+        // to default state
+        if(gridCellParam.row.role === "management"){
+            dispatch(extractor_default())
+        }
+
         // Redireect to member deails
         history.push('/list-members/member/'+gridCellParam.row.id)
     }
@@ -107,7 +122,6 @@ function ShowMembers({ extractors, managements, isLoading }) {
                 className={classes.table}
                 onCellDoubleClick={handleCellClick}
                 hideFooterSelectedRowCount={true}
-                loading={isLoading ? CircularProgress : null}
 
             />
             <DataGrid
@@ -119,7 +133,6 @@ function ShowMembers({ extractors, managements, isLoading }) {
                 className={classes.table}
                 onCellDoubleClick={handleCellClick}
                 hideFooterSelectedRowCount={true}
-                loading={isLoading ? CircularProgress : null}
             />
         </Container>
     )

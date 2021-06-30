@@ -11,6 +11,7 @@ import { loadUser } from './store/actions/auth';
 import MemberList from './pages/admin/MemberList';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import NotFound from './pages/NotFound';
+import SelectedMember from './pages/admin/SelectedMember';
 
 
 
@@ -65,7 +66,8 @@ function App() {
           <PublicRoute path='/about' exact component={AboutPage} />
           <PublicRoute path='/contact' exact component={ContactPage} />
           <PrivateRoute path='/admin' component={AdminPage} />
-          <PrivateRoute path='/list-members' component={MemberList} />
+          <PrivateRoute path='/list-members' exact component={MemberList} />
+          <PrivateRoute path='/list-members/member/:id' component={SelectedMember} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
