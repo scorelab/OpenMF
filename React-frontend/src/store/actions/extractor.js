@@ -2,10 +2,20 @@
 
 import axios from '../../axios';
 import {
+    EXTRACTOR_DEFAULT,
 FETCH_EXTRACTED_CASES,
 FETCH_EXTRACTED_CASES_FAILED,
 FETCH_EXTRACTED_CASES_SUCCESSFULL} from "../types/extractor";
 import { setAlert } from './alerts';
+
+
+// action generator to set deafault
+// state of extractor reducuer
+export const extractor_default = () => (dispatch) => {
+    dispatch({
+        type: EXTRACTOR_DEFAULT
+    })
+}
 
 
 
