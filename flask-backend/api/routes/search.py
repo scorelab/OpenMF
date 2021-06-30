@@ -27,7 +27,7 @@ dirname = os.path.abspath(os.path.dirname(__file__))
 keyword = Blueprint('keyword', __name__, url_prefix="/keyword")
 
 dirname = (os.path.dirname(__file__))
-print(dirname, " dirname")
+
 
 '''
     DATA_PATH, PATH_TO_REPORT,PATH_TO_TSV are support variables.
