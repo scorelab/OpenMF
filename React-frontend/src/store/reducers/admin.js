@@ -5,7 +5,10 @@ import {
     SELECT_USER,
     MEMBER_DELETE,
     MEMBER_DELETE_FAILED,
-    MEMBER_DELETE_SUCCESSFULL
+    MEMBER_DELETE_SUCCESSFULL,
+    MEMBER_ADD,
+    MEMBER_ADD_FAILED,
+    MEMBER_ADD_SUCCESSFULL
 } from '../types/admin';
 
 
@@ -29,12 +32,14 @@ const adminReducer = (state = inittialState, action) => {
                 ...state,
                 isLoading: true
             }
+
         case FETCH_MEMBERS_FAILED:
             return {
                 ...state,
                 isLoading: false,
                 error: payload.error
             }
+
         case FETCH_MEMBERS_SUCCESSFULL:
             return {
                 ...state,
@@ -43,28 +48,52 @@ const adminReducer = (state = inittialState, action) => {
                 managements: payload.managements,
                 error: null
             }
+
         case SELECT_USER:
             return {
                 ...state,
                 selected_user: payload.user
             }
+
         case MEMBER_DELETE:
             return {
                 ...state,
                 isLoading: true
             }
+
         case MEMBER_DELETE_FAILED:
             return {
                 ...state,
                 isLoading: false,
                 error: payload.error
             }
+
         case MEMBER_DELETE_SUCCESSFULL:
             return {
                 ...state,
                 isLoading: false,
                 selected_user: null
             }
+
+        case MEMBER_ADD:
+            return {
+                ...state,
+                isLoading: true
+            }
+
+        case MEMBER_ADD_SUCCESSFULL:
+            return {
+                ...state,
+                isLoading: false
+            }
+
+        case MEMBER_ADD_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload.error
+            }
+
         default:
             return state
     }

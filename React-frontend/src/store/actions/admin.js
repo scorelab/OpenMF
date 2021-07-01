@@ -7,7 +7,10 @@ import {
     SELECT_USER,
     MEMBER_DELETE,
     MEMBER_DELETE_FAILED,
-    MEMBER_DELETE_SUCCESSFULL
+    MEMBER_DELETE_SUCCESSFULL,
+    MEMBER_ADD,
+    MEMBER_ADD_SUCCESSFULL,
+    MEMBER_ADD_FAILED
 } from '../types/admin';
 
 
@@ -122,12 +125,79 @@ export const deleteMember = (email, history) => (dispatch) => {
             dispatch(setAlert('Member Deleted Successfully!','success'))
         })
         .catch((err) => {
-            console.log(err)
+            const res = err.response
             dispatch({
                 type: MEMBER_DELETE_FAILED,
                 payload: {
-                    error: err.message
+                    error: res.data.message
                 }
             })
+            dispatch(setAlert(res.data.message))
+        })
+}
+
+
+// action generator to add a member
+export const addMember = (name, email, role, password, history) => (dispatch) => {
+
+    // start member add process
+    dispatch({
+        type: MEMBER_ADD
+    })
+
+    // request body
+    const body = {
+        name: name,
+        email: email,
+        password: password,
+        role: role
+    }
+
+    // request headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // get jwt token from localstorage
+    const token = localStorage.getItem('openmf_token')
+
+    // If token available add to headers
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    } else {
+        dispatch({ type: MEMBER_DELETE_FAILED })
+        return
+    }
+
+    // send post request to route
+    // '/user/add-user'
+    axios.post('/user/add-user', body,config)
+        .then((res) => {
+
+            // fetch updated members
+            dispatch(fetchMembers())
+
+            // change route
+            history.push('/list-members')
+
+            // dispatch succcessfull reducer
+            dispatch({
+                type: MEMBER_ADD_SUCCESSFULL,
+            })
+
+            // dispatch successfull alert
+            dispatch(setAlert('Member Added Successfully!','success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            dispatch({
+                type: MEMBER_ADD_FAILED,
+                payload: {
+                    error: res.data.message
+                }
+            })
+            dispatch(setAlert(res.data.message))
         })
 }
