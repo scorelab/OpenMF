@@ -3,7 +3,7 @@
     details of a selected member.
 */
 
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import memberIcon from '../../images/memberIcon.png';
 import CaseCard from '../Extractor/CaseCard';
+import DeleteUserModal from './DeleteUserModal';
 
 
 // custom styles
@@ -61,6 +62,7 @@ const useStyle = makeStyles((theme) => ({
 
 function MemberDetails() {
     const classes = useStyle()
+    const [isDeleteModelOpen, setToggleShowDeleteModel] = useState(false)
 
     // Get selected member from admin reducer
     const member= useSelector(state => state.admin.selected_user)
@@ -117,13 +119,16 @@ function MemberDetails() {
                                 disableElevation
                                 variant="contained"
                                 color="secondary"
-                                className={classes.button}>
+                                className={classes.button}
+                                onClick={() => setToggleShowDeleteModel(true)}
+                                >
                                 Delete
                             </Button>
                         </Grid>
                     </Grid>
                 </Grid>
 
+                <DeleteUserModal isOpen={isDeleteModelOpen} toggleShowDeleteModel={setToggleShowDeleteModel}/>
 
 
                 {/*

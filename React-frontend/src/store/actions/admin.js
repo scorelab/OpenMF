@@ -4,7 +4,10 @@ import {
     FETCH_MEMBERS,
     FETCH_MEMBERS_SUCCESSFULL,
     FETCH_MEMBERS_FAILED,
-    SELECT_USER
+    SELECT_USER,
+    MEMBER_DELETE,
+    MEMBER_DELETE_FAILED,
+    MEMBER_DELETE_SUCCESSFULL
 } from '../types/admin';
 
 
@@ -74,4 +77,57 @@ export const selectUser = (user) => (dispatch, getState) => {
         type: SELECT_USER,
         payload: {user: user}
     })
+}
+
+
+// action generator to delete a member
+export const deleteMember = (email, history) => (dispatch) => {
+
+    // start member deletion process
+    dispatch({
+        type: MEMBER_DELETE
+    })
+
+    // request body
+    const body = {
+        email: email
+    }
+
+    // request headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // get jwt token from localstorage
+    const token = localStorage.getItem('openmf_token')
+
+    // If token available add to headers
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    } else {
+        dispatch({ type: MEMBER_DELETE_FAILED })
+        return
+    }
+
+    // send delete request to route
+    // '/user/delete-user'
+    axios.post('/user/delete-user', body,config)
+        .then((res) => {
+            history.push('/list-members')
+            dispatch({
+                type: MEMBER_DELETE_SUCCESSFULL,
+            })
+            dispatch(setAlert('Member Deleted Successfully!','success'))
+        })
+        .catch((err) => {
+            console.log(err)
+            dispatch({
+                type: MEMBER_DELETE_FAILED,
+                payload: {
+                    error: err.message
+                }
+            })
+        })
 }
