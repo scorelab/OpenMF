@@ -67,6 +67,9 @@ function MemberDetails() {
     // Get selected member from admin reducer
     const member= useSelector(state => state.admin.selected_user)
 
+    // isloading state from admin
+    const isLoading = useSelector(state => state.admin.isLoading)
+
     // Get extracted cases of a extractor member
     const cases = useSelector(state => state.extractor.extracted_cases)
 
@@ -87,7 +90,7 @@ function MemberDetails() {
         <Container className={classes.root}>
 
             <Typography component="h1" variant="h5" className={classes.title}>
-                All Members &gt; Extractor &gt; {member.email}
+                All Members &gt; {member.role} &gt; {member.email}
             </Typography>
             <Grid container>
                 <Grid item xs={12} sm={12} md={6} lg={4} className={classes.profileSection}>
@@ -114,15 +117,26 @@ function MemberDetails() {
                                 Edit
                             </Button>
                         </Grid>
+
+                        <Grid item>
+                            <Button
+                                disableElevation
+                                variant="outlined"
+                                color="primary"
+                                className={classes.button}>
+                                Update Role
+                            </Button>
+                        </Grid>
                         <Grid item>
                             <Button
                                 disableElevation
                                 variant="contained"
                                 color="secondary"
                                 className={classes.button}
+                                disabled={(isLoading) ? true: false}
                                 onClick={() => setToggleShowDeleteModel(true)}
                                 >
-                                Delete
+                                {(isLoading) ? (<span>Wait...</span>): (<span>Delete</span>)}
                             </Button>
                         </Grid>
                     </Grid>
