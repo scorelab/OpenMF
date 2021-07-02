@@ -39,7 +39,7 @@ ROOT_DIR = os.getcwd()
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 
-dirname = os.path.abspath(os.path.dirname(__file__))
+
 
 keyword = Blueprint('keyword', __name__, url_prefix="/keyword")
 
