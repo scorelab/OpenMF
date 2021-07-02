@@ -403,7 +403,7 @@ def roleupdate():
     return make_response(jsonify(response)), 409
 
 
-@user.route('/delete-user', methods=['DELETE'])
+@user.route('/delete-user', methods=['DELETE', 'POST'])
 @admin_token_required
 def deleteuser():
     """
