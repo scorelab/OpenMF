@@ -16,6 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import memberIcon from '../../images/memberIcon.png';
 import CaseCard from '../Extractor/CaseCard';
 import DeleteUserModal from './DeleteUserModal';
+import RoleUpdateModel from './RoleUpdateModel';
 
 
 // custom styles
@@ -62,7 +63,10 @@ const useStyle = makeStyles((theme) => ({
 
 function MemberDetails() {
     const classes = useStyle()
+
+    // state variable for opening and closing models
     const [isDeleteModelOpen, setToggleShowDeleteModel] = useState(false)
+    const [isRoleUpdateModelOpen, setToggleShowRoleUpdateModel] = useState(false)
 
     // Get selected member from admin reducer
     const member= useSelector(state => state.admin.selected_user)
@@ -108,25 +112,20 @@ function MemberDetails() {
                         {member.created_at}
                     </Typography>
                     <Grid container>
-                        <Grid item>
-                            <Button
-                                disableElevation
-                                variant="outlined"
-                                color="primary"
-                                className={classes.button}>
-                                Edit
-                            </Button>
-                        </Grid>
 
                         <Grid item>
                             <Button
                                 disableElevation
                                 variant="outlined"
                                 color="primary"
-                                className={classes.button}>
-                                Update Role
+                                className={classes.button}
+                                onClick={() => setToggleShowRoleUpdateModel(true)}
+                                disabled={(isLoading) ? true: false}
+                            >
+                                Edit Role
                             </Button>
                         </Grid>
+
                         <Grid item>
                             <Button
                                 disableElevation
@@ -136,14 +135,27 @@ function MemberDetails() {
                                 disabled={(isLoading) ? true: false}
                                 onClick={() => setToggleShowDeleteModel(true)}
                                 >
-                                {(isLoading) ? (<span>Wait...</span>): (<span>Delete</span>)}
+                                Delete
                             </Button>
                         </Grid>
+
                     </Grid>
+
                 </Grid>
 
-                <DeleteUserModal isOpen={isDeleteModelOpen} toggleShowDeleteModel={setToggleShowDeleteModel}/>
-
+                {/*
+                    Models for deleteUser and RoleUpdate
+                 */}
+                <DeleteUserModal
+                    isOpen={isDeleteModelOpen}
+                    toggleShowDeleteModel={setToggleShowDeleteModel}
+                    key="deleteUserModel"
+                />
+                <RoleUpdateModel
+                    isOpen={isRoleUpdateModelOpen}
+                    toggleUpdateRoleModel={setToggleShowRoleUpdateModel}
+                    key="roleUpdateModel"
+                />
 
                 {/*
                     Display the extracted cases only if
@@ -158,7 +170,7 @@ function MemberDetails() {
                             {(cases.length > 0) ? (
                                 cases.map((c) => {
                                     return (
-                                        <CaseCard {...c}/>
+                                        <CaseCard {...c} key={c.case_name}/>
                                     )
                                 })
                             ) : (
