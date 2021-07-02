@@ -10,7 +10,10 @@ import {
     MEMBER_DELETE_SUCCESSFULL,
     MEMBER_ADD,
     MEMBER_ADD_SUCCESSFULL,
-    MEMBER_ADD_FAILED
+    MEMBER_ADD_FAILED,
+    MEMBER_ROLE_UPDATE,
+    MEMBER_ROLE_UPDATE_FAILED,
+    MEMBER_ROLE_UPDATE_SUCCESSFULL
 } from '../types/admin';
 
 
@@ -137,6 +140,8 @@ export const deleteMember = (email, history) => (dispatch) => {
 }
 
 
+
+
 // action generator to add a member
 export const addMember = (name, email, role, password, history) => (dispatch) => {
 
@@ -194,6 +199,66 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
             const res = err.response
             dispatch({
                 type: MEMBER_ADD_FAILED,
+                payload: {
+                    error: res.data.message
+                }
+            })
+            dispatch(setAlert(res.data.message))
+        })
+}
+
+
+
+// Action generator for role
+// update of a member
+export const updateRole = (email, new_role, password, history) => (dispatch) => {
+
+    // dispatch role update
+    dispatch({
+        type: MEMBER_ROLE_UPDATE
+    })
+
+    // request body
+    const body = {
+        email: email,
+        new_role: new_role,
+        password: password
+    }
+
+    // config headers
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }
+
+    // get token from localstorage
+    const token = localStorage.getItem('openmf_token')
+
+    // check for token and add to config
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    } else {
+        dispatch(setAlert('Please log in.'))
+        dispatch({
+            type: MEMBER_ROLE_UPDATE_FAILED,
+            error: 'UNAUTHORIZED'
+        })
+    }
+
+    // send role update request to server
+    axios.put('user/role-update', body, config)
+        .then((res) => {
+            history.push('/list-members')
+            dispatch({
+                type: MEMBER_ROLE_UPDATE_SUCCESSFULL,
+            })
+            dispatch(setAlert('Role Updated Successfully!','success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            dispatch({
+                type: MEMBER_ROLE_UPDATE_FAILED,
                 payload: {
                     error: res.data.message
                 }
