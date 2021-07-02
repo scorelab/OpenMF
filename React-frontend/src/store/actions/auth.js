@@ -154,8 +154,8 @@ export const signUp = (username, email, password, role, history) => (dispatch) =
     .then((res) => {
       if(res && (res.status === 200 || res.status === 201)){
         dispatch({type: SIGNUP_SUCCESSFULL})
-        dispatch(setAlert(res.data.message, 'success'))
         history.push('/')
+        dispatch(setAlert(res.data.message, 'success'))
         window.location.reload()
       }
     })
@@ -197,9 +197,9 @@ export const logout = (history) => (dispatch) => {
         dispatch({
           type: LOGOUT
         })
+        history.push('/')
         dispatch(setAlert('user logged out!','success'))
         window.location.reload()
-        history.push('/')
       }
     })
     .catch((err) => {
