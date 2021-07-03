@@ -1,3 +1,7 @@
+/*
+    Action generator for admin reducer.
+*/
+
 import axios from '../../axios';
 import { setAlert } from './alerts';
 import {
@@ -13,7 +17,13 @@ import {
     MEMBER_ADD_FAILED,
     MEMBER_ROLE_UPDATE,
     MEMBER_ROLE_UPDATE_FAILED,
-    MEMBER_ROLE_UPDATE_SUCCESSFULL
+    MEMBER_ROLE_UPDATE_SUCCESSFULL,
+    TASK_CREATE_FAILED,
+    TASK_CREATE,
+    TASK_CREATE_SUCCESSFULL,
+    TASK_FETCH,
+    TASK_FETCH_FAILED,
+    TASK_FETCH_SUCCESSFULL
 } from '../types/admin';
 
 
@@ -113,6 +123,7 @@ export const deleteMember = (email, history) => (dispatch) => {
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     } else {
+        history.push('/')
         dispatch({ type: MEMBER_DELETE_FAILED })
         return
     }
@@ -129,13 +140,16 @@ export const deleteMember = (email, history) => (dispatch) => {
         })
         .catch((err) => {
             const res = err.response
-            dispatch({
-                type: MEMBER_DELETE_FAILED,
-                payload: {
-                    error: res.data.message
-                }
-            })
-            dispatch(setAlert(res.data.message))
+            if(res.status === 401 || res.status === 403 || res.status === 406){
+                dispatch({
+                    type: MEMBER_DELETE_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch(setAlert('Something went wrong.'))
         })
 }
 
@@ -172,6 +186,7 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     } else {
+        history.push('/')
         dispatch({ type: MEMBER_DELETE_FAILED })
         return
     }
@@ -197,13 +212,16 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
         })
         .catch((err) => {
             const res = err.response
-            dispatch({
-                type: MEMBER_ADD_FAILED,
-                payload: {
-                    error: res.data.message
-                }
-            })
-            dispatch(setAlert(res.data.message))
+            if(res.status === 401 || res.status === 403 || res.status === 406){
+                dispatch({
+                    type: MEMBER_ADD_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch(setAlert('Something went wrong.'))
         })
 }
 
@@ -239,6 +257,7 @@ export const updateRole = (email, new_role, password, history) => (dispatch) => 
     if(token){
         config.headers.Authorization = `Bearer ${token}`
     } else {
+        history.push('/')
         dispatch(setAlert('Please log in.'))
         dispatch({
             type: MEMBER_ROLE_UPDATE_FAILED,
@@ -257,12 +276,133 @@ export const updateRole = (email, new_role, password, history) => (dispatch) => 
         })
         .catch((err) => {
             const res = err.response
+            if(res.status === 401 || res.status === 403 || res.status === 406){
+                dispatch({
+                    type: MEMBER_ROLE_UPDATE_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch(setAlert('Something went wrong.'))
+        })
+}
+
+
+// Action generator for create task
+export const createTask = (title, description, role, memberEmail, history) => (dispatch) => {
+
+    // task create
+    dispatch({
+        type: TASK_CREATE
+    })
+
+    // create request body
+    const body = {
+        title: title,
+        description: description
+    }
+
+    // assign email according to role
+    if(role === 'extractor'){
+        body.extractor_email = memberEmail
+        body.management_email = "none"
+    } else if(role === 'management'){
+        body.management_email = memberEmail
+        body.extractor_email = "none"
+    }
+
+    // create request header config
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // get jwt token and attach with config
+    const token = localStorage.getItem('openmf_token')
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    } else {
+        dispatch({
+            type: TASK_CREATE_FAILED,
+            payload: {
+                error: 'Unauthorized, Please logged in.'
+            }
+        })
+        return
+    }
+
+    // send create request to server
+    axios.post('task/create', body, config)
+        .then((res) => {
+            history.push('/task/list')
+            dispatch({type: TASK_CREATE_SUCCESSFULL})
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res.status === 401 || res.status === 403 || res.status === 406){
+                dispatch({
+                    type: TASK_CREATE_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+                return
+            }
+            dispatch(setAlert('Something went wrong.'))
+        })
+}
+
+
+// Action generator for fetch task
+export const fetchTasks = () => (dispatch) => {
+
+    // task create
+    dispatch({
+        type: TASK_FETCH
+    })
+
+    // create request header config
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // get jwt token and attach with config
+    const token = localStorage.getItem('openmf_token')
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    } else {
+        dispatch({
+            type: TASK_FETCH_FAILED,
+            payload: {
+                error: 'Unauthorized, Please logged in.'
+            }
+        })
+        return
+    }
+
+    // send get request to server
+    axios.get('/task/assigned-tasks', config)
+        .then((res) => {
             dispatch({
-                type: MEMBER_ROLE_UPDATE_FAILED,
+                type: TASK_FETCH_SUCCESSFULL,
+                payload: {tasks: res.data.tasks}
+            })
+            return
+        })
+        .catch((err) => {
+            dispatch({
+                type: TASK_FETCH_FAILED,
                 payload: {
-                    error: res.data.message
+                    error: err.message
                 }
             })
-            dispatch(setAlert(res.data.message))
+            dispatch(setAlert(err.message))
         })
 }

@@ -1,3 +1,7 @@
+/*
+    Admin reducer definition.
+*/
+
 import {
     FETCH_MEMBERS,
     FETCH_MEMBERS_SUCCESSFULL,
@@ -11,7 +15,13 @@ import {
     MEMBER_ADD_SUCCESSFULL,
     MEMBER_ROLE_UPDATE,
     MEMBER_ROLE_UPDATE_FAILED,
-    MEMBER_ROLE_UPDATE_SUCCESSFULL
+    MEMBER_ROLE_UPDATE_SUCCESSFULL,
+    TASK_CREATE,
+    TASK_CREATE_FAILED,
+    TASK_CREATE_SUCCESSFULL,
+    TASK_FETCH,
+    TASK_FETCH_FAILED,
+    TASK_FETCH_SUCCESSFULL
 } from '../types/admin';
 
 
@@ -21,6 +31,7 @@ const inittialState = {
     isLoading: false,
     extractors: [],
     managements: [],
+    tasks: [],
     selected_user : null,
     error: null
 }
@@ -30,13 +41,25 @@ const inittialState = {
 const adminReducer = (state = inittialState, action) => {
     const {type, payload} = action;
     switch(type){
+
+        case TASK_CREATE:
+        case MEMBER_ADD:
+        case MEMBER_DELETE:
+        case MEMBER_ROLE_UPDATE:
         case FETCH_MEMBERS:
+        case TASK_FETCH:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
+                error: null
             }
 
         case FETCH_MEMBERS_FAILED:
+        case TASK_CREATE_FAILED:
+        case MEMBER_ROLE_UPDATE_FAILED:
+        case MEMBER_ADD_FAILED:
+        case MEMBER_DELETE_FAILED:
+        case TASK_FETCH_FAILED:
             return {
                 ...state,
                 isLoading: false,
@@ -58,66 +81,29 @@ const adminReducer = (state = inittialState, action) => {
                 selected_user: payload.user
             }
 
-        case MEMBER_DELETE:
-            return {
-                ...state,
-                isLoading: true,
-                error: null,
-            }
-
-        case MEMBER_DELETE_FAILED:
-            return {
-                ...state,
-                isLoading: false,
-                error: payload.error
-            }
-
         case MEMBER_DELETE_SUCCESSFULL:
-            return {
-                ...state,
-                isLoading: false,
-                selected_user: null
-            }
-
-        case MEMBER_ADD:
-            return {
-                ...state,
-                error: null,
-                isLoading: true,
-            }
-
-        case MEMBER_ADD_SUCCESSFULL:
-            return {
-                ...state,
-                isLoading: false
-            }
-
-        case MEMBER_ADD_FAILED:
-            return {
-                ...state,
-                isLoading: false,
-                error: payload.error
-            }
-
-        case MEMBER_ROLE_UPDATE:
-            return {
-                ...state,
-                error: null,
-                isLoading: true,
-            }
-
-        case MEMBER_ROLE_UPDATE_FAILED:
-            return {
-                ...state,
-                isLoading: false,
-                error: payload.error
-            }
-
         case MEMBER_ROLE_UPDATE_SUCCESSFULL:
             return {
                 ...state,
                 isLoading: false,
                 selected_user: null
+            }
+
+
+        case MEMBER_ADD_SUCCESSFULL:
+        case TASK_CREATE_SUCCESSFULL:
+            return {
+                ...state,
+                isLoading: false,
+                error: null
+            }
+
+        case TASK_FETCH_SUCCESSFULL:
+            return {
+                ...state,
+                isLoading: false,
+                tasks: payload.tasks,
+                error: null,
             }
         default:
             return state
