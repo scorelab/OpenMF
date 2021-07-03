@@ -66,6 +66,10 @@ function AddMemberForm({toggleAddMemberModel}) {
     // function to handle add member request
     function handleAddMember(){
         dispatch(addMember(username, email, role, password, history))
+        setUsername('')
+        setEmail('')
+        setPassword('')
+        setRole('')
         toggleAddMemberModel(false)
     }
 
