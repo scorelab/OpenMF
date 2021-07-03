@@ -1,6 +1,6 @@
 /*
-    Functional component to render the
-    extracted case inside a card.
+    Functional component to render
+    individual tasks inside a card.
 */
 
 import React from 'react'
@@ -15,7 +15,7 @@ import {
 const useStyles = makeStyles((theme) => ({
     root: {
         minWidth: theme.spacing(20),
-        maxWidth: theme.spacing(60),
+        maxWidth: theme.spacing(50),
         padding: theme.spacing(2),
         border: '1px solid #aaa',
         borderRadius: '4px',
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        margin: `${theme.spacing(2)}px 0px`,
+        margin: `${theme.spacing(2)}px`,
     },
     title: {
         fontWeight: '700',
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function CaseCard({case_name, data_path, extracted_on, device_id}) {
+function TaskCard({id, title, description, due_on, is_completed}) {
     const classes = useStyles()
     return (
         <Container component="main" className={classes.root}>
@@ -53,28 +53,30 @@ function CaseCard({case_name, data_path, extracted_on, device_id}) {
                 variant="h5"
                 component="h2"
                 className={classes.title}>
-                    {case_name}
+                    {title}
             </Typography>
             <Typography
                 variant="body1"
                 component="h4"
                 className={classes.date}>
-                    {extracted_on}
+                    {due_on}
             </Typography>
             <Typography
                 variant="body1"
                 component="h4"
                 className={classes.bodyText}>
-                    Device: {device_id}
+                    {description}
             </Typography>
             <Typography
                 variant="body1"
                 component="h4"
                 className={classes.bodyText}>
-                    Data Path: {data_path}
+                    {
+                        (is_completed) ? (<span>Completed</span>) : (<span>Not Completed</span>)
+                    }
             </Typography>
         </Container>
     )
 }
 
-export default CaseCard
+export default TaskCard

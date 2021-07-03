@@ -35,7 +35,7 @@ const useStyle = makeStyles((theme) => ({
     root: {
         marginTop: '10vh',
         height: '82.5vh',
-        padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+        padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',

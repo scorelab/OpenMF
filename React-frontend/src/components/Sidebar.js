@@ -17,7 +17,6 @@ import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import SearchIcon from '@material-ui/icons/Search';
 import AddIcon from '@material-ui/icons/Add';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
@@ -100,9 +99,8 @@ function Sidebar() {
 
   // Task Management related list items(For Admin)
   const taskManagementItems = [
-                                ['Opened Tasks', <AssignmentIcon color="secondary"/>],
-                                ['Closed Tasks', <DoneAllIcon color="secondary"/>],
-                                ['Create Task', <AddIcon color="secondary" />]
+                                ['All Tasks', <AssignmentIcon color="secondary"/>, "/task/list"],
+                                ['Create Task', <AddIcon color="secondary" />, "/task/create"]
                               ]
 
   // Other items
@@ -157,12 +155,10 @@ function Sidebar() {
             button
             key={item[0]}
             className={(location.pathname === item[2]) ? classes.activeItem : null}
+            onClick={(index === 1) ? () => setToggleAddMemberModel(true): () => history.push(item[2])}
           >
             <ListItemIcon>{item[1]}</ListItemIcon>
-            <ListItemText
-              primary={item[0]}
-              onClick={(index === 1) ? () => setToggleAddMemberModel(true): () => history.push(item[2])}
-            />
+            <ListItemText primary={item[0]} />
           </ListItem>
         ))}
       </List>
@@ -180,9 +176,14 @@ function Sidebar() {
       <Divider />
       <List>
         {taskManagementItems.map((item, index) => (
-          <ListItem button key={item[0]}>
+          <ListItem
+            button
+            key={item[0]}
+            className={(location.pathname === item[2]) ? classes.activeItem : null}
+            onClick={() => history.push(item[2])}
+          >
             <ListItemIcon>{item[1]}</ListItemIcon>
-            <ListItemText primary={item[0]}/>
+            <ListItemText primary={item[0]} />
           </ListItem>
         ))}
       </List>
