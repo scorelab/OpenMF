@@ -140,7 +140,7 @@ export const deleteMember = (email, history) => (dispatch) => {
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 403 || res.status === 406){
+            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
                 dispatch({
                     type: MEMBER_DELETE_FAILED,
                     payload: {
@@ -212,7 +212,7 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 403 || res.status === 406){
+            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
                 dispatch({
                     type: MEMBER_ADD_FAILED,
                     payload: {
@@ -276,7 +276,7 @@ export const updateRole = (email, new_role, password, history) => (dispatch) => 
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 403 || res.status === 406){
+            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
                 dispatch({
                     type: MEMBER_ROLE_UPDATE_FAILED,
                     payload: {
@@ -343,7 +343,7 @@ export const createTask = (title, description, role, memberEmail, history) => (d
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 403 || res.status === 406){
+            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
                 dispatch({
                     type: TASK_CREATE_FAILED,
                     payload: {
