@@ -1,3 +1,6 @@
+'''
+    script for extraction of location data
+'''
 import sys
 import sqlite3
 import os
@@ -19,6 +22,11 @@ searchlocationdb = ''
 savedlocationdb = ''
 
 def store_saved_location():
+    
+    '''
+        store_saved_location() stores all the saved locations from device.
+        All the necessary informations like latitude, longitude, timestamp, and saved location link are available in savedlocation.tsv
+    '''
 
     if os.path.isfile(savedlocationdb):
         saved_location_conn = sqlite3.connect(savedlocationdb)
@@ -37,6 +45,7 @@ def store_saved_location():
     saved_location_cursor.execute(saved_location_query)
 
 
+    
    
     SAVED_LOCATION_KEY_STRING = 0
     SAVED_LOCATION_TIMESTAMP = 1
@@ -104,16 +113,27 @@ def store_saved_location():
     for index in saved_location_dict:
 
         if saved_location_dict[index][SAVED_LOCATION_TIMESTAMP] > 0:
+            
+            '''
+                changing timestamp to readable format
+            '''
             timestamp = datetime.datetime.fromtimestamp(saved_location_dict[index][SAVED_LOCATION_TIMESTAMP] / 1000).strftime(
                 '%Y-%m-%dT%H:%M:%S')
         else:
             timestamp = str(saved_location_dict[index][SAVED_LOCATION_TIMESTAMP])
-
+        
+        '''
+            parsing sync_item to get location link
+        '''
         sync_item = (saved_location_dict[index]
                      [SAVED_LOCATION_SYNC_ITEM]).decode('windows-1252', 'ignore')
+        
         sync_item = sync_item.replace("\r\n", " ")
+        
         sync_item = sync_item.replace("\n", " ")
+        
         sync_item = list(sync_item.split("http"))
+        
         sync_item = "http" + sync_item[-1]
         
                      
@@ -133,6 +153,11 @@ def store_saved_location():
 
 
 def store_searched_location():
+    
+    '''
+        store_searched_location() is responsible for getting searched location from android device
+        which stores data in searchedlocation.tsv
+    '''
 
     if os.path.isfile(searchlocationdb):
         searched_location_conn = sqlite3.connect(searchlocationdb)
@@ -172,6 +197,9 @@ def store_searched_location():
         
         key_data = key_data.decode('windows-1252','ignore')
         final_letters = " "
+        '''
+        parsing key_data to erase garbage from key_data
+        '''
         for letters in key_data:
             if letters in (map(chr, range(97, 123)) or map(chr, range(65, 91))):
                 final_letters += str(letters)
