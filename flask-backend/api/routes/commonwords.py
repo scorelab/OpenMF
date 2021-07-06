@@ -1,5 +1,19 @@
 '''
     Routes related to common word between cases.
+
+    1) http://127.0.0.1:5000/common/<case1>/<case2>
+
+    This API is responsible for getting common words
+    between two cases present in the database.
+
+    method = ["POST"]
+
+    {
+        "case1": "case_name_one",
+        "case2": "case_name_two"
+    }
+
+    
 '''
 import sys
 import os
@@ -98,7 +112,7 @@ def commonword(case_one, case_two):
                     read_path_file = set(read_path_file.split())
 
                     case_two_list.extend(read_path_file)
-                    
+
 
     final_common_words = set(case_one_list).intersection(set(case_two_list))
     
