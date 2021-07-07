@@ -1,12 +1,15 @@
 import sqlite3 as sql
 import os
+import json
 from flask import Blueprint, jsonify, request, make_response
 from api.models.case import Case
 from api.schema.case import CaseSchema
 from api.extansions import db
 from api.utils.jwt_decorators import (
-    admin_or_extractor_token_required
+    admin_or_extractor_token_required,
+    token_required
 )
+from api.helpers.case import getDirectoryTree
 from api.helpers.users import get_current_user
 
 ROOT_DIR = os.getcwd()
@@ -68,6 +71,8 @@ def openFile(case_name, folder_name, file_name):
     os.chdir(ROOT_DIR)
     return File
 
+
+
 @case.route('/extracted-cases', methods=["GET"])
 @admin_or_extractor_token_required
 def extracted_cases():
@@ -97,4 +102,63 @@ def extracted_cases():
         "cases": cases_json
     }
     return make_response(jsonify(response)), 200
+
+
+
+@case.route('/case-tree', methods=["GET", "POST"])
+@token_required
+def case_tree():
+    """
+    Route that would give sub-directories and
+    files that reside inside a give case.
+    """
+
+    ## Get case_name
+    try:
+        req = request.get_json()
+        case_name = req['case_name']
+
+    ## Throw Error if case_name is not provided
+    except Exception as e:
+        response = {
+            "success": False,
+            "message": "Please Provide A Case Name."
+        }
+        return make_response(jsonify(response)), 422
+
+    ## Find case with given name
+    case = Case.query.filter_by(case_name=case_name).first()
+
+    ## Check if case with given name exists or not
+    if not case:
+        response = {
+            "success": False,
+            "message": "Case not found."
+        }
+        return make_response(jsonify(response)), 404
+
+    ## absolute path of case
+    case_path = case.data_path
+
+    ## get directory-tree with given case_name
+    try:
+        directory_tree = {}
+        getDirectoryTree(tree=directory_tree, rootDirectory=case_path, rootDirectoryName=case_name)
+
+        ## create resposne
+        response = {
+            "success": True,
+            "message": "Tree Fetched.",
+            "case": case_schema.dump(case),
+            "tree": json.dumps(directory_tree),
+        }
+        return make_response(jsonify(response)), 200
+
+    ## Response if something went wrong.
+    except Exception as e:
+        response = {
+            "success": False,
+            "message": "something went wrong."
+        }
+        return make_response(jsonify(response)), 500
 
