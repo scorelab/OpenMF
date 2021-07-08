@@ -1,23 +1,23 @@
 // Component to represent case as in a tree structure
 
-
-// Importing dependencies
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadCaseTree } from '../../store/actions/case';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import JsonPretty from '../Utils/JsonPretty';
 import {
     Container,
     TextField,
     Button,
     InputAdornment,
+    Grid
 } from '@material-ui/core';
 import {
     TreeItem,
     TreeView
 } from '@material-ui/lab';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadCaseTree } from '../../store/actions/case';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 
 
@@ -38,6 +38,10 @@ const useStyles = makeStyles((theme) => ({
     input: {
         marginBottom: theme.spacing(4)
     },
+    tree: {
+        height: theme.spacing(55),
+        overflow: 'auto'
+    }
 }))
 
 
@@ -99,22 +103,36 @@ function CaseTreeView() {
                 }}
             />
 
-            {/* Render Case Tree */}
-            {
-                (!caseReducer.isLoading && caseReducer.caseTree) ? (
-                    <TreeView
-                        defaultCollapseIcon={<ExpandMoreIcon />}
-                        defaultExpanded={['root']}
-                        defaultExpandIcon={<ChevronRightIcon />}
-                    >
-                        {renderTree(caseReducer.caseTree)}
-                    </TreeView>
-                ) : (caseReducer.error) ? (
-                    <span>{caseReducer.error}</span>
-                ) : (
-                    <span>Please Provide Case Name.</span>
-                )
-            }
+            <Grid container>
+                <Grid item xs={12} md={4}>
+
+                    {/* Render Case Tree */}
+                    {
+                        (!caseReducer.isLoading && caseReducer.caseTree) ? (
+                            <TreeView
+                                defaultCollapseIcon={<ExpandMoreIcon />}
+                                defaultExpanded={['root']}
+                                defaultExpandIcon={<ChevronRightIcon />}
+                                className={classes.tree}
+                            >
+                                {renderTree(caseReducer.caseTree)}
+                            </TreeView>
+                        ) : (caseReducer.error) ? (
+                            <span>{caseReducer.error}</span>
+                        ) : (
+                            <span>Please Provide Case Name.</span>
+                        )
+                    }
+
+                </Grid>
+                <Grid item xs={12} md={8}>
+
+                    {/* Render CaseTree in Pretty Json format */}
+                    <JsonPretty data={caseReducer.caseTree}/>
+
+                </Grid>
+            </Grid>
+
         </Container>
     )
 }
