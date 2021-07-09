@@ -7,12 +7,15 @@ import {
   Grid
 } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
-  content: {
+  root: {
     flexGrow: 1,
     padding: 0,
     backgroundColor: '#f4f6f8',
     height: '100vh',
     overflow: 'auto'
+  },
+  content: {
+    display: 'flex'
   }
 }))
 
@@ -22,19 +25,15 @@ export default function LayoutMain ({ children, sidebarBool=true, background=tru
 
   return (
     <>
-      <main className={classes.content}>
+      <main className={classes.root}>
         <Navbar />
         <Grid container>
         {
           (sidebarBool) ?
-          <>
-            <Grid item xs={2} sm={2} md={2} lg={2}>
+          <div className={classes.content}>
               <Sidebar />
-            </Grid>
-            <Grid item xs={10} sm={10} md={10} lg={10}>
               {children}
-            </Grid>
-          </>:
+          </div>:
           <>
             {children}
           </>

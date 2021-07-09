@@ -7,9 +7,11 @@ from flask.helpers import make_response
 from api.models.admin import Admin
 from api.models.extractor import Extractor
 from api.models.management import Management
+from api.models.case import Case
 from api.schema.admin import AdminSchema
 from api.schema.extractor import ExtractorSchema
 from api.schema.management import ManagementSchema
+from api.schema.case import CaseSchema
 from api.extansions import db
 from api.helpers.users import get_current_user
 from api.utils.jwt_decorators import (
@@ -24,6 +26,8 @@ management_schema = ManagementSchema()
 managements_schema = ManagementSchema(many=True)
 extractor_schema = ExtractorSchema()
 extractors_schema = ExtractorSchema(many=True)
+case_schema = CaseSchema()
+cases_schema = CaseSchema(many=True)
 
 user = Blueprint('user', __name__, url_prefix='/user')
 
@@ -399,7 +403,7 @@ def roleupdate():
     return make_response(jsonify(response)), 409
 
 
-@user.route('/delete-user', methods=['DELETE'])
+@user.route('/delete-user', methods=['DELETE', 'POST'])
 @admin_token_required
 def deleteuser():
     """
@@ -449,3 +453,52 @@ def delete():
         "message": "User deleted."
     }
     return make_response(jsonify(response)), 200
+
+
+@user.route('/extracted-cases', methods=["POST"])
+@admin_token_required
+def extracted_cases():
+    """
+    Route to get extracted cases of an extractor.
+    """
+    # get Current user
+    current_user = get_current_user(extracted_cases.role, extracted_cases.public_id)
+
+    try:
+        # parse request details
+        req = request.get_json()
+        extractor_email = str(req['email'])
+    except:
+        response = {
+            "success": False,
+            "message": "Please provide all parameters."
+        }
+        return make_response(jsonify(response)), 409
+
+    # filter extractor from current user's extractor_members
+    extractor = list(filter(lambda member: member.email == extractor_email, current_user.extractor_members))
+
+    # check if extractor exists
+    if len(extractor) != 1:
+        resposne = {
+            "success": False,
+            "message": "Extractor User not Found."
+        }
+        return make_response(jsonify(resposne)), 404
+
+    # get extracted_cases in json format
+    _extracted_cases = cases_schema.dump(extractor[0].extracted_cases)
+
+    #create response
+    response = {
+        "success": True,
+        "message": "Extracted Cases fetched.",
+        "extracted_cases": _extracted_cases
+    }
+
+    return make_response(jsonify(response)), 200
+
+
+
+
+
