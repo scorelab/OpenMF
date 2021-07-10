@@ -48,7 +48,9 @@ function CaseDirectories() {
             <Typography component="h1" variant="h5">
                 All Cases &gt; {(caseReducer.caseTree ) && caseReducer.caseTree.name}
             </Typography>
-            <Divider light/>
+
+            <Divider style={{width: '100%', marginTop: '1em'}} />
+
             <Box component="div" className={classes.dirList}>
                 {
                     (caseReducer.caseTree && caseReducer.caseTree.children.length > 0) ?

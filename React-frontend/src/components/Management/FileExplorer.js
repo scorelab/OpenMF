@@ -57,7 +57,9 @@ function FileExplorer() {
             <Typography component="h1" variant="h5">
                 All Cases
             </Typography>
-            <Divider light/>
+
+            <Divider style={{width: '100%', marginTop: '1em'}} />
+
             <Box component="div" className={classes.caseList}>
                 {
                     (caseReducer.cases && caseReducer.cases.length > 0) ?
