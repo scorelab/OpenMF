@@ -1,3 +1,7 @@
+/*
+*   Function Compoennt to render Login Form.
+*/
+
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,16 +17,17 @@ import {
     Card,
     IconButton,
     InputAdornment,
-    Avatar
+    Avatar,
 } from '@material-ui/core';
-
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import logo from '../images/logo.png';
-
 import { authDefault, login } from '../store/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import SelectItem from './Utils/SelectItem';
 
+
+// Custom styles
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(1),
@@ -56,8 +61,14 @@ const useStyles = makeStyles((theme) => ({
 
 
 function LoginForm() {
+
+    // Invoke custorm classes
     const classes = useStyles()
+
+    // Get auth reducer
     const auth = useSelector(state => state.auth)
+
+    // Get dispatcher
     const dispatch = useDispatch()
 
     // setting up default auth state
@@ -65,15 +76,25 @@ function LoginForm() {
         dispatch(authDefault())
     }, [dispatch])
 
-    // states
+    // option array to display inside select box
+    const options = [
+        { value: 'admin', name: 'Admin' },
+        { value: 'extractor', name: 'Extractor' },
+        { value: 'management', name: 'Management' }
+    ]
+
+    // states to hold login details
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [role, setRole] = useState('admin')
+    const [role, setRole] = useState('')
     const [remember, setRemember] = useState(true)
     const [showPassword, setShowPassword] = useState(false)
+
+    // FUnction to handle password visibility
     const handleClickShowPassword = () => setShowPassword(!showPassword)
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
+    // Returning JSX
     return (
         <Container ccomponent="main" maxWidth="xs">
             <Card className={classes.paper}>
@@ -134,19 +155,14 @@ function LoginForm() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required={true}
-                        fullWidth={true}
-                        id="role"
-                        label="role"
-                        name="role"
-                        autoComplete="role"
-                        className={classes.inputs}
+
+                    <SelectItem
                         value={role}
-                        onChange={e => setRole(e.target.value)}
+                        setValue={setRole}
+                        options={options}
+                        placeholder="Select Role"
                     />
+
                     <FormControlLabel
                         control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} color="primary"/>}
                         label={<Typography variant="body2">Remember</Typography>}
