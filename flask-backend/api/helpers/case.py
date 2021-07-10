@@ -2,6 +2,8 @@
 
 # import dependencies
 import os
+import datetime
+
 
 def getDirectoryTree(tree, rootDirectory, rootDirectoryName, i=0):
     """
@@ -37,7 +39,8 @@ def getDirectoryTree(tree, rootDirectory, rootDirectoryName, i=0):
                 'name': item.name,
                 'type': 'file',
                 'path': item.path,
-                'size': convert_bytes(os.stat(item.path).st_size)
+                'size': convert_bytes(os.stat(item.path).st_size),
+                'lastAccessTime': datetime.datetime.fromtimestamp(os.stat(item.path).st_atime).strftime('%Y-%m-%d %H:%M')
             }
 
             ### push node to current tree
