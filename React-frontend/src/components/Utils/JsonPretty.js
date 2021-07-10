@@ -9,6 +9,7 @@ import {
     Box,
     Typography
 } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 
 // custom styles
@@ -38,10 +39,14 @@ function JsonPretty({data}) {
     // invoke custom styles
     const classes = useStyles()
 
+    // get case Reducer
+    const caseReducer = useSelector(state => state.case)
+
     // default json data
     const defaultData = {
+        "processing": ( caseReducer.isLoading ) ? "Wait Processing..." : "Done",
         "success": false,
-        "message": "Please Provide a Case Name."
+        "message": ( caseReducer.error ) ? caseReducer.error : "Please Provide a Case Name.",
     }
 
     return (

@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     tree: {
         height: theme.spacing(55),
         overflow: 'auto'
+    },
+    dullText: {
+        fontSize: '.6rem',
+        fontWeight: '400',
+        color: '#444'
     }
 }))
 
@@ -62,7 +67,11 @@ function CaseTreeView() {
 
     // Tree Component
     const renderTree = (nodes) => (
-        <TreeItem key={nodes.id} nodeId={String(nodes.id)} label={nodes.name}>
+        <TreeItem
+            key={nodes.id}
+            nodeId={String(nodes.id)}
+            label={<><span> {nodes.name} </span> <span className={classes.dullText}> {nodes.size} </span></>}
+        >
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)): null}
         </TreeItem>
     )

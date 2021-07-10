@@ -6,7 +6,7 @@ import ManagementLayout from '../../components/Management/ManagementLayout';
 import { useSelector } from 'react-redux';
 import CaseTreeView from '../../components/Management/CaseTreeView';
 
-const ShowTasks = () => {
+const CaseTreePage = () => {
 
     // auth reducer
     const auth = useSelector(state => state.auth)
@@ -26,4 +26,4 @@ const ShowTasks = () => {
     )
 }
 
-export default ShowTasks
+export default CaseTreePage
