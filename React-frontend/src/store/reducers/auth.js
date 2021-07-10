@@ -67,6 +67,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isAuthenticated: true,
+        isRegistered: true,
         isLoading: false,
         auth_token: payload.data.auth_token,
         error: ''
@@ -92,6 +93,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isAuthenticated: true,
+        isRegistered: true,
         user: payload.data.user
       }
 
@@ -99,6 +101,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
+        isAuthenticated: false
       }
 
     case LOGOUT_PROCESS:

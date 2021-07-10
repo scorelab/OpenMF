@@ -14,7 +14,6 @@ import {
   USER_LOAD_ERROR
 } from '../types/auth';
 import { setAlert } from './alerts';
-
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const TOGGLE_AUTH_LOADING = 'TOGGLE_AUTH_LOADING';
@@ -27,58 +26,61 @@ export const authDefault = () => dispatch => {
 
 
 export const loadUser = () => (dispatch, getState) => {
-  // User Loading
-  dispatch({ type: USER_LOADING})
+  if(!(getState() && getState().auth && getState().auth.user)){
 
-  // Get token from localstorage
-  const token = localStorage.getItem('openmf_token')
+    // User Loading
+    dispatch({ type: USER_LOADING})
 
-  // add headers
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
+    // Get token from localstorage
+    const token = localStorage.getItem('openmf_token')
+
+    // add headers
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
-  }
 
-  // If token available add to headers
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  } else {
-    dispatch({ type: USER_LOAD_ERROR })
-    return
-  }
+    // If token available add to headers
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    } else {
+      dispatch({ type: USER_LOAD_ERROR })
+      return
+    }
 
-  axios.get('/user/profile', config)
-    .then(
-      (res) => {
-        if (res && (res.status === 200 || res.status === 201)) {
-          dispatch({
-            type: USER_LOADED,
-            payload: {
-              data: {
-                user: res.data.user
+    axios.get('/user/profile', config)
+      .then(
+        (res) => {
+          if (res && (res.status === 200 || res.status === 201)) {
+            dispatch({
+              type: USER_LOADED,
+              payload: {
+                data: {
+                  user: res.data.user
+                }
               }
-            }
-          })
-        } else if (res && (res.status >= 400 && res.status < 500)) {
-          dispatch({
-            type: USER_LOAD_ERROR,
-            payload: {
-              data: res.data.message
-            }
-          })
-          dispatch(setAlert(res.data.message))
-      }
-      }
-    )
-    .catch((err) => {
-      dispatch({
-        type: USER_LOAD_ERROR,
-        payload: {
-          data: {error: 'UNAUTHORIZED'}
+            })
+          } else if (res && (res.status >= 400 && res.status < 500)) {
+            dispatch({
+              type: USER_LOAD_ERROR,
+              payload: {
+                data: res.data.message
+              }
+            })
+            dispatch(setAlert(res.data.message))
         }
+        }
+      )
+      .catch((err) => {
+        dispatch({
+          type: USER_LOAD_ERROR,
+          payload: {
+            data: {error: 'UNAUTHORIZED'}
+          }
+        })
       })
-    })
+  }
 }
 
 
@@ -152,8 +154,8 @@ export const signUp = (username, email, password, role, history) => (dispatch) =
     .then((res) => {
       if(res && (res.status === 200 || res.status === 201)){
         dispatch({type: SIGNUP_SUCCESSFULL})
-        dispatch(setAlert(res.data.message, 'success'))
         history.push('/')
+        dispatch(setAlert(res.data.message, 'success'))
         window.location.reload()
       }
     })
@@ -195,6 +197,7 @@ export const logout = (history) => (dispatch) => {
         dispatch({
           type: LOGOUT
         })
+        history.push('/')
         dispatch(setAlert('user logged out!','success'))
         window.location.reload()
       }

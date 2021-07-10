@@ -1,15 +1,18 @@
-import React from 'react'
-import Layout from '../components/core/Layout'
-import HomeLogo from '../components/core/HomeLogo';
+import React  from 'react'
+import Layout from '../../components/core/Layout'
+import HomeLogo from '../../components/core/HomeLogo';
 import { useSelector } from 'react-redux';
+import MemberDetails from '../../components/Admin/MemberDetails';
 
-const HomePage = () => {
+const SelectedMember = () => {
     // auth reducer
     const auth = useSelector(state => state.auth)
+
+
     if(auth && auth.isAuthenticated){
         return (
             <Layout sidebarBool={true}>
-                <HomeLogo />
+                <MemberDetails />
             </Layout>
         )
     }
@@ -20,4 +23,4 @@ const HomePage = () => {
     )
 }
 
-export default HomePage
+export default SelectedMember

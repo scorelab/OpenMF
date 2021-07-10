@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100vw',
+    // width: '100vw',
     marginTop: '10vh',
     height: '82.5vh',
     padding: '0'
@@ -189,7 +189,7 @@ function HomeLogo() {
             Know More
           </Link>
         </Grid>
-        <Grid item xs={12} sm={12} md={8} className={classes.right}>
+        <Grid item xs sm md={8} className={classes.right}>
           <div className={classes.rightInner2}>
             <Typography
               component="h1"
