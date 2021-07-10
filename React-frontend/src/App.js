@@ -14,6 +14,8 @@ import NotFound from './pages/NotFound';
 import SelectedMember from './pages/admin/SelectedMember';
 import CreateTask from './pages/admin/CreateTask';
 import ShowTasks from './pages/admin/ShowTasks';
+import CaseTreePage from './pages/Management/CaseTreePage';
+import FileExplorerPage from './pages/Management/FileExplorerPage';
 
 
 
@@ -72,6 +74,8 @@ function App() {
           <PrivateRoute path='/list-members/member/:id' component={SelectedMember} />
           <PrivateRoute path='/task/create' exact component={CreateTask} />
           <PrivateRoute path='/task/list' exact component={ShowTasks} />
+          <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
+          <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
