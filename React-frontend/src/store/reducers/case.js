@@ -2,14 +2,25 @@
     Case reducer definition.
 */
 
-import { LOAD_CASE_TREE, LOAD_CASE_TREE_FAILED, LOAD_CASE_TREE_SUCCESSFULL } from "../types/case"
+
+// Types for case reducers
+import {
+    LOAD_CASES,
+    LOAD_CASES_FAILED,
+    LOAD_CASES_SUCCESSFULL,
+    LOAD_CASE_TREE,
+    LOAD_CASE_TREE_FAILED,
+    LOAD_CASE_TREE_SUCCESSFULL
+} from "../types/case"
 
 
 // Initial state of Case Reducer
 const inittialState = {
     isLoading: false,
     error: null,
-    caseTree: null
+    caseTree: null,
+    cases: null,
+    selected_case: null,
 }
 
 // Case reducer
@@ -21,6 +32,7 @@ const caseReducer = (state = inittialState, action) => {
     //// define cases
     switch(type){
         case LOAD_CASE_TREE:
+        case LOAD_CASES:
             return {
                 ...state,
                 isLoading: true,
@@ -28,6 +40,7 @@ const caseReducer = (state = inittialState, action) => {
             }
 
         case LOAD_CASE_TREE_FAILED:
+        case LOAD_CASES_FAILED:
             return {
                 ...state,
                 isLoading: false,
@@ -40,9 +53,17 @@ const caseReducer = (state = inittialState, action) => {
                 ...state,
                 isLoading: false,
                 error: null,
-                caseTree: payload.tree
+                caseTree: payload.tree,
+                selected_case: payload.case
             }
 
+        case LOAD_CASES_SUCCESSFULL:
+            return {
+                ...state,
+                isLoading: false,
+                error: null,
+                cases: payload.cases
+            }
         default:
             return state
     }
