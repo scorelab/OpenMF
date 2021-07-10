@@ -1,11 +1,10 @@
 /*
-    Component to render all the cases.
+    Component to render all the cases directories.
 */
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch, useSelector } from 'react-redux';
-import { loadCases } from '../../store/actions/case';
+import { useSelector } from 'react-redux';
 import CaseFolderButton from '../Utils/CaseFolderButton';
 import {
     Container,
@@ -28,7 +27,7 @@ const useStyle = makeStyles((theme) => ({
         justifyContent: 'flex-start',
         alignItems: 'flex-start'
     },
-    caseList: {
+    dirList: {
         marginTop: theme.spacing(2),
         display: 'flex',
         flexWrap: 'wrap',
@@ -36,36 +35,34 @@ const useStyle = makeStyles((theme) => ({
     }
 }))
 
-function FileExplorer() {
+function CaseDirectories() {
 
     // invoke custom styles
     const classes = useStyle()
 
-    // dispatcher
-    const dispatch = useDispatch()
-
     // get case reducer
     const caseReducer = useSelector(state => state.case)
-
-    // useEffect
-    useEffect(() => {
-        dispatch(loadCases())
-    }, [dispatch])
 
     return (
         <Container component="main" className={classes.root}>
             <Typography component="h1" variant="h5">
-                All Cases
+                All Cases &gt; {(caseReducer.caseTree ) && caseReducer.caseTree.name}
             </Typography>
             <Divider light/>
-            <Box component="div" className={classes.caseList}>
+            <Box component="div" className={classes.dirList}>
                 {
-                    (caseReducer.cases && caseReducer.cases.length > 0) ?
-                        caseReducer.cases.map((caseItem) => {
-                            return (<CaseFolderButton key={caseItem.case_name} dirName={caseItem.case_name} parentDir='file-explorer'/>)
+                    (caseReducer.caseTree && caseReducer.caseTree.children.length > 0) ?
+                        caseReducer.caseTree.children.map((subDirectories) => {
+                            return (
+                                <CaseFolderButton
+                                    key={subDirectories.id}
+                                    dirName={subDirectories.name}
+                                    parentDir={`file-explorer/${caseReducer.caseTree.name}`}
+                                />
+                            )
                         })
                     : (
-                        <span> Cases Not Found.</span>
+                        <span> Empty Folder.</span>
                     )
                 }
             </Box>
@@ -73,4 +70,4 @@ function FileExplorer() {
     )
 }
 
-export default FileExplorer
+export default CaseDirectories
