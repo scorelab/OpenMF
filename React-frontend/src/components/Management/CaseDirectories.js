@@ -6,11 +6,13 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import CaseFolderButton from '../Utils/CaseFolderButton';
+import { useHistory } from 'react-router-dom';
 import {
     Container,
     Typography,
     Box,
-    Divider
+    Divider,
+    Button
 } from '@material-ui/core';
 
 
@@ -32,6 +34,13 @@ const useStyle = makeStyles((theme) => ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center'
+    },
+    button: {
+        fontSize: '1rem',
+        fontWeight: 'bolder',
+        '&:focus': {
+            outline: 'none'
+        }
     }
 }))
 
@@ -43,10 +52,14 @@ function CaseDirectories() {
     // get case reducer
     const caseReducer = useSelector(state => state.case)
 
+    // history
+    const history = useHistory()
+
     return (
         <Container component="main" className={classes.root}>
             <Typography component="h1" variant="h5">
-                All Cases &gt; {(caseReducer.caseTree ) && caseReducer.caseTree.name}
+                <Button className={classes.button} onClick={() => history.goBack()}>All Cases</Button>&gt;
+                <Button className={classes.button}>{(caseReducer.caseTree ) && caseReducer.caseTree.name}</Button>
             </Typography>
 
             <Divider style={{width: '100%', marginTop: '1em'}} />

@@ -9,9 +9,10 @@ import { loadCases } from '../../store/actions/case';
 import CaseFolderButton from '../Utils/CaseFolderButton';
 import {
     Container,
-    Typography,
     Box,
-    Divider
+    Divider,
+    Button,
+    Typography
 } from '@material-ui/core';
 
 
@@ -27,6 +28,13 @@ const useStyle = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start'
+    },
+    title: {
+        fontSize: '1rem',
+        fontWeight: 'bolder',
+        '&:focus': {
+            outline: 'none'
+        }
     },
     caseList: {
         marginTop: theme.spacing(2),
@@ -54,8 +62,11 @@ function FileExplorer() {
 
     return (
         <Container component="main" className={classes.root}>
+
             <Typography component="h1" variant="h5">
-                All Cases
+                <Button className={classes.title}>
+                    All Cases
+                </Button>
             </Typography>
 
             <Divider style={{width: '100%', marginTop: '1em'}} />

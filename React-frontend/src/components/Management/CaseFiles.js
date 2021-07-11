@@ -5,7 +5,7 @@
 import React from 'react';
 import { withStyles ,makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
     Container,
     Typography,
@@ -15,7 +15,9 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper
+    Paper,
+    Divider,
+    Button
 } from '@material-ui/core';
 
 
@@ -44,6 +46,13 @@ const useStyles = makeStyles((theme) => ({
     table: {
         minWidth: 650,
     },
+    button: {
+        fontSize: '1rem',
+        fontWeight: 'bolder',
+        '&:focus': {
+            outline: 'none'
+        }
+    }
 }))
 
 
@@ -80,6 +89,9 @@ function CaseFiles() {
     // params
     const params = useParams()
 
+    // history
+    const history = useHistory()
+
     // destructure params
     const { caseName, dirName } = params
 
@@ -100,9 +112,12 @@ function CaseFiles() {
         <Container component="main" className={classes.root}>
 
             <Typography component="h1" variant="h5">
-                All Cases &gt; {caseName} &gt; {dirName}
+                <Button className={classes.button} onClick={() => history.push('/file-explorer')}>All Cases</Button>&gt;
+                <Button className={classes.button} onClick={() => history.goBack()}>{caseName}</Button>&gt;
+                <Button className={classes.button} >{dirName}</Button>
             </Typography>
 
+            <Divider style={{width: '100%', marginTop: '1em'}}/>
 
             <TableContainer component={Paper} className={classes.paper}>
                 <Table stickyHeader className={classes.table} aria-label="file table">
