@@ -13,6 +13,7 @@ import alerts from './reducers/alerts';
 import admin from './reducers/admin';
 import extractor from './reducers/extractor';
 import caseReducer from './reducers/case';
+import management from './reducers/management';
 
 
 // Combine each reducer here
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   alerts,
   admin,
   extractor,
+  management,
   case: caseReducer
 });
 
