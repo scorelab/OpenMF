@@ -25,8 +25,7 @@
         "case1": "case_name_one",
         "case2": "case_name_two"
     }
-
-    
+ 
 '''
 import sys
 import os
@@ -62,7 +61,6 @@ cases_data_path = os.path.join(dirname, DATA_PATH)
 
 
 def commonword(case_one, case_two):
-
     '''
         commonword() gathers all the common words/data
         between two cases and returns a list.
@@ -99,7 +97,6 @@ def commonword(case_one, case_two):
 
                     case_one_list.extend(read_path_file)
 
-
     for subdir, dirs, files in os.walk(case_two):
 
         if subdir[-2:] != "db":
@@ -125,18 +122,14 @@ def commonword(case_one, case_two):
 
                     case_two_list.extend(read_path_file)
 
-
     final_common_words = set(case_one_list).intersection(set(case_two_list))
-    
 
     final_common_words = list(final_common_words)
-    
 
     return final_common_words
 
 
 def most_common(case_one, case_two):
-
     '''
         most_common() returns a dictionary which have key as a 
         common words between two cases and key value as a maximum 
@@ -171,7 +164,6 @@ def most_common(case_one, case_two):
 
                     read_path_file = Counter(read_path_file.split())
 
-
                     case_one_words.extend(read_path_file)
 
     for subdir, dirs, files in os.walk(case_two):
@@ -193,7 +185,7 @@ def most_common(case_one, case_two):
                     '''
                         Making dictionary of the words with their frequencies.
                     '''
-                    
+
                     read_path_file = Counter(read_path_file.split())
 
                     case_two_words.extend(read_path_file)
@@ -224,7 +216,8 @@ def most_common(case_one, case_two):
 
     for key in common_keys:
 
-        most_common_word_list.update({key: max(case_one_counter[key], case_two_counter[key])})
+        most_common_word_list.update(
+            {key: max(case_one_counter[key], case_two_counter[key])})
 
     return most_common_word_list
 
@@ -262,8 +255,8 @@ def most_common(case_one, case_two):
 '''
 
 
-@common.route('/<case1>/<case2>', methods = ["POST"])
-def commonwordlist(case1 , case2):
+@common.route('/<case1>/<case2>', methods=["POST"])
+def commonwordlist(case1, case2):
 
     try:
 
@@ -274,9 +267,8 @@ def commonwordlist(case1 , case2):
         case_two_from_json = str(req['case2'])
 
         case_one = Case.query.filter_by(case_name=case_one_from_json).first()
-        
-        case_two = Case.query.filter_by(case_name=case_two_from_json).first()
 
+        case_two = Case.query.filter_by(case_name=case_two_from_json).first()
 
         if not case_one:
 
@@ -306,10 +298,9 @@ def commonwordlist(case1 , case2):
 
         print(e)
 
-        return 'Please provide keyword to search within case', 400   
+        return 'Please provide keyword to search within case', 400
 
     final_common_word_list = commonword(case_one, case_two)
-
 
     if final_common_word_list:
 
@@ -321,10 +312,10 @@ def commonwordlist(case1 , case2):
 
     else:
 
-        return "Nothing Common between these two cases." , 404
+        return "Nothing Common between these two cases.", 404
 
 
-@common.route('words/<case1>/<case2>', methods= ["POST"])
+@common.route('words/<case1>/<case2>', methods=["POST"])
 def mostcommonwordlist(case1, case2):
 
     try:
@@ -371,7 +362,8 @@ def mostcommonwordlist(case1, case2):
 
     most_common_words = most_common(case_one, case_two)
 
-    most_common_words = sorted(most_common_words.items(), key=lambda x: x[1], reverse=True)
+    most_common_words = sorted(
+        most_common_words.items(), key=lambda x: x[1], reverse=True)
 
     if most_common_words:
 
@@ -384,4 +376,3 @@ def mostcommonwordlist(case1, case2):
     else:
 
         return "Nothing Common between these two cases.", 404
-
