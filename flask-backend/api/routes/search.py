@@ -37,7 +37,13 @@ ROOT_DIR = os.getcwd()
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 
+<<<<<<< HEAD
 
+||||||| c5a82f7
+
+
+=======
+>>>>>>> 26925ce85d99ab23025e1d38a32d12da643d0bf1
 keyword = Blueprint('keyword', __name__, url_prefix="/keyword")
 
 dirname = (os.path.dirname(__file__))
@@ -53,7 +59,6 @@ PATH_TO_TSV = 'tsv/'
 
 
 cases_data_path = os.path.join(dirname, DATA_PATH)
-
 
 def checkword(pathname, keyword):
     '''
@@ -87,8 +92,18 @@ def searchkeyword(keyword):
         if subdir[-2:] != "db":
 
             for filename in files:
+<<<<<<< HEAD
 
                 filepath = os.sep.join([subdir, filename])
+||||||| c5a82f7
+            
+                filepath = os.sep.join([subdir,filename])
+            
+            
+=======
+            
+                filepath = os.sep.join([subdir,filename])
+>>>>>>> 26925ce85d99ab23025e1d38a32d12da643d0bf1
 
                 if filepath.endswith(".txt") or filepath.endswith(".tsv"):
 
@@ -102,9 +117,19 @@ def searchkeyword(keyword):
                         '''
                             if keyword found in filepath then added to case_list
                         '''
+<<<<<<< HEAD
                         case_list.append(os.path.dirname(
                             os.path.dirname(filepath)))
 
+||||||| c5a82f7
+                        case_list.append(os.path.dirname(os.path.dirname(filepath)))
+                    
+
+    
+=======
+                        case_list.append(os.path.dirname(os.path.dirname(filepath)))
+    
+>>>>>>> 26925ce85d99ab23025e1d38a32d12da643d0bf1
     return case_list
 
 
@@ -118,14 +143,43 @@ def search_keyword_from_case(case, keyword):
 
     file_list = []
 
+<<<<<<< HEAD
     for subdir, dirs, files in os.walk(case):
 
+||||||| c5a82f7
+        
+
+=======
+>>>>>>> 26925ce85d99ab23025e1d38a32d12da643d0bf1
         if subdir[-2:] != "db":
+<<<<<<< HEAD
 
+||||||| c5a82f7
+
+        
+=======
+        
+>>>>>>> 26925ce85d99ab23025e1d38a32d12da643d0bf1
             for filename in files:
+<<<<<<< HEAD
 
+||||||| c5a82f7
+
+                
+
+=======
+               
+>>>>>>> 26925ce85d99ab23025e1d38a32d12da643d0bf1
                 filepath = os.sep.join([subdir, filename])
+<<<<<<< HEAD
 
+||||||| c5a82f7
+
+                
+
+=======
+               
+>>>>>>> 26925ce85d99ab23025e1d38a32d12da643d0bf1
                 if filepath.endswith(".txt") or filepath.endswith(".tsv"):
 
                     '''
