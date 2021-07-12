@@ -53,6 +53,7 @@ PATH_TO_TSV = 'tsv/'
 
 cases_data_path = os.path.join(dirname, DATA_PATH)
 
+
 def checkword(pathname, keyword):
     '''
     checkword() is a bool function which returns true if
@@ -100,8 +101,9 @@ def searchkeyword(keyword):
                         '''
                             if keyword found in filepath then added to case_list
                         '''
-                        
-                        case_list.append(os.path.dirname(os.path.dirname(filepath)))
+
+                        case_list.append(os.path.dirname(
+                            os.path.dirname(filepath)))
 
     return case_list
 
@@ -115,7 +117,6 @@ def search_keyword_from_case(case, keyword):
     '''
 
     file_list = []
-
 
     for subdir, dirs, files in os.walk(case):
 
