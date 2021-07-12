@@ -22,8 +22,6 @@ This API will give file path of searched keyword from the case.
 
 '''
 
-
-
 import sys
 import os
 import re
@@ -38,8 +36,6 @@ ROOT_DIR = os.getcwd()
 
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
-
-
 
 keyword = Blueprint('keyword', __name__, url_prefix="/keyword")
 
@@ -56,7 +52,6 @@ PATH_TO_TSV = 'tsv/'
 
 
 cases_data_path = os.path.join(dirname,DATA_PATH)
-
 
 
 def checkword(pathname, keyword):
@@ -95,8 +90,6 @@ def searchkeyword(keyword):
             for filename in files:
             
                 filepath = os.sep.join([subdir,filename])
-            
-            
 
                 if filepath.endswith(".txt") or filepath.endswith(".tsv"):
 
@@ -111,8 +104,6 @@ def searchkeyword(keyword):
                             if keyword found in filepath then added to case_list
                         '''
                         case_list.append(os.path.dirname(os.path.dirname(filepath)))
-                    
-
     
     return case_list
 
@@ -131,19 +122,12 @@ def search_keyword_from_case(case , keyword):
     
     for subdir, dirs, files in os.walk(case):
 
-        
-
         if subdir[-2:] != "db":
-
         
             for filename in files:
-
-                
-
+               
                 filepath = os.sep.join([subdir, filename])
-
-                
-
+               
                 if filepath.endswith(".txt") or filepath.endswith(".tsv"):
 
                     '''
@@ -202,8 +186,6 @@ def search():
         print(e)
 
         return 'Please provide keyword', 400
-
- 
 
     caselist = searchkeyword(keyword)
 
