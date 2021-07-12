@@ -62,6 +62,8 @@ const useStyle = makeStyles((theme) => ({
 
 
 function MemberDetails() {
+
+    // Invoke custom styles
     const classes = useStyle()
 
     // state variable for opening and closing models
@@ -161,12 +163,12 @@ function MemberDetails() {
                     Display the extracted cases only if
                     the role of selected memer is extractor
                 */}
+                <Typography component="h1" variant="h5" className={classes.title}>
+                    Extracted Cases
+                </Typography>
                 {member.role === 'extractor' &&
                     ((cases) ? (
                         <Grid item  xs={12} sm={12} md={6} lg={8} className={classes.caseSection}>
-                            <Typography component="h1" variant="h5" className={classes.title}>
-                                Extracted Cases
-                            </Typography>
                             {(cases.length > 0) ? (
                                 cases.map((c) => {
                                     return (

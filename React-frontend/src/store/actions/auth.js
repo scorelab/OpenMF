@@ -1,3 +1,8 @@
+/*
+*  Action generators for
+*  Auth reducer.
+*/
+
 import axios from '../../axios';
 import {
   AUTH_DEFAULT,
@@ -20,11 +25,13 @@ export const TOGGLE_AUTH_LOADING = 'TOGGLE_AUTH_LOADING';
 
 
 
+// Action generator for auth default state
 export const authDefault = () => dispatch => {
   dispatch({type: AUTH_DEFAULT})
 };
 
 
+// Action Generator to load user
 export const loadUser = () => (dispatch, getState) => {
   if(!(getState() && getState().auth && getState().auth.user)){
 
@@ -85,7 +92,7 @@ export const loadUser = () => (dispatch, getState) => {
 
 
 
-
+// Action generator to handle login
 export const login = (email, password, role, remember) => async dispatch => {
   // Login data
   const loginData = {
@@ -122,17 +129,20 @@ export const login = (email, password, role, remember) => async dispatch => {
           type: LOGIN_FAILED,
           payload: {data: res.data.message}
         })
+        dispatch(setAlert(res.data.message))
       }
       else{
         dispatch({
           type: LOGIN_FAILED,
           payload: {data: 'Something went wrong.'}
         })
+        dispatch(setAlert('Something went wrong, please try again.'))
       }
     })
 };
 
 
+// Action generator to handle signup
 export const signUp = (username, email, password, role, history) => (dispatch) => {
   // Body for post request
   const body = {
@@ -174,6 +184,7 @@ export const signUp = (username, email, password, role, history) => (dispatch) =
 }
 
 
+// Action generator to handle logout
 export const logout = (history) => (dispatch) => {
   const token = localStorage.getItem('openmf_token')
 

@@ -14,6 +14,12 @@ import NotFound from './pages/NotFound';
 import SelectedMember from './pages/admin/SelectedMember';
 import CreateTask from './pages/admin/CreateTask';
 import ShowTasks from './pages/admin/ShowTasks';
+import CaseTreePage from './pages/Management/CaseTreePage';
+import FileExplorerPage from './pages/Management/FileExplorerPage';
+import CaseDirsPage from './pages/Management/CaseDirsPage';
+import CaseFilePage from './pages/Management/CaseFilePage';
+import CompletedtaskPage from './pages/Management/CompletedTaskPage';
+import TodoTaskPage from './pages/Management/TodoTaskPage';
 
 
 
@@ -72,6 +78,12 @@ function App() {
           <PrivateRoute path='/list-members/member/:id' component={SelectedMember} />
           <PrivateRoute path='/task/create' exact component={CreateTask} />
           <PrivateRoute path='/task/list' exact component={ShowTasks} />
+          <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
+          <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
+          <PrivateRoute path='/file-explorer/:caseName/:dirName' component={CaseFilePage} />
+          <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
+          <PrivateRoute path='/task/finished' exact component={CompletedtaskPage} />
+          <PrivateRoute path='/task/todo' exact component={TodoTaskPage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
