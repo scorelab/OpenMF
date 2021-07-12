@@ -47,9 +47,6 @@ common = Blueprint('common', __name__, url_prefix="/common")
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 
-
-
-
 dirname = (os.path.dirname(__file__))
 
 '''
@@ -197,9 +194,7 @@ def most_common(case_one, case_two):
                         Making dictionary of the words with their frequencies.
                     '''
                     
-                    
                     read_path_file = Counter(read_path_file.split())
-
 
                     case_two_words.extend(read_path_file)
 
@@ -221,11 +216,9 @@ def most_common(case_one, case_two):
 
     key_case_two = set(case_two_counter.keys())
 
-
     '''
         common_keys have all the common keys between two cases.
     '''
-
 
     common_keys = key_case_one.intersection(key_case_two)
 
@@ -234,10 +227,6 @@ def most_common(case_one, case_two):
         most_common_word_list.update({key: max(case_one_counter[key], case_two_counter[key])})
 
     return most_common_word_list
-
-
-
-
 
 
 '''
@@ -270,10 +259,7 @@ def most_common(case_one, case_two):
         "case2": "case_name_two"
     }
 
-
-
 '''
-
 
 
 @common.route('/<case1>/<case2>', methods = ["POST"])
@@ -291,7 +277,6 @@ def commonwordlist(case1 , case2):
         
         case_two = Case.query.filter_by(case_name=case_two_from_json).first()
 
-        
 
         if not case_one:
 
@@ -321,9 +306,7 @@ def commonwordlist(case1 , case2):
 
         print(e)
 
-        return 'Please provide keyword to search within case', 400
-
-    
+        return 'Please provide keyword to search within case', 400   
 
     final_common_word_list = commonword(case_one, case_two)
 
@@ -339,9 +322,6 @@ def commonwordlist(case1 , case2):
     else:
 
         return "Nothing Common between these two cases." , 404
-
-
-
 
 
 @common.route('words/<case1>/<case2>', methods= ["POST"])
@@ -404,9 +384,4 @@ def mostcommonwordlist(case1, case2):
     else:
 
         return "Nothing Common between these two cases.", 404
-
-
-
-
-
 
