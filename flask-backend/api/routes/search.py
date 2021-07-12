@@ -22,8 +22,6 @@ This API will give file path of searched keyword from the case.
 
 '''
 
-
-
 import sys
 import os
 import re
@@ -40,7 +38,6 @@ case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 
 
-
 keyword = Blueprint('keyword', __name__, url_prefix="/keyword")
 
 dirname = (os.path.dirname(__file__))
@@ -55,8 +52,7 @@ PATH_TO_REPORT = '/report/report.txt'
 PATH_TO_TSV = 'tsv/'
 
 
-cases_data_path = os.path.join(dirname,DATA_PATH)
-
+cases_data_path = os.path.join(dirname, DATA_PATH)
 
 
 def checkword(pathname, keyword):
@@ -65,9 +61,8 @@ def checkword(pathname, keyword):
     keyword found in path given else returns false.
     '''
 
-    open_path_file = open(pathname, "r" , encoding="UTF-8")
+    open_path_file = open(pathname, "r", encoding="UTF-8")
     read_path_file = open_path_file.read()
-
 
     if keyword in read_path_file:
         open_path_file.close()
@@ -86,17 +81,14 @@ def searchkeyword(keyword):
     '''
 
     case_list = []
-    
 
     for subdir, dirs, files in os.walk(cases_data_path):
-        
+
         if subdir[-2:] != "db":
 
             for filename in files:
-            
-                filepath = os.sep.join([subdir,filename])
-            
-            
+
+                filepath = os.sep.join([subdir, filename])
 
                 if filepath.endswith(".txt") or filepath.endswith(".tsv"):
 
@@ -104,21 +96,19 @@ def searchkeyword(keyword):
                         report_check stores bool
                     '''
                     report_check = checkword(filepath, keyword)
-                
+
                     if report_check:
-                    
+
                         '''
                             if keyword found in filepath then added to case_list
                         '''
-                        case_list.append(os.path.dirname(os.path.dirname(filepath)))
-                    
+                        case_list.append(os.path.dirname(
+                            os.path.dirname(filepath)))
 
-    
     return case_list
 
 
-def search_keyword_from_case(case , keyword):
-
+def search_keyword_from_case(case, keyword):
     '''
     search_keyword_from_case() iterates over only report.txt and .tsv
     files present in the only case that has been asked and checks if the 
@@ -127,22 +117,14 @@ def search_keyword_from_case(case , keyword):
     '''
 
     file_list = []
-    
-    
-    for subdir, dirs, files in os.walk(case):
 
-        
+    for subdir, dirs, files in os.walk(case):
 
         if subdir[-2:] != "db":
 
-        
             for filename in files:
 
-                
-
                 filepath = os.sep.join([subdir, filename])
-
-                
 
                 if filepath.endswith(".txt") or filepath.endswith(".tsv"):
 
@@ -156,11 +138,10 @@ def search_keyword_from_case(case , keyword):
                         '''
                             if keyword found in filepath then added to file_list
                         '''
-                    
+
                         file_list.append(filepath)
-                        
+
     return file_list
-                
 
 
 '''
@@ -190,6 +171,7 @@ This API will give file path of searched keyword from the case.
 
 '''
 
+
 @keyword.route('/search', methods=['POST'])
 def search():
     try:
@@ -203,27 +185,24 @@ def search():
 
         return 'Please provide keyword', 400
 
- 
-
     caselist = searchkeyword(keyword)
 
     if caselist:
-        
+
         return jsonify(caselist)
 
     else:
-        
+
         return "KEYWORD NOT FOUND", 404
 
 
-
-@keyword.route('/<case_name>/search', methods= ['POST'])
+@keyword.route('/<case_name>/search', methods=['POST'])
 def searchfromCase(case_name):
     try:
 
         '''
         case_name_from_json -> This variable take case_name from json
-        
+
         '''
         req = request.get_json()
 
@@ -232,8 +211,7 @@ def searchfromCase(case_name):
         keyword = str(req['keyword'])
 
         case = Case.query.filter_by(case_name=case_name_from_json).first()
-        
-        
+
         if not case:
             '''
             If case is not present in database.
@@ -242,13 +220,11 @@ def searchfromCase(case_name):
 
         case_path = case.data_path
 
-        
-
     except Exception as e:
 
         print(e)
 
-        return 'Please provide keyword to search within case' , 400
+        return 'Please provide keyword to search within case', 400
 
     filepaths = search_keyword_from_case(case_path, keyword)
 
@@ -261,8 +237,4 @@ def searchfromCase(case_name):
 
     else:
 
-        return "Keyword not found in this case" , 404
-
-
-
-
+        return "Keyword not found in this case", 404
