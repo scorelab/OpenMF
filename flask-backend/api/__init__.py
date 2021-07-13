@@ -20,6 +20,7 @@ from api.routes.case import case as case_blueprint
 from api.routes.extraction import extraction as extraction_blueprint
 from api.routes.data import data as data_blueprint
 from api.routes.task import task as task_blueprint
+from api.routes.search import keyword as keyword_blueprint
 
 def create_app():
     """
@@ -42,6 +43,7 @@ def create_app():
     app.register_blueprint(data_blueprint)
     app.register_blueprint(extraction_blueprint)
     app.register_blueprint(task_blueprint)
+    app.register_blueprint(keyword_blueprint)
 
     # Register a shell context
     register_shell_context(app)
