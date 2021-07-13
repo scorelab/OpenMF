@@ -12,7 +12,8 @@ import {
     TextField,
     Button,
     InputAdornment,
-    Grid
+    Grid,
+    Tooltip
 } from '@material-ui/core';
 import {
     TreeItem,
@@ -40,12 +41,21 @@ const useStyles = makeStyles((theme) => ({
     },
     tree: {
         height: theme.spacing(55),
-        overflow: 'auto'
     },
     dullText: {
         fontSize: '.6rem',
         fontWeight: '400',
         color: '#444'
+    },
+    treeSidebar: {
+        overflow: 'auto',
+        border: '1px solid #000'
+    },
+    treeItem: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        display: 'block'
     }
 }))
 
@@ -70,9 +80,19 @@ function CaseTreeView() {
         <TreeItem
             key={nodes.id}
             nodeId={String(nodes.id)}
-            label={<><span> {nodes.name} </span> <span className={classes.dullText}> {nodes.size} </span></>}
+            label={
+                <>
+                    <Tooltip title={nodes.name} arrow>
+                        <span>{nodes.name}</span>
+                    </Tooltip>
+                    <span className={classes.dullText}>
+                        {nodes.size}
+                    </span>
+                </>
+            }
+            className={classes.treeItem}
         >
-            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)): null}
+            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
     )
 
@@ -113,7 +133,7 @@ function CaseTreeView() {
             />
 
             <Grid container>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={3} className={classes.treeSidebar}>
 
                     {/* Render Case Tree */}
                     {
@@ -134,7 +154,7 @@ function CaseTreeView() {
                     }
 
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={9}>
 
                     {/* Render CaseTree in Pretty Json format */}
                     <JsonPretty data={caseReducer.caseTree}/>
