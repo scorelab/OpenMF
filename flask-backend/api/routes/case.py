@@ -145,11 +145,11 @@ def filter():
     except:
         return 'please provide date', 400
 
-    p = Case.query.all()
+    all_cases = Case.query.all()
 
     case_filtered = []
 
-    for cases in p:
+    for cases in all_cases:
 
         time = (str(cases.extracted_on)).split()
 
