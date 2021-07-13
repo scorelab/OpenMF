@@ -49,7 +49,7 @@ def list():
     Listing all the cases present in
     the database( For development purpose ).
     """
-    all_cases = Case.query.order_by(Case.timestamp).all()
+    all_cases = Case.query.order_by(Case.extracted_on).all()
     result = cases_schema.dump(all_cases)
     return jsonify(result)
 
