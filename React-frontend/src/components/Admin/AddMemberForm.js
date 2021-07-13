@@ -1,33 +1,26 @@
-/*
-*   Function Compoennt to render Login Form.
-*/
+// Add User Form
+// It will be mounted over
+// AddUserModel
 
-import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
-    Grid,
     Button,
     Typography,
-    Link,
-    Checkbox,
-    FormControlLabel,
     TextField,
     Card,
     IconButton,
     InputAdornment,
-    Avatar,
 } from '@material-ui/core';
+
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import logo from '../images/logo.png';
-import { authDefault, login } from '../store/actions/auth';
+
 import { useDispatch, useSelector } from 'react-redux';
-import SelectItem from './Utils/SelectItem';
+import { useHistory } from 'react-router-dom';
+import { addMember } from '../../store/actions/admin';
 
-
-// Custom styles
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(1),
@@ -37,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 4),
         width: "350px",
         backgroundColor: '#fdfdfd'
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.primary.main
     },
     inputs: {
         height: theme.spacing(6),
@@ -54,63 +43,68 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.extraLight,
         margin: theme.spacing(1.5, 0),
         '&:hover': {
-          backgroundColor: theme.palette.primary.light
+            backgroundColor: theme.palette.primary.light
         }
     }
 }))
 
 
-function LoginForm() {
+function AddMemberForm({toggleAddMemberModel}) {
 
-    // Invoke custorm classes
+    // invoking custom styles
     const classes = useStyles()
 
-    // Get auth reducer
-    const auth = useSelector(state => state.auth)
+    // history
+    const history = useHistory()
 
-    // Get dispatcher
+    // getting admin reducer
+    const admin = useSelector(state => state.admin)
+
+    // dispatcher
     const dispatch = useDispatch()
 
-    // setting up default auth state
-    useEffect(() => {
-        dispatch(authDefault())
-    }, [dispatch])
+    // function to handle add member request
+    function handleAddMember(){
+        dispatch(addMember(username, email, role, password, history))
+        setUsername('')
+        setEmail('')
+        setPassword('')
+        setRole('')
+        toggleAddMemberModel(false)
+    }
 
-    // option array to display inside select box
-    const options = [
-        { value: 'admin', name: 'Admin' },
-        { value: 'extractor', name: 'Extractor' },
-        { value: 'management', name: 'Management' }
-    ]
-
-    // states to hold login details
+    // states
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [role, setRole] = useState('')
-    const [remember, setRemember] = useState(true)
     const [showPassword, setShowPassword] = useState(false)
-
-    // FUnction to handle password visibility
     const handleClickShowPassword = () => setShowPassword(!showPassword)
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
-    // Returning JSX
     return (
-        <Container ccomponent="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs">
             <Card className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <img src={logo} alt="openMF" style={{width: "100%"}}/>
-                </Avatar>
-
-                <Typography component="h1" variant="h5">
-                    Login
-                </Typography>
 
                 <Typography variant="body1" align="center" color="error">
-                    {auth.error}
+                    {admin.error}
                 </Typography>
 
                 <form className={classes.form} noValidate>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required={true}
+                        fullWidth={true}
+                        id="username"
+                        label="username"
+                        name="username"
+                        autoFocus
+                        className={classes.inputs}
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                    />
+
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -124,7 +118,22 @@ function LoginForm() {
                         type="email"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
-                        autoFocus
+                    />
+
+
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required={true}
+                        fullWidth={true}
+                        id="role"
+                        label="role"
+                        name="role"
+                        autoComplete="role"
+                        className={classes.inputs}
+                        type="text"
+                        value={role}
+                        onChange={e => setRole(e.target.value)}
                     />
 
                     <TextField
@@ -156,45 +165,22 @@ function LoginForm() {
                         onChange={e => setPassword(e.target.value)}
                     />
 
-                    <SelectItem
-                        value={role}
-                        setValue={setRole}
-                        options={options}
-                        placeholder="Select Role"
-                    />
-
-                    <FormControlLabel
-                        control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} color="primary"/>}
-                        label={<Typography variant="body2">Remember</Typography>}
-                    />
-
                     <Button
                         fullWidth
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled={ auth.isLoading ||!email || !password || !role}
-                        onClick={() => dispatch(login(email, password, role, remember))}
+                        disabled={ !username || !email || !password || admin.isLoading}
+                        onClick={handleAddMember}
                     >
-                        Login
+                        Add Member
                     </Button>
                 </form>
 
-                <Grid container>
-                    <Grid item style={{margin: 'auto'}}>
-                        <Link component={RouterLink} to="/register" variant="body2">
-                            {"Don't have accont? Register"}
-                        </Link>
-                    </Grid>
-                    <Grid item style={{margin: 'auto'}}>
-                        <Link component={RouterLink} to="#" variant="body2" >
-                            {"Forget password ?"}
-                        </Link>
-                    </Grid>
-                </Grid>
             </Card>
+
         </Container>
     )
 }
 
-export default LoginForm
+export default AddMemberForm

@@ -1,7 +1,13 @@
+/*
+    Management layout that would be used to
+    wrap all the pages related to a manage-
+    ment user.
+*/
+
 import React from 'react';
-import Navbar from './Navbar';
-import Sidebar from '../Sidebar';
-import Footer from './Footer';
+import Navbar from '../core/Navbar';
+import Sidebar from './Sidebar';
+import Footer from '../core/Footer';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Grid
@@ -19,8 +25,9 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+
 // Display main content of layout
-export default function LayoutMain ({ children, sidebarBool=true, background=true}) {
+export default function ManagementLayout ({ children, sidebarBool=true, background=true}) {
   const classes = useStyles()
 
   return (

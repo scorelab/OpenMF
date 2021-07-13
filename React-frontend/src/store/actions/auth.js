@@ -1,3 +1,8 @@
+/*
+*  Action generators for
+*  Auth reducer.
+*/
+
 import axios from '../../axios';
 import {
   AUTH_DEFAULT,
@@ -14,76 +19,80 @@ import {
   USER_LOAD_ERROR
 } from '../types/auth';
 import { setAlert } from './alerts';
-
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const TOGGLE_AUTH_LOADING = 'TOGGLE_AUTH_LOADING';
 
 
 
+// Action generator for auth default state
 export const authDefault = () => dispatch => {
   dispatch({type: AUTH_DEFAULT})
 };
 
 
+// Action Generator to load user
 export const loadUser = () => (dispatch, getState) => {
-  // User Loading
-  dispatch({ type: USER_LOADING})
+  if(!(getState() && getState().auth && getState().auth.user)){
 
-  // Get token from localstorage
-  const token = localStorage.getItem('openmf_token')
+    // User Loading
+    dispatch({ type: USER_LOADING})
 
-  // add headers
-  const config = {
-    headers: {
-      'Content-Type': 'application/json'
+    // Get token from localstorage
+    const token = localStorage.getItem('openmf_token')
+
+    // add headers
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
     }
-  }
 
-  // If token available add to headers
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  } else {
-    dispatch({ type: USER_LOAD_ERROR })
-    return
-  }
+    // If token available add to headers
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    } else {
+      dispatch({ type: USER_LOAD_ERROR })
+      return
+    }
 
-  axios.get('/user/profile', config)
-    .then(
-      (res) => {
-        if (res && (res.status === 200 || res.status === 201)) {
-          dispatch({
-            type: USER_LOADED,
-            payload: {
-              data: {
-                user: res.data.user
+    axios.get('/user/profile', config)
+      .then(
+        (res) => {
+          if (res && (res.status === 200 || res.status === 201)) {
+            dispatch({
+              type: USER_LOADED,
+              payload: {
+                data: {
+                  user: res.data.user
+                }
               }
-            }
-          })
-        } else if (res && (res.status >= 400 && res.status < 500)) {
-          dispatch({
-            type: USER_LOAD_ERROR,
-            payload: {
-              data: res.data.message
-            }
-          })
-          dispatch(setAlert(res.data.message))
-      }
-      }
-    )
-    .catch((err) => {
-      dispatch({
-        type: USER_LOAD_ERROR,
-        payload: {
-          data: {error: 'UNAUTHORIZED'}
+            })
+          } else if (res && (res.status >= 400 && res.status < 500)) {
+            dispatch({
+              type: USER_LOAD_ERROR,
+              payload: {
+                data: res.data.message
+              }
+            })
+            dispatch(setAlert(res.data.message))
         }
+        }
+      )
+      .catch((err) => {
+        dispatch({
+          type: USER_LOAD_ERROR,
+          payload: {
+            data: {error: 'UNAUTHORIZED'}
+          }
+        })
       })
-    })
+  }
 }
 
 
 
-
+// Action generator to handle login
 export const login = (email, password, role, remember) => async dispatch => {
   // Login data
   const loginData = {
@@ -120,17 +129,20 @@ export const login = (email, password, role, remember) => async dispatch => {
           type: LOGIN_FAILED,
           payload: {data: res.data.message}
         })
+        dispatch(setAlert(res.data.message))
       }
       else{
         dispatch({
           type: LOGIN_FAILED,
           payload: {data: 'Something went wrong.'}
         })
+        dispatch(setAlert('Something went wrong, please try again.'))
       }
     })
 };
 
 
+// Action generator to handle signup
 export const signUp = (username, email, password, role, history) => (dispatch) => {
   // Body for post request
   const body = {
@@ -152,8 +164,8 @@ export const signUp = (username, email, password, role, history) => (dispatch) =
     .then((res) => {
       if(res && (res.status === 200 || res.status === 201)){
         dispatch({type: SIGNUP_SUCCESSFULL})
-        dispatch(setAlert(res.data.message, 'success'))
         history.push('/')
+        dispatch(setAlert(res.data.message, 'success'))
         window.location.reload()
       }
     })
@@ -172,6 +184,7 @@ export const signUp = (username, email, password, role, history) => (dispatch) =
 }
 
 
+// Action generator to handle logout
 export const logout = (history) => (dispatch) => {
   const token = localStorage.getItem('openmf_token')
 
@@ -195,6 +208,7 @@ export const logout = (history) => (dispatch) => {
         dispatch({
           type: LOGOUT
         })
+        history.push('/')
         dispatch(setAlert('user logged out!','success'))
         window.location.reload()
       }

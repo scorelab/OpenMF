@@ -1,4 +1,11 @@
-import React, { useState } from 'react';
+/*
+    Functional component to render
+    sidebar for management member.
+*/
+
+
+// Importing dependencies
+import React from 'react';
 import { useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
@@ -12,19 +19,18 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
-import SearchIcon from '@material-ui/icons/Search';
-import AddIcon from '@material-ui/icons/Add';
+import DoneAll from '@material-ui/icons/DoneAll';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import Folder from '@material-ui/icons/Folder';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import Poll from '@material-ui/icons/Poll';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
-import AddMemberModel from './Admin/AddMemberModel';
 
 
-// styles
+// custom styles
 const useStyles = makeStyles((theme) => ({
   drawer: {
     width: '250px',
@@ -47,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   Icon: {
     position: 'relative',
     '&::before': {
-      content: `"Admin"`,
+      content: `"Management"`,
       textAlign: 'center',
       fontWeight: '600',
       fontSize: theme.spacing(1.2),
@@ -89,18 +95,18 @@ function Sidebar() {
   const auth = useSelector(state => state.auth)
 
   // state for add member model
-  const [isAddMemberModelOpen, setToggleAddMemberModel] = useState(false)
 
-  // User management related list items(For Admin)
-  const userManagementItems = [ ['All Members', <SupervisorAccountIcon color="secondary"/>, "/list-members"],
-                                ['Add Member', <PersonAddIcon color="secondary"/>, "/create-member"],
-                                ['Search User', <SearchIcon color="secondary" />, "/"]
-                              ]
+  // Management related items
+  const managementItems = [
+                            ['File Explorer', <Folder color='secondary' />, '/file-explorer'],
+                            ['case Tree', <AccountTreeIcon color='secondary' />, '/case-tree'],
+                            ['Analytics', <Poll color='secondary' />, '/analytics']
+                          ]
 
   // Task Management related list items(For Admin)
   const taskManagementItems = [
-                                ['All Tasks', <AssignmentIcon color="secondary"/>, "/task/list"],
-                                ['Create Task', <AddIcon color="secondary" />, "/task/create"]
+                                ['Todo Tasks', <AssignmentIcon color="secondary"/>, "/task/todo"],
+                                ['Finished Tasks', <DoneAll color="secondary" />, "/task/finished"]
                               ]
 
   // Other items
@@ -146,28 +152,22 @@ function Sidebar() {
       </List>
 
       {/*
-          Mapping user management items
+          Mapping  management related items
       */}
       <Divider />
       <List>
-        {userManagementItems.map((item, index) => (
+        {managementItems.map((item, index) => (
           <ListItem
             button
             key={item[0]}
             className={(location.pathname === item[2]) ? classes.activeItem : null}
-            onClick={(index === 1) ? () => setToggleAddMemberModel(true): () => history.push(item[2])}
+            onClick={() => history.push(item[2])}
           >
             <ListItemIcon>{item[1]}</ListItemIcon>
             <ListItemText primary={item[0]} />
           </ListItem>
         ))}
       </List>
-
-
-      {/*
-          Add Member Model
-      */}
-      <AddMemberModel  isOpen={isAddMemberModelOpen} toggleAddMemberModel={setToggleAddMemberModel}/>
 
 
       {/*

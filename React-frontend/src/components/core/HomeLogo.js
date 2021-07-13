@@ -1,3 +1,8 @@
+/*
+*   HomeLogo component that would be
+*   Wrapped by HomePage Component.
+*/
+
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -16,9 +21,10 @@ import RegisterForm from '../RegisterForm';
 import logo from '../../images/HomeLogo.png';
 import { useSelector } from 'react-redux';
 
+
+// Custom Styles
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100vw',
     marginTop: '10vh',
     height: '82.5vh',
     padding: '0'
@@ -107,26 +113,42 @@ const useStyles = makeStyles((theme) => ({
     color: '#909090'
   }
 }))
+
+
+// Main Component
 function HomeLogo() {
+
+  // Invoke custom classes
   const classes = useStyles()
 
+  // Get auth Reducer
   const auth = useSelector(state => state.auth)
+
+  // State to hold modal opening variables
   const [openLogin, setOpenLogin] = useState(false)
   const [openSignUp, setOpenSignUp] = useState(false)
 
+  // function to handle login modal open state
   const handleOpenLogin = () => {
     setOpenLogin(true)
   }
+
+  // Function to handle login modal close state
   const handleCloseLogin = () => {
     setOpenLogin(false)
   }
+
+  // Function to handle Signup Modal open state
   const handleOpenSignUp = () => {
     setOpenSignUp(true)
   }
+
+  // Function to handle Signup modal close state
   const handleCloseSignUp = () => {
     setOpenSignUp(false)
   }
 
+  // Returning JSX
   return (
     <Container className={classes.root}>
       <Grid container>
@@ -189,7 +211,7 @@ function HomeLogo() {
             Know More
           </Link>
         </Grid>
-        <Grid item xs={12} sm={12} md={8} className={classes.right}>
+        <Grid item xs sm md={8} className={classes.right}>
           <div className={classes.rightInner2}>
             <Typography
               component="h1"
@@ -199,7 +221,7 @@ function HomeLogo() {
               OpenMF
             </Typography>
             <Typography
-              component="body1"
+              component="h2"
               variant="body2"
               className={classes.textBody}
             >
@@ -210,7 +232,7 @@ function HomeLogo() {
             <br />
             <br />
             <Typography
-              component="body1"
+              component="h6"
               variant="body2"
               className={classes.textBody}
             >
@@ -227,25 +249,25 @@ function HomeLogo() {
             <Typography component="h1" variant="body1" className={classes.title}>
               How OpenMF Works ?
             </Typography>
-            <Typography component="body1" variant="body2" className={classes.textBody}>
+            <Typography component="h6" variant="body2" className={classes.textBody}>
               Step 1: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
             </Typography>
             <br />
             <br />
-            <Typography component="body1" variant="body2" className={classes.textBody}>
+            <Typography component="h6" variant="body2" className={classes.textBody}>
               Step 2: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
             </Typography>
             <br />
             <br />
-            <Typography component="body1" variant="body2" className={classes.textBody}>
+            <Typography component="h6" variant="body2" className={classes.textBody}>
               Step 3: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
             </Typography>
             <br />
             <br />
-            <Typography component="body1" variant="body2" className={classes.textBody}>
+            <Typography component="h6" variant="body2" className={classes.textBody}>
               Step 4: Lorem Ipsum is simply dummy text of the printing and typesetting industry.
               Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
             </Typography>
