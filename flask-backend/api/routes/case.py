@@ -142,8 +142,12 @@ def filter():
             '''
             to_date = str(datetime.date.today())
 
-    except:
-        return 'please provide date', 400
+    except Exception as e:
+        response = {
+            "success": False,
+            "message": "please provide date."
+            }
+        return make_response(jsonify(response)), 404
 
     all_cases = Case.query.all()
 
@@ -162,7 +166,11 @@ def filter():
 
         return jsonify(case_filtered)
     else:
-        return "No case found in this range", 404
+        response = {
+            "success": False,
+            "message": "No case found in this range"
+        }
+        return make_response(jsonify(response)), 404
 
 
 @case.route('/extracted-cases', methods=["GET"])
