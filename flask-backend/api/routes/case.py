@@ -205,8 +205,8 @@ def _get_file():
 
     # send file of provided file name
     try:
-        file = send_file(filename_or_fp=file_pathname, as_attachment=False, mimetype='application/json')
-        return file, 200
+        file = send_file(filename_or_fp=file_pathname, as_attachment=False, mimetype='application/blob')
+        return make_response(file), 200
 
     # handle FileNOtFOund error
     except FileNotFoundError as e:
