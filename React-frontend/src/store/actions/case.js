@@ -2,7 +2,7 @@
     Action and Action generators for Case Reducer.
 */
 
-import { LOAD_CASES, LOAD_CASES_FAILED, LOAD_CASES_SUCCESSFULL, LOAD_CASE_TREE, LOAD_CASE_TREE_FAILED, LOAD_CASE_TREE_SUCCESSFULL } from "../types/case";
+import { LOAD_CASES, LOAD_CASES_FAILED, LOAD_CASES_SUCCESSFULL, LOAD_CASE_TREE, LOAD_CASE_TREE_FAILED, LOAD_CASE_TREE_SUCCESSFULL, LOAD_FILE, LOAD_FILE_FAILED, LOAD_FILE_SUCCESSFULL } from "../types/case";
 import { setAlert } from "./alerts";
 import axios from '../../axios';
 
@@ -149,5 +149,80 @@ export const loadCases = () => (dispatch) => {
               }
           })
           dispatch(setAlert(err.message))
+      })
+}
+
+
+// Action generator for load a file
+export const loadfile = (file_pathname) => (dispatch) => {
+
+  // cases loading
+  dispatch({
+      type: LOAD_FILE
+  })
+
+  // create request body data object
+  const data = {
+    file_pathname: file_pathname
+  }
+
+  // get jwt token and attach with config
+  const token = localStorage.getItem('openmf_token')
+
+  // check if token exists or not
+  if(!token){
+    dispatch({
+        type: LOAD_CASES_FAILED,
+        payload: {
+            error: 'Unauthorized, Please logged in.'
+        }
+    })
+    return
+  }
+
+  // get config object
+  const config = createConfig(token)
+
+  // set responseType to the config object
+  config['responseType'] = 'blob'
+
+  // send get request to server
+  axios.post('/case/get-file',data,config)
+      .then(async (res) => {
+
+        // convert blob to readable stream
+        try{
+          const stream = await res.data.text()
+
+          console.log(stream)
+          // dispatch successful result
+          dispatch({
+            type: LOAD_FILE_SUCCESSFULL,
+            payload: {
+              file: stream
+            }
+          })
+        }
+
+        // handle blob conversion error
+        catch(err){
+
+          // dispatch fail with error message
+          dispatch({
+            type: LOAD_FILE_FAILED,
+            payload: err.message
+          })
+        }
+
+      })
+
+      // Handle request error
+      .catch((err) => {
+          dispatch({
+              type: LOAD_FILE_FAILED,
+              payload: {
+                  error: err.message
+              }
+          })
       })
 }

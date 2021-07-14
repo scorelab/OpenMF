@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadCaseTree } from '../../store/actions/case';
+import { loadCaseTree, loadfile } from '../../store/actions/case';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import JsonPretty from '../Utils/JsonPretty';
@@ -92,7 +92,7 @@ function CaseTreeView() {
                 </>
             }
             className={classes.treeItem}
-            onDoubleClick={() => (nodes.type === 'file') && console.log(nodes)}
+            onDoubleClick={() => (nodes.type === 'file') && dispatch(loadfile(nodes.path))}
         >
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
