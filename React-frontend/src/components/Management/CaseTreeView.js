@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
     },
     treeSidebar: {
         overflow: 'auto',
-        border: '1px solid #000'
+        border: '1px solid #000',
+        padding: `${theme.spacing(1)}px 0px`
     },
     treeItem: {
         overflow: 'hidden',
@@ -91,6 +92,7 @@ function CaseTreeView() {
                 </>
             }
             className={classes.treeItem}
+            onDoubleClick={() => (nodes.type === 'file') && console.log(nodes)}
         >
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
