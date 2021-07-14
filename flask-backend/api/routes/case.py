@@ -6,6 +6,7 @@ Routes to handle request related to case.
 import sqlite3 as sql
 import os
 import json
+import datetime
 from flask import Blueprint, jsonify, request, make_response
 from api.models.case import Case
 from api.models.extractor import Extractor
@@ -38,8 +39,8 @@ def count():
     Route to get total numbers of cases
     present in database( For development purpose ).
     """
-    return jsonify({'status':200,
-                    'total_users':Case.query.count()})
+    return jsonify({'status': 200,
+                    'total_users': Case.query.count()})
 
 
 @case.route('/list', methods=["GET"])
@@ -48,7 +49,7 @@ def list():
     Listing all the cases present in
     the database( For development purpose ).
     """
-    all_cases = Case.query.order_by(Case.timestamp).all()
+    all_cases = Case.query.order_by(Case.extracted_on).all()
     result = cases_schema.dump(all_cases)
     return jsonify(result)
 
@@ -117,6 +118,61 @@ def openFile(case_name, folder_name, file_name):
     return File
 
 
+@case.route('/filter', methods=['POST'])
+def filter():
+    '''
+        Route to filter the cases in range of date.
+        If starting date will not be provided it will 
+        return cases till the end date.
+        If both not provided all cases will be shown.
+        If starting date is provided and no end date then 
+        cases from starting date till present date will be shown.
+    '''
+    try:
+        req = request.get_json()
+
+        from_date = str(req['starting date'])
+
+        to_date = str(req['end date'])
+
+        if not to_date:
+            '''
+            if end date is not there
+            then end date will be the present date.
+            '''
+            to_date = str(datetime.date.today())
+
+    except Exception as e:
+        response = {
+            "success": False,
+            "message": "please provide date."
+            }
+        return make_response(jsonify(response)), 404
+
+    all_cases = Case.query.all()
+
+    case_filtered = []
+
+    for cases in all_cases:
+
+        time = (str(cases.extracted_on)).split()
+
+        time = time[0]
+
+        if time >= from_date and time <= to_date:
+            case_filtered.append((cases.data_path, cases.extracted_on))
+
+    if case_filtered:
+
+        return jsonify(case_filtered)
+    else:
+        response = {
+            "success": False,
+            "message": "No case found in this range"
+        }
+        return make_response(jsonify(response)), 404
+
+
 @case.route('/extracted-cases', methods=["GET"])
 @token_required
 def extracted_cases():
@@ -125,10 +181,10 @@ def extracted_cases():
     an admin or extractor.
     """
 
-    ## Get current user object
+    # Get current user object
     current_user = get_current_user(extracted_cases.role, extracted_cases.public_id)
 
-    ## check for admin user
+    # check for admin user
     if current_user.role == "admin":
         cases = []
         for i in current_user.extractor_members:
@@ -166,7 +222,6 @@ def extracted_cases():
     return make_response(jsonify(response)), 200
 
 
-
 @case.route('/case-tree', methods=["GET", "POST"])
 @token_required
 def case_tree():
@@ -175,12 +230,12 @@ def case_tree():
     files that reside inside a give case.
     """
 
-    ## Get case_name
+    # Get case_name
     try:
         req = request.get_json()
         case_name = req['case_name']
 
-    ## Throw Error if case_name is not provided
+    # Throw Error if case_name is not provided
     except Exception as e:
         response = {
             "success": False,
@@ -188,10 +243,10 @@ def case_tree():
         }
         return make_response(jsonify(response)), 422
 
-    ## Find case with given name
+    # Find case with given name
     case = Case.query.filter_by(case_name=case_name).first()
 
-    ## Check if case with given name exists or not
+    # Check if case with given name exists or not
     if not case:
         response = {
             "success": False,
@@ -199,24 +254,25 @@ def case_tree():
         }
         return make_response(jsonify(response)), 404
 
-    ## absolute path of case
+    # absolute path of case
     case_path = case.data_path
 
-    ## get details of extractor
+    # get details of extractor
     extractor_detail = extractor_schema.dump(case.extractor)
 
-    ## dump case
+    # dump case
     case_json = case_schema.dump(case)
 
-    ## attach extractor detail with case_json
+    # attach extractor detail with case_json
     case_json['extractor_detail'] = extractor_detail
 
-    ## get directory-tree with given case_name
+    # get directory-tree with given case_name
     try:
         directory_tree = {}
-        getDirectoryTree(tree=directory_tree, rootDirectory=case_path, rootDirectoryName=case_name)
+        getDirectoryTree(tree=directory_tree,
+                         rootDirectory=case_path, rootDirectoryName=case_name)
 
-        ## create resposne
+        # create resposne
         response = {
             "success": True,
             "message": "Tree Fetched.",
@@ -225,11 +281,10 @@ def case_tree():
         }
         return make_response(jsonify(response)), 200
 
-    ## Response if something went wrong.
+    # Response if something went wrong.
     except Exception as e:
         response = {
             "success": False,
             "message": "something went wrong."
         }
         return make_response(jsonify(response)), 500
-
