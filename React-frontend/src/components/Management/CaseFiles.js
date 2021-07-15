@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { withStyles ,makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import {
     Container,
@@ -19,6 +19,7 @@ import {
     Divider,
     Button
 } from '@material-ui/core';
+import { loadfile } from '../../store/actions/case';
 
 
 // custom styles
@@ -47,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 650,
     },
     button: {
-        fontSize: '1rem',
+        fontSize: '.8rem',
         fontWeight: 'bolder',
         '&:focus': {
             outline: 'none'
@@ -73,6 +74,10 @@ const StyledTableRow = withStyles((theme) => ({
       '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
       },
+      '&:hover': {
+          cursor: 'pointer',
+          backgroundColor: '#aaa'
+      }
     },
 }))(TableRow);
 
@@ -85,6 +90,9 @@ function CaseFiles() {
 
     // get case reducer
     const caseReducer = useSelector(state => state.case)
+
+    // dispatcher
+    const dispatch = useDispatch()
 
     // params
     const params = useParams()
@@ -104,9 +112,21 @@ function CaseFiles() {
             id: index+1,
             name: file.name,
             lastAccessTime: file.lastAccessTime,
-            size: file.size
+            size: file.size,
+            path: file.path
         }
     ))
+
+    // Functional to handle double click
+    const handleDoubleClick = (rowItem) => {
+
+        // dispatch laod file action
+        dispatch(loadfile(rowItem.path))
+
+        // redirect to show file page
+        history.push(`/file-explorer/${caseName}/${dirName}/${rowItem.name}`)
+
+    }
 
     return (
         <Container component="main" className={classes.root}>
@@ -133,7 +153,7 @@ function CaseFiles() {
                     <TableBody >
 
                         {filesRow.map((row) => (
-                            <StyledTableRow key={row.name}>
+                            <StyledTableRow key={row.name} onDoubleClick={() => handleDoubleClick(row)}>
                             <StyledTableCell component="th" scope="row">
                                 {row.name}
                             </StyledTableCell>
