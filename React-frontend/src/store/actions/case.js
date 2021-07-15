@@ -194,7 +194,6 @@ export const loadfile = (file_pathname) => (dispatch) => {
         try{
           const stream = await res.data.text()
 
-          console.log(stream)
           // dispatch successful result
           dispatch({
             type: LOAD_FILE_SUCCESSFULL,
@@ -202,6 +201,7 @@ export const loadfile = (file_pathname) => (dispatch) => {
               file: stream
             }
           })
+
         }
 
         // handle blob conversion error
