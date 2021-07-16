@@ -5,6 +5,7 @@
 
 // Types for case reducers
 import {
+    DEFAULT_STATE,
     LOAD_FILE,
     LOAD_FILE_FAILED,
     LOAD_FILE_SUCCESSFULL
@@ -27,6 +28,15 @@ const fileReducer = (state = inittialState, action) => {
 
     //// define cases
     switch(type){
+        case DEFAULT_STATE:
+            return {
+                ...state,
+                isLoading: false,
+                error: null,
+                file: null,
+                fileType: null
+            }
+
         case LOAD_FILE:
             return {
                 ...state,

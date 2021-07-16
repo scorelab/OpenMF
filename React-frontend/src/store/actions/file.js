@@ -3,6 +3,7 @@
 */
 
 import {
+  DEFAULT_STATE,
     LOAD_FILE,
     LOAD_FILE_FAILED,
     LOAD_FILE_SUCCESSFULL
@@ -32,7 +33,12 @@ const createConfig = (token) => {
 // ++++++++++++++++++++++++++++++++++++++++++++++++
 
 
-
+// Action generator for default state
+export const loadDefaultFileState = () => (dispatch) => {
+  dispatch({
+    type: DEFAULT_STATE
+  })
+}
 
 // Action generator for load a file
 export const loadfile = (file_pathname, fileType) => (dispatch) => {
