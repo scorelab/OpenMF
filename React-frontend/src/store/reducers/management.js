@@ -5,19 +5,22 @@
 
 // Import action types
 import {
-    LOAD_COMPLETED_TASKS,
-    LOAD_COMPLETED_TASKS_FAILED,
-    LOAD_COMPLETED_TASKS_SUCCESSFULL,
-    LOAD_TODO_TASKS,
-    LOAD_TODO_TASKS_FAILED,
-    LOAD_TODO_TASKS_SUCCESSFULL,
-    LOAD_ANALYTICS_COMMON_WORD,
-    LOAD_ANALYTICS_COMMON_WORD_FAILED,
-    LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL,
-    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
-    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD,
-    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL
-} from "../types/management"
+  LOAD_COMPLETED_TASKS,
+  LOAD_COMPLETED_TASKS_FAILED,
+  LOAD_COMPLETED_TASKS_SUCCESSFULL,
+  LOAD_TODO_TASKS,
+  LOAD_TODO_TASKS_FAILED,
+  LOAD_TODO_TASKS_SUCCESSFULL,
+  LOAD_ANALYTICS_COMMON_WORD,
+  LOAD_ANALYTICS_COMMON_WORD_FAILED,
+  LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL,
+  LOAD_ANALYTICS_MAXIMUM_COMMON_WORD,
+  LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
+  LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL,
+  LOAD_ANALYTICS_KEYWORD_SEARCH,
+  LOAD_ANALYTICS_KEYWORD_SEARCH_FAILED,
+  LOAD_ANALYTICS_KEYWORD_SEARCH_SUCCESSFUL
+} from "../types/management";
 
 // initial state
 const initialState = {
@@ -27,6 +30,7 @@ const initialState = {
     completedTasks: null,
     commonwords: null,
     maxcommonwords: null,
+    keyword: null,
 }
 
 // Reducer definition
@@ -113,6 +117,27 @@ const managementReducer = (state = initialState, action) => {
               isLoading: false,
               error: null,
               maxcommonwords: payload.maxcommonwords,
+            }
+        case LOAD_ANALYTICS_KEYWORD_SEARCH_FAILED:
+            return {
+              ...state,
+              isLoading: false,
+              error: payload.error,
+              keyword: null,
+            }
+        case LOAD_ANALYTICS_KEYWORD_SEARCH:
+            return {
+              ...state,
+              isLoading: true,
+              error: null,
+              keyword: null,
+            }
+        case LOAD_ANALYTICS_KEYWORD_SEARCH_SUCCESSFUL:
+            return {
+              ...state,
+              isLoading: false,
+              error: null,
+              keyword: payload.keyword,
             }
         default:
             return state

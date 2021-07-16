@@ -4,19 +4,22 @@
 
 import axios from '../../axios';
 import {
-    LOAD_COMPLETED_TASKS,
-    LOAD_COMPLETED_TASKS_FAILED,
-    LOAD_COMPLETED_TASKS_SUCCESSFULL,
-    LOAD_TODO_TASKS,
-    LOAD_TODO_TASKS_FAILED,
-    LOAD_TODO_TASKS_SUCCESSFULL,
-    LOAD_ANALYTICS_COMMON_WORD,
-    LOAD_ANALYTICS_COMMON_WORD_FAILED,
-    LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL,
-    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL,
-    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
-    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD
-} from "../types/management"
+  LOAD_COMPLETED_TASKS,
+  LOAD_COMPLETED_TASKS_FAILED,
+  LOAD_COMPLETED_TASKS_SUCCESSFULL,
+  LOAD_TODO_TASKS,
+  LOAD_TODO_TASKS_FAILED,
+  LOAD_TODO_TASKS_SUCCESSFULL,
+  LOAD_ANALYTICS_COMMON_WORD,
+  LOAD_ANALYTICS_COMMON_WORD_FAILED,
+  LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL,
+  LOAD_ANALYTICS_MAXIMUM_COMMON_WORD,
+  LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
+  LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL,
+  LOAD_ANALYTICS_KEYWORD_SEARCH,
+  LOAD_ANALYTICS_KEYWORD_SEARCH_FAILED,
+  LOAD_ANALYTICS_KEYWORD_SEARCH_SUCCESSFUL
+} from "../types/management";
 import { setAlert } from './alerts';
 
 
@@ -279,6 +282,70 @@ export const loadTodoTasks = () => (dispatch) => {
             }
             dispatch({
                 type: LOAD_TODO_TASKS_FAILED,
+                payload: {
+                    error: 'Something Went Wrong.'
+                }
+            })
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+}
+
+// Action generator to fetch/load common words between cases
+export const loadAnalyticsKeyword = (keyword) => (dispatch) => {
+    
+    // dispatch laod analytics common word
+    dispatch({
+        type: LOAD_ANALYTICS_KEYWORD_SEARCH
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_ANALYTICS_KEYWORD_SEARCH_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        keyword: keyword
+    }
+    
+    // send request to server
+    axios.post('/keyword/search',data ,config)
+        .then((res) => {
+            console.log(res)
+            const case_data = (res.data)
+            
+            dispatch({
+                type: LOAD_ANALYTICS_KEYWORD_SEARCH_SUCCESSFUL,
+                payload: {
+                    keyword: case_data
+                }
+            })
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                    type: LOAD_ANALYTICS_KEYWORD_SEARCH_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+                type: LOAD_ANALYTICS_KEYWORD_SEARCH_FAILED,
                 payload: {
                     error: 'Something Went Wrong.'
                 }
