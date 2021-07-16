@@ -73,9 +73,9 @@ function ShowFile() {
             <Divider style={{width: '100%', marginTop: '1em'}}/>
 
             {
-                (fileReducer.isLoading) ? (<span>Loading...</span>) :
-                    (dirName === 'tsv') ? (<ShowTSV data={fileReducer.file} />) :
-                    (dirName === 'report') ? (<ShowTXT data={fileReducer.file} />) :
+                (fileReducer.isLoading || !fileReducer.file) ? (<span>Loading...</span>) :
+                    (fileReducer.fileType === 'tsv') ? (<ShowTSV data={fileReducer.file} />) :
+                    (fileReducer.fileType === 'report' || fileReducer.fileType === 'txt') ? (<ShowTXT data={fileReducer.file} />) :
                     (<pre className={classes.preStyle}>{fileReducer.file}</pre>)
             }
         </Container>
