@@ -40,7 +40,8 @@ def getDirectoryTree(tree, rootDirectory, rootDirectoryName, i=0):
                 'type': 'file',
                 'path': item.path,
                 'size': convert_bytes(os.stat(item.path).st_size),
-                'lastAccessTime': datetime.datetime.fromtimestamp(os.stat(item.path).st_atime).strftime('%Y-%m-%d %H:%M')
+                'lastAccessTime': datetime.datetime.fromtimestamp(os.stat(item.path).st_atime).strftime('%Y-%m-%d %H:%M'),
+                'extension': os.path.splitext(item.path)[1][1:]
             }
 
             ### push node to current tree
