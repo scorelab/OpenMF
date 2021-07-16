@@ -1,9 +1,9 @@
 // Component to represent case as in a tree structure
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadCaseTree } from '../../store/actions/case';
+import { loadCaseTree, loadDefaultState } from '../../store/actions/case';
 import { loadfile } from '../../store/actions/file';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -81,6 +81,11 @@ function CaseTreeView() {
 
     // invoke custom styles
     const classes = useStyles()
+
+    // dispatch default state of caseReducer
+    useEffect(() => {
+        dispatch(loadDefaultState())
+    }, [dispatch])
 
     // Tree Component
     const renderTree = (nodes) => (

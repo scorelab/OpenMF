@@ -2,6 +2,7 @@
     Types for Case Reducer.
 */
 
+export const DEFAULT_CASE_STATE = 'DEFAULT_CASE_STATE';
 export const LOAD_CASE_TREE = 'LOAD_CASE_TREE';
 export const LOAD_CASE_TREE_FAILED = 'LOAD_CASE_TREE_FAILED';
 export const LOAD_CASE_TREE_SUCCESSFULL = 'LOAD_CASE_TREE_SUCCESSFULL';

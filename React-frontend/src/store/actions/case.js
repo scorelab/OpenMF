@@ -3,6 +3,7 @@
 */
 
 import {
+  DEFAULT_CASE_STATE,
   LOAD_CASES,
   LOAD_CASES_FAILED,
   LOAD_CASES_SUCCESSFULL,
@@ -35,6 +36,13 @@ const createConfig = (token) => {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+// Action generator for default state
+export const loadDefaultState = () => (dispatch) => {
+  dispatch({
+    type: DEFAULT_CASE_STATE
+  })
+}
 
 
 // Action generator for Loading csae tree
