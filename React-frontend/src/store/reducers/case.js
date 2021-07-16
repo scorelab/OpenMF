@@ -11,9 +11,6 @@ import {
     LOAD_CASE_TREE,
     LOAD_CASE_TREE_FAILED,
     LOAD_CASE_TREE_SUCCESSFULL,
-    LOAD_FILE,
-    LOAD_FILE_FAILED,
-    LOAD_FILE_SUCCESSFULL
 } from "../types/case"
 
 
@@ -24,7 +21,6 @@ const inittialState = {
     caseTree: null,
     cases: null,
     selected_case: null,
-    file: null
 }
 
 // Case reducer
@@ -37,22 +33,18 @@ const caseReducer = (state = inittialState, action) => {
     switch(type){
         case LOAD_CASE_TREE:
         case LOAD_CASES:
-        case LOAD_FILE:
             return {
                 ...state,
                 isLoading: true,
                 error: null,
-                file: null
             }
-            
+
         case LOAD_CASE_TREE_FAILED:
         case LOAD_CASES_FAILED:
-        case LOAD_FILE_FAILED:
             return {
                 ...state,
                 isLoading: false,
                 error: payload.error,
-                file: null,
                 caseTree: null
             }
 
@@ -73,13 +65,6 @@ const caseReducer = (state = inittialState, action) => {
                 cases: payload.cases
             }
 
-        case LOAD_FILE_SUCCESSFULL:
-            return {
-                ...state,
-                isLoading: false,
-                error: null,
-                file: payload.file
-            }
         default:
             return state
     }

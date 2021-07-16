@@ -19,6 +19,7 @@ import { parse } from 'papaparse';
 const useStyles = makeStyles(theme => ({
     paper: {
         marginTop: theme.spacing(1),
+        overflow: 'auto'
     },
     table: {
         minWidth: 650,

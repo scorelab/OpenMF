@@ -19,7 +19,7 @@ import {
     Divider,
     Button
 } from '@material-ui/core';
-import { loadfile } from '../../store/actions/case';
+import { loadfile } from '../../store/actions/file';
 
 
 // custom styles
@@ -121,7 +121,7 @@ function CaseFiles() {
     const handleDoubleClick = (rowItem) => {
 
         // dispatch laod file action
-        dispatch(loadfile(rowItem.path))
+        dispatch(loadfile(rowItem.path, dirName))
 
         // redirect to show file page
         history.push(`/file-explorer/${caseName}/${dirName}/${rowItem.name}`)

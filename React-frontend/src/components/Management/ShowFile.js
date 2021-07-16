@@ -19,7 +19,7 @@ import ShowTXT from '../Utils/ShowTXT';
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '80vw',
-        overflowX: 'auto',
+        // overflowX: 'auto',
         marginTop: '10vh',
         height: '82.5vh',
         padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
@@ -34,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
         '&:focus': {
             outline: 'none'
         }
+    },
+    preStyle: {
+        width: '100%',
+        height: '100%',
+        overflow: 'auto'
     }
 }))
 
@@ -52,8 +57,8 @@ function ShowFile() {
     // destructure params
     const { caseName, dirName, fileName } = params
 
-    // get caseReducer
-    const caseReducer = useSelector(state => state.case)
+    // get fileReducer
+    const fileReducer = useSelector(state => state.file)
 
     return (
         <Container className={classes.root}>
@@ -68,10 +73,10 @@ function ShowFile() {
             <Divider style={{width: '100%', marginTop: '1em'}}/>
 
             {
-                (caseReducer.isLoading) ? (<span>Loading...</span>) :
-                    (dirName === 'tsv') ? (<ShowTSV data={caseReducer.file} />) :
-                    (dirName === 'report') ? (<ShowTXT data={caseReducer.file} />) :
-                    (<pre>{caseReducer.file}</pre>)
+                (fileReducer.isLoading) ? (<span>Loading...</span>) :
+                    (dirName === 'tsv') ? (<ShowTSV data={fileReducer.file} />) :
+                    (dirName === 'report') ? (<ShowTXT data={fileReducer.file} />) :
+                    (<pre className={classes.preStyle}>{fileReducer.file}</pre>)
             }
         </Container>
     )

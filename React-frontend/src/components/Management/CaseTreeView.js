@@ -3,10 +3,13 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadCaseTree, loadfile } from '../../store/actions/case';
+import { loadCaseTree } from '../../store/actions/case';
+import { loadfile } from '../../store/actions/file';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import JsonPretty from '../Utils/JsonPretty';
+import ShowTXT from '../Utils/ShowTXT';
+import ShowTSV from '../Utils/ShowTSV';
 import {
     Container,
     TextField,
@@ -70,6 +73,9 @@ function CaseTreeView() {
     // Get case reducer
     const caseReducer = useSelector((state) => state.case)
 
+    // get file Reducer
+    const fileReducer = useSelector(state => state.file)
+
     // case state
     const [caseName, setCaseName] = useState('')
 
@@ -92,7 +98,7 @@ function CaseTreeView() {
                 </>
             }
             className={classes.treeItem}
-            onDoubleClick={() => (nodes.type === 'file') && dispatch(loadfile(nodes.path))}
+            onDoubleClick={() => (nodes.type === 'file') && dispatch(loadfile(nodes.path, 'tsv'))}
         >
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
@@ -159,7 +165,16 @@ function CaseTreeView() {
                 <Grid item xs={12} md={9}>
 
                     {/* Render CaseTree in Pretty Json format */}
-                    <JsonPretty data={caseReducer.caseTree}/>
+                    {
+                        (caseReducer.isLoading || fileReducer.isLoading || !fileReducer.file || !fileReducer.fileType) ? (
+                            <JsonPretty data={caseReducer.caseTree}/>
+                        ) : (fileReducer.fileType === 'report') ? (
+                            <ShowTXT data={fileReducer.file}/>
+                        ) : (fileReducer.fileType === 'tsv') ? (
+                            <ShowTSV data={fileReducer.file}/>) : (
+                                <pre>{fileReducer.file}</pre>
+                            )
+                    }
 
                 </Grid>
             </Grid>
