@@ -10,7 +10,10 @@ import {
     LOAD_COMPLETED_TASKS_SUCCESSFULL,
     LOAD_TODO_TASKS,
     LOAD_TODO_TASKS_FAILED,
-    LOAD_TODO_TASKS_SUCCESSFULL
+    LOAD_TODO_TASKS_SUCCESSFULL,
+    LOAD_ANALYTICS_COMMON_WORD,
+    LOAD_ANALYTICS_COMMON_WORD_FAILED,
+    LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL
 } from "../types/management"
 
 // initial state
@@ -18,7 +21,8 @@ const initialState = {
     isLoading: false,
     error: null,
     todoTasks: null,
-    completedTasks: null
+    completedTasks: null,
+    commonwords: null
 }
 
 // Reducer definition
@@ -64,7 +68,27 @@ const managementReducer = (state = initialState, action) => {
                 error: null,
                 completedTasks: payload.tasks
             }
-
+        case LOAD_ANALYTICS_COMMON_WORD_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload.error,
+                commonwords: null
+            }
+        case LOAD_ANALYTICS_COMMON_WORD:
+            return {
+                ...state,
+                isLoading: true,
+                error: null,
+                commonwords: null
+            }
+        case LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL:
+            return {
+                ...state,
+                isLoading: false,
+                error: null,
+                commonwords: payload.commonwords
+            }
         default:
             return state
     }
