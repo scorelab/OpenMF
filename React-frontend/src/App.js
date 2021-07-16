@@ -20,6 +20,9 @@ import CaseDirsPage from './pages/Management/CaseDirsPage';
 import CaseFilePage from './pages/Management/CaseFilePage';
 import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
+import AnalyticsPage from './pages/Management/AnalyticsPage';
+import CommonWordsPage from './pages/Management/CommonWordsPage';
+import KeywordSearchPage from './pages/Management/KeywordSearchPage'
 
 
 
@@ -79,11 +82,14 @@ function App() {
           <PrivateRoute path='/task/create' exact component={CreateTask} />
           <PrivateRoute path='/task/list' exact component={ShowTasks} />
           <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
+          <PrivateRoute path='/analytics' exact component={AnalyticsPage} />
           <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
           <PrivateRoute path='/file-explorer/:caseName/:dirName' component={CaseFilePage} />
           <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
           <PrivateRoute path='/task/finished' exact component={CompletedtaskPage} />
           <PrivateRoute path='/task/todo' exact component={TodoTaskPage} />
+          <PrivateRoute path='/common/Case1/Case2' exact component={CommonWordsPage} />
+          <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
