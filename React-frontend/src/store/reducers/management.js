@@ -13,7 +13,10 @@ import {
     LOAD_TODO_TASKS_SUCCESSFULL,
     LOAD_ANALYTICS_COMMON_WORD,
     LOAD_ANALYTICS_COMMON_WORD_FAILED,
-    LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL
+    LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL,
+    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
+    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD,
+    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL
 } from "../types/management"
 
 // initial state
@@ -22,7 +25,8 @@ const initialState = {
     error: null,
     todoTasks: null,
     completedTasks: null,
-    commonwords: null
+    commonwords: null,
+    maxcommonwords: null,
 }
 
 // Reducer definition
@@ -88,6 +92,27 @@ const managementReducer = (state = initialState, action) => {
                 isLoading: false,
                 error: null,
                 commonwords: payload.commonwords
+            }
+        case LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED:
+            return {
+              ...state,
+              isLoading: false,
+              error: payload.error,
+              maxcommonwords: null,
+            }
+        case LOAD_ANALYTICS_MAXIMUM_COMMON_WORD:
+            return {
+              ...state,
+              isLoading: true,
+              error: null,
+              maxcommonwords: null,
+            }
+        case LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL:
+            return {
+              ...state,
+              isLoading: false,
+              error: null,
+              maxcommonwords: payload.maxcommonwords,
             }
         default:
             return state

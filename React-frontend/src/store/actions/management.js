@@ -12,7 +12,10 @@ import {
     LOAD_TODO_TASKS_SUCCESSFULL,
     LOAD_ANALYTICS_COMMON_WORD,
     LOAD_ANALYTICS_COMMON_WORD_FAILED,
-    LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL
+    LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL,
+    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL,
+    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
+    LOAD_ANALYTICS_MAXIMUM_COMMON_WORD
 } from "../types/management"
 import { setAlert } from './alerts';
 
@@ -129,7 +132,7 @@ export const loadAnalyticsCommonWord = (case1, case2) => (dispatch) => {
     // send request to server
     axios.post('/common/Case1/Case2',data ,config)
         .then((res) => {
-            console.log(res)
+            //console.log(res)
             const commonword_json = (res.data)
             
             dispatch({
@@ -157,6 +160,73 @@ export const loadAnalyticsCommonWord = (case1, case2) => (dispatch) => {
                     error: 'Something Went Wrong.'
                 }
             })
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+}
+
+// Action generator to fetch/load maximum common words between cases
+export const loadAnalyticsMaxCommonWord = (case1, case2) => (dispatch) => {
+    
+    // dispatch laod analytics common word
+    dispatch({
+        type: LOAD_ANALYTICS_MAXIMUM_COMMON_WORD
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case1: case1,
+        case2: case2
+    }
+    
+    // send request to server
+    axios.post('/common/words/<Case1>/<Case2>',data ,config)
+        .then((res) => {
+            //console.log(res)
+            let max_commonword_json = (res.data)
+            // console.log("max_commonword_json");
+            // console.log(max_commonword_json)
+            
+            dispatch({
+                type: LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL,
+                payload: {
+                    maxcommonwords: max_commonword_json
+                }
+            })
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                    type: LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
             dispatch(setAlert('Something Went Wrong.'))
         })
 }
