@@ -12,6 +12,7 @@ import {
     Button
 } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import memberIcon from '../../images/memberIcon.png';
 import CaseCard from '../Extractor/CaseCard';
@@ -53,6 +54,13 @@ const useStyle = makeStyles((theme) => ({
             border: 'none'
         }
     },
+    headerButton: {
+        fontSize: '.8rem',
+        fontWeight: 'bolder',
+        '&:focus': {
+            outline: 'none'
+        }
+    },
     text: {
         'marginTop': theme.spacing(1),
         fontWeight: '500'
@@ -65,6 +73,9 @@ function MemberDetails() {
 
     // Invoke custom styles
     const classes = useStyle()
+
+    // history
+    const history = useHistory()
 
     // state variable for opening and closing models
     const [isDeleteModelOpen, setToggleShowDeleteModel] = useState(false)
@@ -96,7 +107,9 @@ function MemberDetails() {
         <Container className={classes.root}>
 
             <Typography component="h1" variant="h5" className={classes.title}>
-                All Members &gt; {member.role} &gt; {member.email}
+                <Button className={classes.headerButton} onClick={() => history.push('/list-members')}>All Members</Button>&gt;
+                <Button className={classes.headerButton} onClick={() => history.goBack()}>{member.role}</Button>&gt;
+                <Button className={classes.headerButton} >{member.email}</Button>
             </Typography>
             <Grid container>
                 <Grid item xs={12} sm={12} md={6} lg={4} className={classes.profileSection}>
@@ -163,26 +176,32 @@ function MemberDetails() {
                     Display the extracted cases only if
                     the role of selected memer is extractor
                 */}
-                <Typography component="h1" variant="h5" className={classes.title}>
-                    Extracted Cases
-                </Typography>
-                {member.role === 'extractor' &&
-                    ((cases) ? (
+                {
+                    (member.role === 'extractor') && (
                         <Grid item  xs={12} sm={12} md={6} lg={8} className={classes.caseSection}>
-                            {(cases.length > 0) ? (
-                                cases.map((c) => {
-                                    return (
-                                        <CaseCard {...c} key={c.case_name}/>
+
+                            <Typography component="h1" variant="h5" className={classes.title}>
+                                Extracted Cases
+                            </Typography>
+
+                            {
+                                (cases) ? (
+                                    (cases.length > 0) ? (
+                                        cases.map((c) => {
+                                            return (
+                                                <CaseCard {...c} key={c.case_name}/>
+                                            )
+                                        })
+                                    ): (
+                                        <span> No Cases Extracted. </span>
                                     )
-                                })
-                            ) : (
-                                <span> No Cases Found. </span>
-                            )
+                                ) : (
+                                    <span> No Cases Found. </span>
+                                )
                             }
+
                         </Grid>
-                    ) : (
-                        <CircularProgress style={{ marginTop: '30vh', marginLeft: '20vw'}}/>
-                    ))
+                    )
                 }
             </Grid>
 
