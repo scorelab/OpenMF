@@ -22,7 +22,8 @@ import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
 import AnalyticsPage from './pages/Management/AnalyticsPage';
 import CommonWordsPage from './pages/Management/CommonWordsPage';
-import KeywordSearchPage from './pages/Management/KeywordSearchPage'
+import KeywordSearchPage from './pages/Management/KeywordSearchPage';
+import FilterCasePage from './pages/Management/FilterCasePage';
 
 
 
@@ -90,6 +91,7 @@ function App() {
           <PrivateRoute path='/task/todo' exact component={TodoTaskPage} />
           <PrivateRoute path='/common/Case1/Case2' exact component={CommonWordsPage} />
           <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
+          <PrivateRoute path='/filter' exact component={FilterCasePage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
