@@ -75,7 +75,6 @@ function AddMemberForm({toggleAddMemberModel}) {
 
     // option array to display inside select box
     const options = [
-        { value: 'admin', name: 'Admin' },
         { value: 'extractor', name: 'Extractor' },
         { value: 'management', name: 'Management' }
     ]
