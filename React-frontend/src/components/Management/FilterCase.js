@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
 import "date-fns";
 import {
   loadFilteredCase,
@@ -11,7 +10,6 @@ import DateFnsUtils from "@date-io/date-fns";
 import {
   Container,
   Typography,
-  TextField,
   Button,
   Table,
   TableBody,
@@ -21,12 +19,12 @@ import {
   TableRow,
   Paper,
   Grid,
-  Divider,
 } from "@material-ui/core";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+
 // custom styles
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,17 +94,18 @@ function FilterCase () {
 
   // Get management reducer
   const managementReducer = useSelector((state) => state.management);
-  // history
-  const history = useHistory();
+
   // invoke custom styles
   const classes = useStyles();
 
+  // state for from_date and to_date
   const [from_date, setFromDate] = useState("")
   const [to_date, setToDate] = useState("");
 
   let files = managementReducer.filtercase
 
 
+  // mapping fetched data
   let file = files && files.map((file, index) => {
       return file
    })
