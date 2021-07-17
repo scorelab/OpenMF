@@ -16,10 +16,10 @@ import {
 
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addMember } from '../../store/actions/admin';
+import SelectItem from '../Utils/SelectItem';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -73,6 +73,13 @@ function AddMemberForm({toggleAddMemberModel}) {
         toggleAddMemberModel(false)
     }
 
+    // option array to display inside select box
+    const options = [
+        { value: 'admin', name: 'Admin' },
+        { value: 'extractor', name: 'Extractor' },
+        { value: 'management', name: 'Management' }
+    ]
+
     // states
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -120,21 +127,13 @@ function AddMemberForm({toggleAddMemberModel}) {
                         onChange={e => setEmail(e.target.value)}
                     />
 
-
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required={true}
-                        fullWidth={true}
-                        id="role"
-                        label="role"
-                        name="role"
-                        autoComplete="role"
-                        className={classes.inputs}
-                        type="text"
+                    <SelectItem
                         value={role}
-                        onChange={e => setRole(e.target.value)}
+                        setValue={setRole}
+                        options={options}
+                        placeholder="Select Role"
                     />
+
 
                     <TextField
                         variant="outlined"
