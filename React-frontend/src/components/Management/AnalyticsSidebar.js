@@ -23,7 +23,10 @@ import InfoIcon from "@material-ui/icons/Info";
 import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import Folder from "@material-ui/icons/Folder";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
+import SearchIcon from "@material-ui/icons/Search";
+import BlurOnIcon from "@material-ui/icons/BlurOn";
 import Poll from "@material-ui/icons/Poll";
+import FilterListIcon from "@material-ui/icons/FilterList";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 // custom styles
@@ -98,13 +101,13 @@ function AnalyticsSidebar() {
   ];
 
   const analyticsItems = [
-    ["Common word", <Folder color="secondary" />, "/common/Case1/Case2"],
+    ["Common word", <BlurOnIcon color="secondary" />, "/common/Case1/Case2"],
     [
       "Key Word Search",
-      <AccountTreeIcon color="secondary" />,
+      <SearchIcon color="secondary" />,
       "/keywordsearch",
     ],
-    ["Filter", <Poll color="secondary" />, "/filter"],
+    ["Filter", <FilterListIcon color="secondary" />, "/filter"],
   ];
 
   // Other items
