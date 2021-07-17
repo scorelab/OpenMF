@@ -141,7 +141,7 @@ export const loadAnalyticsCommonWord = (case1, case2) => (dispatch) => {
     // send request to server
     axios.post('/common/Case1/Case2',data ,config)
         .then((res) => {
-            //console.log(res)
+            
             const commonword_json = (res.data)
             
             dispatch({
@@ -206,10 +206,7 @@ export const loadAnalyticsMaxCommonWord = (case1, case2) => (dispatch) => {
     // send request to server
     axios.post('/common/words/<case1>/<case2>',data ,config)
         .then((res) => {
-            //console.log(res)
             let max_commonword_json = (res.data)
-            // console.log("max_commonword_json");
-            // console.log(max_commonword_json)
             
             dispatch({
                 type: LOAD_ANALYTICS_MAXIMUM_COMMON_WORD_SUCCESSFUL,
@@ -328,7 +325,7 @@ export const loadAnalyticsKeyword = (keyword) => (dispatch) => {
     // send request to server
     axios.post('/keyword/search',data ,config)
         .then((res) => {
-            console.log(res)
+            
             const case_data = (res.data)
             
             dispatch({
@@ -360,7 +357,7 @@ export const loadAnalyticsKeyword = (keyword) => (dispatch) => {
         })
 }
 
-// Action generator to fetch/load common words between cases
+// Action generator to fetch/load common words from case
 export const loadKeywordfromCase = (keyword, keywordfromcase) => (dispatch) => {
   // dispatch laod analytics common word
   dispatch({
@@ -391,7 +388,7 @@ export const loadKeywordfromCase = (keyword, keywordfromcase) => (dispatch) => {
   // send request to server
   axios.post('/keyword/<case_name>/search', data, config)
     .then((res) => {
-      console.log(res)
+      
       const case_data = res.data
 
       dispatch({
@@ -458,7 +455,7 @@ export const loadFilteredCase = (from_date, to_date) => (dispatch) => {
   // send request to server
   axios.post('/case/filter', data, config)
     .then((res) => {
-      console.log(res)
+      
       const case_data = res.data
 
       dispatch({
