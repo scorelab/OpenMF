@@ -21,7 +21,10 @@ import {
   LOAD_ANALYTICS_KEYWORD_SEARCH_SUCCESSFUL,
   LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE,
   LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE_SUCCESSFUL,
-  LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE_FAILED
+  LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE_FAILED,
+  LOAD_ANALYTICS_FILTER,
+  LOAD_ANALYTICS_FILTER_SUCCESSFUL,
+  LOAD_ANALYTICS_FILTER_FAILED
 } from "../types/management";
 import { setAlert } from './alerts';
 
@@ -418,6 +421,73 @@ export const loadKeywordfromCase = (keyword, keywordfromcase) => (dispatch) => {
         payload: {
           error: "Something Went Wrong.",
         }
+      })
+      dispatch(setAlert("Something Went Wrong."))
+    })
+}
+
+
+// Action generator to fetch/load filtered cases
+export const loadFilteredCase = (from_date, to_date) => (dispatch) => {
+  // dispatch laod filtered cases
+  dispatch({
+    type: LOAD_ANALYTICS_FILTER,
+  })
+
+  // Get jwt token from local Storage
+  const token = localStorage.getItem("openmf_token");
+
+  // check if token exists or not
+  if (!token) {
+    dispatch({
+      type: LOAD_ANALYTICS_FILTER_FAILED,
+      payload: {
+        error: "Unauthorized, Please Login Again.",
+      }
+    })
+    return
+  }
+  // create config header object
+  const config = createConfig(token)
+
+  const data = {
+    starting_date: from_date,
+    end_date: to_date
+  }
+
+  // send request to server
+  axios.post('/case/filter', data, config)
+    .then((res) => {
+      console.log(res)
+      const case_data = res.data
+
+      dispatch({
+        type: LOAD_ANALYTICS_FILTER_SUCCESSFUL,
+        payload: {
+          filtercase: case_data
+        }
+      })
+      dispatch(setAlert(res.data.message, "success"))
+    })
+    .catch((err) => {
+      const res = err.response
+      if (
+        res &&
+        (res.status === 404 || res.status === 500 || res.status === 403)
+      ) {
+        dispatch({
+          type: LOAD_ANALYTICS_FILTER_FAILED,
+          payload: {
+            error: res.data.message
+          }
+        })
+        dispatch(setAlert(res.data.message))
+      }
+      dispatch({
+        type: LOAD_ANALYTICS_FILTER_FAILED,
+        payload: {
+          error: "Something Went Wrong.",
+        },
       })
       dispatch(setAlert("Something Went Wrong."))
     })

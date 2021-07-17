@@ -22,7 +22,10 @@ import {
   LOAD_ANALYTICS_KEYWORD_SEARCH_SUCCESSFUL,
   LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE,
   LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE_FAILED,
-  LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE_SUCCESSFUL
+  LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE_SUCCESSFUL,
+  LOAD_ANALYTICS_FILTER,
+  LOAD_ANALYTICS_FILTER_FAILED,
+  LOAD_ANALYTICS_FILTER_SUCCESSFUL
 } from "../types/management";
 
 // initial state
@@ -35,6 +38,7 @@ const initialState = {
     maxcommonwords: null,
     keyword: null,
     keywordfromcase: null,
+    filtercase: null,
 }
 
 // Reducer definition
@@ -163,6 +167,27 @@ const managementReducer = (state = initialState, action) => {
               isLoading: false,
               error: null,
               keywordfromcase: payload.keywordfromcase,
+            }
+        case LOAD_ANALYTICS_FILTER_FAILED:
+            return {
+              ...state,
+              isLoading: false,
+              error: payload.error,
+              filtercase: null,
+            }
+        case LOAD_ANALYTICS_FILTER:
+            return {
+              ...state,
+              isLoading: true,
+              error: null,
+              filtercase: null,
+            }
+        case LOAD_ANALYTICS_FILTER_SUCCESSFUL:
+            return {
+              ...state,
+              isLoading: false,
+              error: null,
+              filtercase: payload.filtercase,
             }
         default:
             return state
