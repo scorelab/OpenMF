@@ -1,7 +1,9 @@
+/*
+    Component to render cases which contains keyword.
+*/
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
 import {
   loadAnalyticsKeyword,
   loadKeywordfromCase,
@@ -20,7 +22,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Divider,
 } from "@material-ui/core";
 
 // custom styles
@@ -89,8 +90,7 @@ function Keywordsearch() {
 
   // Get management reducer
   const managementReducer = useSelector((state) => state.management);
-  // history
-  const history = useHistory();
+  
   // invoke custom styles
   const classes = useStyles();
 
@@ -102,13 +102,20 @@ function Keywordsearch() {
 
   let case_data_from_case = managementReducer.keywordfromcase;
 
+  // implementation of logic to get data from both api
   let data = case_name && keyword ? case_data_from_case : case_data;
   let file =
     data &&
     data.map((file, index) => {
       return file;
     });
+  
+  // dispatch function
   function dispatchonClick() {
+
+    //  if case_name is given then 
+    //  keyword search from within the case else
+    //  from the whole database
     if (case_name) {
       dispatch(loadKeywordfromCase(keyword, case_name));
     } else {
@@ -181,7 +188,7 @@ function Keywordsearch() {
 
               <TableBody>
                 {file &&
-                  file.map((row, index) => (
+                  file.map((value, index) => (
                     <StyledTableRow key={index}>
                       {
                         <StyledTableCell component="th" scope="row" key={index}>
@@ -190,7 +197,7 @@ function Keywordsearch() {
                       }
                       {
                         <StyledTableCell component="th" scope="row" key={index}>
-                          {row}
+                          {value}
                         </StyledTableCell>
                       }
                     </StyledTableRow>
