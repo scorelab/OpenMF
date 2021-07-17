@@ -1,4 +1,4 @@
-// page to render common word component
+// page to render filter case
 
 import React from "react";
 import HomeLogo from "../../components/core/HomeLogo";
@@ -14,13 +14,13 @@ const FilterCasePage = () => {
       <ManagementLayout sidebarBool={false}>
         <FilterCase />
       </ManagementLayout>
-    )
+    );
   }
   return (
     <ManagementLayout sidebarBool={true}>
       <HomeLogo />
     </ManagementLayout>
-  )
-}
+  );
+};
 
 export default FilterCasePage;

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import {
   loadAnalyticsKeyword,
-  loadKeywordfromCase
+  loadKeywordfromCase,
 } from "../../store/actions/management";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -98,21 +98,21 @@ function Keywordsearch() {
   const [keyword, setKeyword] = useState("");
   const [case_name, setCase_name] = useState("");
 
-  
-  let case_data = managementReducer.keyword
+  let case_data = managementReducer.keyword;
 
-  let case_data_from_case = managementReducer.keywordfromcase
+  let case_data_from_case = managementReducer.keywordfromcase;
 
-  let data = (case_name && keyword) ? case_data_from_case : case_data
-  let file = data && data.map((file, index) => {
+  let data = case_name && keyword ? case_data_from_case : case_data;
+  let file =
+    data &&
+    data.map((file, index) => {
       return file;
-  })
+    });
   function dispatchonClick() {
-    
-    if (case_name){
-        dispatch(loadKeywordfromCase(keyword,case_name))
-    }else{
-        dispatch(loadAnalyticsKeyword(keyword))
+    if (case_name) {
+      dispatch(loadKeywordfromCase(keyword, case_name));
+    } else {
+      dispatch(loadAnalyticsKeyword(keyword));
     }
   }
 
@@ -206,4 +206,4 @@ function Keywordsearch() {
   );
 }
 
-export default Keywordsearch
+export default Keywordsearch;

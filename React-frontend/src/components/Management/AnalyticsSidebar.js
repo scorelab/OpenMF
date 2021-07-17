@@ -101,7 +101,11 @@ function AnalyticsSidebar() {
 
   const analyticsItems = [
     ["Common word", <Folder color="secondary" />, "/common/Case1/Case2"],
-    ["Key Word Search", <AccountTreeIcon color="secondary" />, "/keywordsearch"],
+    [
+      "Key Word Search",
+      <AccountTreeIcon color="secondary" />,
+      "/keywordsearch",
+    ],
     ["Filter", <Poll color="secondary" />, "/filter"],
   ];
 
@@ -149,6 +153,7 @@ function AnalyticsSidebar() {
       </List>
 
       {/* Mapping analytics related items */}
+
       <Divider />
       <List>
         {analyticsItems.map((item, index) => (
@@ -184,10 +189,6 @@ function AnalyticsSidebar() {
           </ListItem>
         ))}
       </List>
-
-      {/*
-          Mapping task management items
-      */}
 
       {/*
           Mapping other items

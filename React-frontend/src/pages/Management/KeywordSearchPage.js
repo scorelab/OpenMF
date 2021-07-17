@@ -1,10 +1,10 @@
-// page to render common word component
+// page to render keyword search
 
 import React from "react";
 import HomeLogo from "../../components/core/HomeLogo";
 import ManagementLayout from "../../components/Management/ManagementLayout";
 import { useSelector } from "react-redux";
-import Keywordsearch from "../../components/Management/Keywordsearch"
+import Keywordsearch from "../../components/Management/Keywordsearch";
 
 const KeywordSearchPage = () => {
   const auth = useSelector((state) => state.auth);
