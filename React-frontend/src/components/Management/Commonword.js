@@ -4,7 +4,6 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
 import { loadAnalyticsCommonWord } from "../../store/actions/management";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -20,7 +19,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Divider,
 } from "@material-ui/core";
 
 // custom styles
@@ -97,34 +95,28 @@ function Commonword() {
   const [case1, setCase1] = useState("");
   const [case2, setCase2] = useState("");
 
-  // history
-  const history = useHistory();
+  
   // invoke custom styles
   const classes = useStyles();
 
-  let files = managementReducer.commonwords
+  let files = managementReducer.commonwords;
 
-  // mapping the Data
-  let file =
-    files &&
-    files.map((file, index) => {
-      return file;
-    })
- 
+  //mapping the Data
+  let file = files && files.map((file, index) => {
+      return file
+    });
+
+  //function for dispatching
   function dispatchonClick() {
-      if(case1 && case2){
-          dispatch(loadAnalyticsCommonWord(case1, case2))
-      }
-      
+    if (case1 && case2) {
+      dispatch(loadAnalyticsCommonWord(case1, case2));
+    }
   }
   return (
     <Container component="main" className={classes.root}>
       <Container>
         <Typography component="h1" variant="h5">
           Common Words
-        </Typography>
-        <Typography variant="body1" align="center" color="error">
-          {managementReducer.error}
         </Typography>
         <form>
           <TextField
@@ -169,7 +161,7 @@ function Commonword() {
           </Button>
         </form>
       </Container>
-      
+
       <Container>
         {/* Creating Table */}
         {managementReducer.commonwords ? (
@@ -184,7 +176,7 @@ function Commonword() {
 
               <TableBody>
                 {file &&
-                  file.map((row, index) => (
+                  file.map((value, index) => (
                     <StyledTableRow key={index}>
                       {
                         <StyledTableCell component="th" scope="row" key={index}>
@@ -193,7 +185,7 @@ function Commonword() {
                       }
                       {
                         <StyledTableCell component="th" scope="row" key={index}>
-                          {row}
+                          {file[index]}
                         </StyledTableCell>
                       }
                     </StyledTableRow>
@@ -201,7 +193,7 @@ function Commonword() {
               </TableBody>
             </Table>
           </TableContainer>
-        ) : (case1.length == 0 || case2.length == 0) ? (
+        ) : case1.length === 0 || case2.length === 0 ? (
           <Typography
             variant="body1"
             className={classes.root}
