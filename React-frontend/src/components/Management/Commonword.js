@@ -194,14 +194,9 @@ function Commonword() {
             </Table>
           </TableContainer>
         ) : case1.length === 0 || case2.length === 0 ? (
-          <Typography
-            variant="body1"
-            className={classes.root}
-            align="center"
-            color="secondary"
-          >
+          <div>
             Please provide Case name!
-          </Typography>
+          </div>
         ) : (
           <Typography variant="body1" align="center" color="secondary">
             {managementReducer.error}
