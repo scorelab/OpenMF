@@ -131,9 +131,9 @@ def filter():
     try:
         req = request.get_json()
 
-        from_date = str(req['starting date'])
+        from_date = str(req['starting_date'])
 
-        to_date = str(req['end date'])
+        to_date = str(req['end_date'])
 
         if not to_date:
             '''
