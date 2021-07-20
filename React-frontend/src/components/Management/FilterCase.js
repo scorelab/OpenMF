@@ -195,12 +195,12 @@ function FilterCase () {
                   file.map((row, index) => (
                     <StyledTableRow key={index}>
                       {
-                        <StyledTableCell component="th" scope="row" key={index}>
+                        <StyledTableCell component="th" scope="row" >
                           {row[1]}
                         </StyledTableCell>
                       }
                       {
-                        <StyledTableCell component="th" scope="row" key={index}>
+                        <StyledTableCell component="th" scope="row" >
                           {row[0]}
                         </StyledTableCell>
                       }
