@@ -20,6 +20,7 @@ import CaseDirsPage from './pages/Management/CaseDirsPage';
 import CaseFilePage from './pages/Management/CaseFilePage';
 import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
+import LiveDevices from './pages/Extractor/LiveDevices';
 
 
 
@@ -84,6 +85,7 @@ function App() {
           <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
           <PrivateRoute path='/task/finished' exact component={CompletedtaskPage} />
           <PrivateRoute path='/task/todo' exact component={TodoTaskPage} />
+          <PrivateRoute path='/live-devices' exact component={LiveDevices} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>

@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   Icon: {
     position: 'relative',
     '&::before': {
-      content: `"Admin"`,
+      content: `"Extractor"`,
       textAlign: 'center',
       fontWeight: '600',
       fontSize: theme.spacing(1.2),
