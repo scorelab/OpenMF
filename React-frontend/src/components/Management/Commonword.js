@@ -179,13 +179,13 @@ function Commonword() {
                   file.map((value, index) => (
                     <StyledTableRow key={index}>
                       {
-                        <StyledTableCell component="th" scope="row" key={index}>
+                        <StyledTableCell component="th" scope="row">
                           {index + 1}
                         </StyledTableCell>
                       }
                       {
-                        <StyledTableCell component="th" scope="row" key={index}>
-                          {file[index]}
+                        <StyledTableCell component="th" scope="row">
+                          {value}
                         </StyledTableCell>
                       }
                     </StyledTableRow>
