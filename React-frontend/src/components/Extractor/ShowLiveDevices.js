@@ -8,7 +8,7 @@ import {
     Typography,
     Divider
 } from '@material-ui/core';
-import DeviceCard from '../Management/DeviceCard';
+import DeviceCard from './DeviceCard';
 
 
 // custom styles
@@ -37,13 +37,21 @@ function ShowLiveDevices() {
     return (
         <Container className={classes.root}>
 
-            <Typography variant="h6" component="h1">
-                Live Connected Devices
+            < Typography
+                variant = "h6"
+                component = "h1"
+            >Live Connected Devices
             </Typography>
 
-            <Divider style={{width: '100%', marginTop: '1em'}}/>
+            <Divider style={{width: '100%', marginTop: '1em', marginBottom: '1em'}}/>
 
-            <DeviceCard serialNo="" modelNo="" isLoading={true}/>
+            <DeviceCard
+                serial="3adad83b"
+                model="SM_G600FY"
+                deviceCodeName="o71te"
+                transportID="1"
+                isLoading={false}
+            />
         </Container>
     )
 }
