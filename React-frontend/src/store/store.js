@@ -14,6 +14,7 @@ import admin from './reducers/admin';
 import extractor from './reducers/extractor';
 import caseReducer from './reducers/case';
 import management from './reducers/management';
+import device from './reducers/device';
 
 
 // Combine each reducer here
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   admin,
   extractor,
   management,
+  device,
   case: caseReducer
 });
 
