@@ -25,7 +25,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderRadius: 10,
+        marginRight: 20,
+        marginBottom: 20
     },
     largeIcon: {
         width: 120,
