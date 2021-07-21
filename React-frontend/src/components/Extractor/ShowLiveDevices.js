@@ -1,3 +1,7 @@
+/*
+* This Contains ShowLiveDevices that would be wrapped inside
+* LiveDevices page.
+*/
 
 
 // Importing Dependencies
