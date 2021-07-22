@@ -24,7 +24,10 @@ import {
   LOAD_ANALYTICS_KEYWORD_SEARCH_FROM_CASE_FAILED,
   LOAD_ANALYTICS_FILTER,
   LOAD_ANALYTICS_FILTER_SUCCESSFUL,
-  LOAD_ANALYTICS_FILTER_FAILED
+  LOAD_ANALYTICS_FILTER_FAILED,
+  LOAD_ANALYTICS_SEARCHED_TAGS,
+  LOAD_ANALYTICS_SEARCHED_TAGS_SUCCESSFUL,
+  LOAD_ANALYTICS_SEARCHED_TAGS_FAILED
 } from "../types/management";
 import { setAlert } from './alerts';
 
@@ -482,6 +485,71 @@ export const loadFilteredCase = (from_date, to_date) => (dispatch) => {
       }
       dispatch({
         type: LOAD_ANALYTICS_FILTER_FAILED,
+        payload: {
+          error: "Something Went Wrong.",
+        },
+      })
+      dispatch(setAlert("Something Went Wrong."))
+    })
+}
+
+// Action generator to fetch/load tag based cases
+export const loadTagCases = (tags) => (dispatch) => {
+  // dispatch laod tag cases
+  dispatch({
+    type: LOAD_ANALYTICS_SEARCHED_TAGS,
+  })
+
+  // Get jwt token from local Storage
+  const token = localStorage.getItem("openmf_token");
+
+  // check if token exists or not
+  if (!token) {
+    dispatch({
+      type: LOAD_ANALYTICS_SEARCHED_TAGS_FAILED,
+      payload: {
+        error: "Unauthorized, Please Login Again.",
+      }
+    })
+    return
+  }
+  // create config header object
+  const config = createConfig(token)
+
+  const data = {
+    tags: tags
+  }
+
+  // send request to server
+  axios.post('/keyword/search/tags', data, config)
+    .then((res) => {
+      
+      const tag_case_data = res.data
+
+      dispatch({
+        type: LOAD_ANALYTICS_SEARCHED_TAGS_SUCCESSFUL,
+        payload: {
+          casetags: tag_case_data
+        }
+      })
+      dispatch(setAlert(res.data.message, "success"))
+    })
+    .catch((err) => {
+      const res = err.response
+      if (
+        res &&
+        (res.status === 404 || res.status === 500 || res.status === 403)
+      ) {
+        dispatch({
+          type: LOAD_ANALYTICS_SEARCHED_TAGS_FAILED,
+          payload: {
+            error: res.data.message
+          }
+        })
+        dispatch(setAlert(res.data.message))
+      }
+      dispatch({
+        type: LOAD_ANALYTICS_SEARCHED_TAGS_FAILED,
         payload: {
           error: "Something Went Wrong.",
         },
