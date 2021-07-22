@@ -5,7 +5,7 @@
 
 
 // Importing Dependencies
-import React, { useEffect }from 'react';
+import React, { useEffect, useState }from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
@@ -19,7 +19,8 @@ import DeviceCard from './DeviceCard';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadLiveDevices } from '../../store/actions/device';
 import RefreshIcon from '@material-ui/icons/Refresh';
-
+import ExtractDataModel from './ExtractDataModel';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 // custom styles
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: theme.spacing(2)
     },
     button: {
         marginLeft: 10,
@@ -63,6 +65,12 @@ function ShowLiveDevices() {
     // Get device reducer
     const device = useSelector(state => state.device)
 
+    // Get Extract reducer
+    const extract = useSelector(state => state.extract)
+
+    // State varible to toggle ExtractDataModel
+    const [ isExtractDataModelOpen, toggleExtractDataModel ] = useState(false)
+
     // Server call on mount
     useEffect(() => {
 
@@ -77,7 +85,7 @@ function ShowLiveDevices() {
         <Container className={classes.root}>
 
 
-            <Box component="div" style={{display: 'flex', justifyContent: 'flex-start'}}>
+            <Box component="div" style={{display: 'flex', justifyContent: 'flex-start', alignItems: 'center'}}>
 
                 < Typography
                     variant = "h6"
@@ -96,7 +104,14 @@ function ShowLiveDevices() {
 
             </Box>
 
-            <Divider style={{width: '100%', marginTop: '1em', marginBottom: '1em'}}/>
+            <Divider style={{width: '100%', marginTop: '1em'}}/>
+
+            {
+                // Showing Linear Progression
+                (device.isLoading || extract.isLoading) && (
+                    <LinearProgress style={{width: '100%'}}/>
+                )
+            }
 
             <Box component="div" className={classes.devices}>
                 {
@@ -112,7 +127,7 @@ function ShowLiveDevices() {
                     ) :
                     // Render all the devices if they exists
                     (device.devices && device.devices.length > 0 ) ? (
-                            device.devices.map((item) => {
+                            device.devices.map((item, index) => {
                                 return (
                                     <DeviceCard
                                     serial={item.serial}
@@ -120,6 +135,7 @@ function ShowLiveDevices() {
                                     deviceCodeName={item.device_codename}
                                     transportID={item.transport_id}
                                     isLoading={device.isLoading}
+                                    key={index}
                                 />
                             )
                         })
@@ -129,6 +145,14 @@ function ShowLiveDevices() {
                         <span>No Device Connnected.</span>
                     )
                 }
+                {
+                    // Extract Data Model
+                    (<ExtractDataModel
+                        isOpen={isExtractDataModelOpen}
+                        toggleExtractDataModel={toggleExtractDataModel}
+                    />)
+                }
+
             </Box>
         </Container>
     )

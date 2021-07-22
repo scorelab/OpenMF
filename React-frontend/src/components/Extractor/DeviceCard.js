@@ -2,9 +2,9 @@
 * Functional componenet to Show Details of a connected device.
 */
 
-
 // Importing Dependencies
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Box,
@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import DeviceUnknownIcon from '@material-ui/icons/DeviceUnknown';
 import PhoneLinkSetupIcon from '@material-ui/icons/PhonelinkSetup';
+import { defaultState } from '../../store/actions/extract';
 
 
 // Custom styles
@@ -55,10 +56,20 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // Main Functional Component
-function DeviceCard({ serial, model, deviceCodeName, transportID, isLoading }) {
+function DeviceCard({ serial, model, deviceCodeName, transportID, isLoading, toggleExtractDataModel }) {
 
     // Invoking custom styles
     const classes = useStyles()
+
+    // dispatcher
+    const dispatch = useDispatch()
+
+    // Function to handle click
+    const handleClick = () => {
+        dispatch(defaultState(model))
+        toggleExtractDataModel(true)
+    }
+
 
     // Main return statement
     return (
@@ -79,8 +90,22 @@ function DeviceCard({ serial, model, deviceCodeName, transportID, isLoading }) {
                 ) : (
                     <>
                         <Tooltip title="Device Model">
+
                             <Typography className={classes.title}>
+                                <svg width="16px" height="16px" style={{marginRight: '.5em'}}>
+                                    <g color='green'>
+                                        <circle
+                                            cx="8px"
+                                            cy="8px"
+                                            r="5"
+                                            stroke='currentcolor'
+                                            fill='currentcolor'
+                                        />
+                                    </g>
+                                </svg>
+
                                 {model}
+
                             </Typography>
                         </Tooltip>
 
@@ -109,6 +134,7 @@ function DeviceCard({ serial, model, deviceCodeName, transportID, isLoading }) {
                         disabled={isLoading}
                         color="secondary"
                         variant="outlined"
+                        onClick={() => handleClick(true)}
                         >Extract Data
                     </Button>
                 )
