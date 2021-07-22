@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import "date-fns";
-import {
-  loadFilteredCase, loadTagCases,
-} from "../../store/actions/management";
+import { loadFilteredCase, loadTagCases } from "../../store/actions/management";
 import { withStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
 import FormControl from "@material-ui/core/FormControl";
@@ -99,7 +97,7 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function FilterCase () {
+function FilterCase() {
   // Dispatcher
   const dispatch = useDispatch();
 
@@ -110,34 +108,33 @@ function FilterCase () {
   const classes = useStyles();
 
   // states
-  const [from_date, setFromDate] = useState("")
+  const [from_date, setFromDate] = useState("");
   const [to_date, setToDate] = useState("");
   const [tags, setTags] = useState("");
   const [filterType, setFilterType] = useState("tags");
 
-  let files = (managementReducer.filtercase) ? managementReducer.filtercase : managementReducer.casetags
-
+  let files = managementReducer.filtercase
+    ? managementReducer.filtercase
+    : managementReducer.casetags;
 
   // mapping fetched data
-  let file = files && files.map((file, index) => {
-      return file
-   })
+  let file =
+    files &&
+    files.map((file, index) => {
+      return file;
+    });
+  // options used in dropdown filter type
+  const options = [
+    { value: "date", name: "Date" },
+    { value: "tags", name: "Tags" },
+  ];
 
-
-
-     const options = [
-       {value: 'date', name: 'Date' },
-       {value: 'tags', name: 'Tags'},
-     ]
-    
-     
   function dispatchonClick() {
-    if(filterType==='date'){
+    if (filterType === "date") {
       dispatch(loadFilteredCase(from_date, to_date));
-    }else{
-      dispatch(loadTagCases(tags))
+    } else {
+      dispatch(loadTagCases(tags));
     }
-    
   }
   return (
     <Container component="main" className={classes.root}>
@@ -155,6 +152,7 @@ function FilterCase () {
         </Typography>
 
         <form>
+          {/* implementing logic for filter type */}
           {filterType === "date" ? (
             <MuiPickersUtilsProvider
               utils={DateFnsUtils}
@@ -321,4 +319,4 @@ function FilterCase () {
   );
 }
 
-export default FilterCase
+export default FilterCase;
