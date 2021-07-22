@@ -153,5 +153,3 @@ if __name__ == '__main__':
         print('Invalid / Not Sufficient options provided')
         print(help_str)
         sys.exit()
-
-# python collector.py --option media --session_name tagcase --tag ["theft"]
