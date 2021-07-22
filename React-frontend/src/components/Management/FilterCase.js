@@ -3,10 +3,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import "date-fns";
 import {
-  loadFilteredCase,
+  loadFilteredCase, loadTagCases,
 } from "../../store/actions/management";
 import { withStyles } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
+import FormControl from "@material-ui/core/FormControl";
+import SelectItem from "../Utils/SelectItem";
+
 import {
   Container,
   Typography,
@@ -18,6 +21,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
   Grid,
 } from "@material-ui/core";
 import {
@@ -68,6 +72,13 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  formControl: {
+    marginRight: theme.spacing(1),
+    justifyContent: "flex-start",
+    width: "10vw",
+    flexDirection: "row",
+    paddingLeft: "10px",
+  },
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -98,11 +109,13 @@ function FilterCase () {
   // invoke custom styles
   const classes = useStyles();
 
-  // state for from_date and to_date
+  // states
   const [from_date, setFromDate] = useState("")
   const [to_date, setToDate] = useState("");
+  const [tags, setTags] = useState("");
+  const [filterType, setFilterType] = useState("tags");
 
-  let files = managementReducer.filtercase
+  let files = (managementReducer.filtercase) ? managementReducer.filtercase : managementReducer.casetags
 
 
   // mapping fetched data
@@ -111,72 +124,122 @@ function FilterCase () {
    })
 
 
+
+     const options = [
+       {value: 'date', name: 'Date' },
+       {value: 'tags', name: 'Tags'},
+     ]
+    
+     
   function dispatchonClick() {
-    dispatch(loadFilteredCase(from_date, to_date))
+    if(filterType==='date'){
+      dispatch(loadFilteredCase(from_date, to_date));
+    }else{
+      dispatch(loadTagCases(tags))
+    }
+    
   }
   return (
     <Container component="main" className={classes.root}>
       <Container>
         <Typography component="h1" variant="h5">
-          Filter Cases
+          <>Filter Cases</>
+          <FormControl className={classes.formControl}>
+            <SelectItem
+              value={filterType}
+              setValue={setFilterType}
+              options={options}
+              placeholder="Filter Type"
+            />
+          </FormControl>
         </Typography>
+
         <form>
-          <MuiPickersUtilsProvider
-            utils={DateFnsUtils}
-            className={classes.inputs}
-          >
-            <Grid container justifyContent="space-around">
-              <KeyboardDatePicker
-                margin="normal"
-                id="date-picker-dialog"
-                label="From Date"
-                name="From Date"
-                format="yyyy-MM-dd"
+          {filterType === "date" ? (
+            <MuiPickersUtilsProvider
+              utils={DateFnsUtils}
+              className={classes.inputs}
+            >
+              <Grid container justifyContent="space-around">
+                <KeyboardDatePicker
+                  margin="normal"
+                  id="date-picker-dialog"
+                  label="From Date"
+                  name="From Date"
+                  format="yyyy-MM-dd"
+                  variant="outlined"
+                  autoOk
+                  disableFuture
+                  emptyLabel
+                  invalidDateMessage
+                  type="text"
+                  className={classes.date}
+                  autoFocus
+                  value={from_date}
+                  onChange={(e) => setFromDate({ e })}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+                <KeyboardDatePicker
+                  margin="normal"
+                  id="date-picker-dialog"
+                  label="To Date"
+                  name="To Date"
+                  format="yyyy-MM-dd"
+                  variant="outlined"
+                  autoOk
+                  disableFuture
+                  emptyLabel
+                  invalidDateMessage
+                  autoComplete="To Date"
+                  type="text"
+                  value={to_date}
+                  className={classes.date}
+                  onChange={(e) => setToDate({ e })}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                  autoFocus
+                />
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={() => dispatchonClick()}
+                >
+                  Search Cases
+                </Button>
+              </Grid>
+            </MuiPickersUtilsProvider>
+          ) : (
+            <Container>
+              <TextField
                 variant="outlined"
-                autoOk
-                disableFuture
-                emptyLabel
-                invalidDateMessage
-                type="text"
-                className={classes.date}
-                autoFocus
-                value={from_date}
-                onChange={(e) => setFromDate(e)}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-              <KeyboardDatePicker
                 margin="normal"
-                id="date-picker-dialog"
-                label="To Date"
-                name="To Date"
-                format="yyyy-MM-dd"
-                variant="outlined"
-                autoOk
-                disableFuture
-                emptyLabel
-                invalidDateMessage
-                autoComplete="To Date"
+                required={true}
+                fullWidth={true}
+                id="tags"
+                label="tags"
+                name="Tags"
+                autoComplete="tags"
+                className={classes.inputs}
                 type="text"
-                value={to_date}
-                className={classes.date}
-                onChange={(e) => setToDate(e)}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
+                value={tags}
+                onChange={(e) => setTags(e.target.value)}
                 autoFocus
               />
               <Button
+                fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
                 onClick={() => dispatchonClick()}
               >
-                Search Cases
+                Find Cases
               </Button>
-            </Grid>
-          </MuiPickersUtilsProvider>
+            </Container>
+          )}
         </form>
       </Container>
       <Container>
@@ -195,12 +258,12 @@ function FilterCase () {
                   file.map((row, index) => (
                     <StyledTableRow key={index}>
                       {
-                        <StyledTableCell component="th" scope="row" >
+                        <StyledTableCell component="th" scope="row">
                           {row[1]}
                         </StyledTableCell>
                       }
                       {
-                        <StyledTableCell component="th" scope="row" >
+                        <StyledTableCell component="th" scope="row">
                           {row[0]}
                         </StyledTableCell>
                       }
@@ -209,10 +272,49 @@ function FilterCase () {
               </TableBody>
             </Table>
           </TableContainer>
+        ) : managementReducer.casetags ? (
+          <Container>
+            <TableContainer component={Paper} className={classes.paper.root}>
+              <Table stickyHeader aria-label="Common words">
+                <TableHead>
+                  <StyledTableRow>
+                    <StyledTableCell align="left">Index</StyledTableCell>
+                    <StyledTableCell align="left">Case Files</StyledTableCell>
+                  </StyledTableRow>
+                </TableHead>
+
+                <TableBody>
+                  {file &&
+                    file.map((row, index) => (
+                      <StyledTableRow key={index}>
+                        {
+                          <StyledTableCell component="th" scope="row">
+                            {index + 1}
+                          </StyledTableCell>
+                        }
+                        {
+                          <StyledTableCell component="th" scope="row">
+                            {row}
+                          </StyledTableCell>
+                        }
+                      </StyledTableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Container>
         ) : (
-          <Typography variant="body1" align="center" color="secondary">
-            No Case Found
-          </Typography>
+          <Container>
+            {filterType !== "date" ? (
+              <Typography variant="body1" align="left" color="secondary">
+                No Case Found
+              </Typography>
+            ) : (
+              <Typography variant="body1" align="center" color="secondary">
+                No Case Found
+              </Typography>
+            )}
+          </Container>
         )}
       </Container>
     </Container>
