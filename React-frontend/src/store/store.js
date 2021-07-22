@@ -7,6 +7,8 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 
+
+// Importing Reducers
 import auth from './reducers/auth';
 import users from './reducers/users';
 import alerts from './reducers/alerts';
@@ -15,6 +17,7 @@ import extractor from './reducers/extractor';
 import caseReducer from './reducers/case';
 import management from './reducers/management';
 import device from './reducers/device';
+import extract from './reducers/extract';
 
 
 // Combine each reducer here
@@ -26,6 +29,7 @@ const rootReducer = combineReducers({
   extractor,
   management,
   device,
+  extract,
   case: caseReducer
 });
 
