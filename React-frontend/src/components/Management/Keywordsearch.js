@@ -6,10 +6,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadAnalyticsKeyword,
+  loadCustomSearchCases,
   loadKeywordfromCase,
 } from "../../store/actions/management";
 import { withStyles } from "@material-ui/core/styles";
-
+import FormControl from "@material-ui/core/FormControl";
+import SelectItem from "../Utils/SelectItem";
 import {
   Container,
   Typography,
@@ -64,6 +66,13 @@ const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
+  formControl: {
+    marginRight: theme.spacing(1),
+    justifyContent: "flex-start",
+    width: "10vw",
+    flexDirection: "row",
+    paddingLeft: "10px",
+  },
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -90,36 +99,56 @@ function Keywordsearch() {
 
   // Get management reducer
   const managementReducer = useSelector((state) => state.management);
-  
+
   // invoke custom styles
   const classes = useStyles();
 
-  //keyword and case state
+  // states
   const [keyword, setKeyword] = useState("");
   const [case_name, setCase_name] = useState("");
+  const [filterType, setFilterType] = useState("search");
+  const [customkeyword, setCustomKeyword] = useState("");
 
   let case_data = managementReducer.keyword;
 
   let case_data_from_case = managementReducer.keywordfromcase;
 
-  // implementation of logic to get data from both api
-  let data = case_name && keyword ? case_data_from_case : case_data;
+  let case_from_custom_search = managementReducer.customsearch;
+
+  // implementation of logic to get data from customsearch
+  // keywordsearch and keywordfromcase api
+  let data = customkeyword
+    ? case_from_custom_search
+    : case_name && keyword
+    ? case_data_from_case
+    : case_data;
   let file =
     data &&
     data.map((file, index) => {
       return file;
     });
-  
+
+  // options used in dropdown filter type
+  const options = [
+    { value: "search", name: "Search" },
+    { value: "customsearch", name: "Custom Search" },
+  ];
+
   // dispatch function
   function dispatchonClick() {
-
-    //  if case_name is given then 
+    // if filtertype is customsearch then
+    // dispatch from loadcustomsearch to get cases.
+    //  if case_name is given then
     //  keyword search from within the case else
     //  from the whole database
-    if (case_name) {
-      dispatch(loadKeywordfromCase(keyword, case_name));
+    if (filterType === "customsearch") {
+      dispatch(loadCustomSearchCases(customkeyword));
     } else {
-      dispatch(loadAnalyticsKeyword(keyword));
+      if (case_name) {
+        dispatch(loadKeywordfromCase(keyword, case_name));
+      } else {
+        dispatch(loadAnalyticsKeyword(keyword));
+      }
     }
   }
 
@@ -128,85 +157,134 @@ function Keywordsearch() {
       <Container>
         <Typography component="h1" variant="h5">
           Keyword Search
+          <FormControl className={classes.formControl}>
+            <SelectItem
+              value={filterType}
+              setValue={setFilterType}
+              options={options}
+              placeholder="Filter Type"
+            />
+          </FormControl>
         </Typography>
-        <Typography variant="body1" align="center" color="error">
-          {managementReducer.error}
-        </Typography>
+
         <form>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required={true}
-            fullWidth={true}
-            id="keyword"
-            label="keyword"
-            name="keyword"
-            autoComplete="keyword"
-            className={classes.inputs}
-            type="text"
-            value={keyword}
-            onChange={(e) => setKeyword(e.target.value)}
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required={true}
-            fullWidth={true}
-            id="case_name"
-            label="case"
-            name="case_name"
-            autoComplete="case_name"
-            className={classes.inputs}
-            type="text"
-            value={case_name}
-            onChange={(e) => setCase_name(e.target.value)}
-            autoFocus
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={() => dispatchonClick()}
-          >
-            Find Cases
-          </Button>
+          {filterType === "search" ? (
+            <Container>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required={true}
+                fullWidth={true}
+                id="keyword"
+                label="keyword"
+                name="keyword"
+                autoComplete="keyword"
+                className={classes.inputs}
+                type="text"
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                autoFocus
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required={true}
+                fullWidth={true}
+                id="case_name"
+                label="case"
+                name="case_name"
+                autoComplete="case_name"
+                className={classes.inputs}
+                type="text"
+                value={case_name}
+                onChange={(e) => setCase_name(e.target.value)}
+                autoFocus
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() => dispatchonClick()}
+              >
+                Find Cases
+              </Button>
+            </Container>
+          ) : (
+            <Container>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required={true}
+                fullWidth={true}
+                id="customkeyword"
+                label="custom keyword"
+                name="custom keyword"
+                autoComplete="custom keyword"
+                className={classes.inputs}
+                type="text"
+                value={customkeyword}
+                onChange={(e) => setCustomKeyword(e.target.value)}
+                autoFocus
+              />
+              <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+                onClick={() => dispatchonClick()}
+              >
+                Find Cases
+              </Button>
+            </Container>
+          )}
         </form>
       </Container>
       <Container>
         {/* Creating Table */}
-        {managementReducer.keyword || managementReducer.keywordfromcase ? (
-          <TableContainer component={Paper} className={classes.paper.root}>
-            <Table stickyHeader aria-label="Common words">
-              <TableHead>
-                <StyledTableRow>
-                  <StyledTableCell align="left">Index</StyledTableCell>
-                  <StyledTableCell align="left">Case Files</StyledTableCell>
-                </StyledTableRow>
-              </TableHead>
+        {managementReducer.keyword ||
+        managementReducer.keywordfromcase ||
+        managementReducer.customsearch ? (
+          <Container>
+            <TableContainer component={Paper} className={classes.paper.root}>
+              <Table stickyHeader aria-label="Common words">
+                <TableHead>
+                  <StyledTableRow>
+                    <StyledTableCell align="left">Index</StyledTableCell>
+                    <StyledTableCell align="left">Case Files</StyledTableCell>
+                  </StyledTableRow>
+                </TableHead>
 
-              <TableBody>
-                {file &&
-                  file.map((value, index) => (
-                    <StyledTableRow key={index}>
-                      {
-                        <StyledTableCell component="th" scope="row" >
-                          {index + 1}
-                        </StyledTableCell>
-                      }
-                      {
-                        <StyledTableCell component="th" scope="row" >
-                          {value}
-                        </StyledTableCell>
-                      }
-                    </StyledTableRow>
-                  ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                <TableBody>
+                  {file &&
+                    file.map((value, index) => (
+                      <StyledTableRow key={index}>
+                        {
+                          <StyledTableCell component="th" scope="row">
+                            {index + 1}
+                          </StyledTableCell>
+                        }
+                        {
+                          <StyledTableCell component="th" scope="row">
+                            {value}
+                          </StyledTableCell>
+                        }
+                      </StyledTableRow>
+                    ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Container>
+        ) : managementReducer.error ? (
+          <Container>
+            <Typography variant="body1" align="left" color="error">
+              {managementReducer.error}
+            </Typography>
+          </Container>
         ) : (
-          <div>"Please add keyword!"</div>
+          <Container>
+            <div>"Please add keyword!"</div>
+          </Container>
         )}
       </Container>
     </Container>
