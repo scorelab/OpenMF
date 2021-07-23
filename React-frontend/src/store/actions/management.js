@@ -27,7 +27,10 @@ import {
   LOAD_ANALYTICS_FILTER_FAILED,
   LOAD_ANALYTICS_SEARCHED_TAGS,
   LOAD_ANALYTICS_SEARCHED_TAGS_SUCCESSFUL,
-  LOAD_ANALYTICS_SEARCHED_TAGS_FAILED
+  LOAD_ANALYTICS_SEARCHED_TAGS_FAILED,
+  LOAD_ANALYTICS_CUSTOM_SEARCH,
+  LOAD_ANALYTICS_CUSTOM_SEARCH_SUCCESSFUL,
+  LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED
 } from "../types/management";
 import { setAlert } from './alerts';
 
@@ -554,6 +557,71 @@ export const loadTagCases = (tags) => (dispatch) => {
           error: "Something Went Wrong.",
         },
       })
+      dispatch(setAlert("Something Went Wrong."))
+    })
+}
+
+// Action generator to fetch/load cases from custom search
+export const loadCustomSearchCases = (keyword) => (dispatch) => {
+  // dispatch laod cases
+  dispatch({
+    type: LOAD_ANALYTICS_CUSTOM_SEARCH,
+  })
+
+  // Get jwt token from local Storage
+  const token = localStorage.getItem("openmf_token");
+
+  // check if token exists or not
+  if (!token) {
+    dispatch({
+      type: LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED,
+      payload: {
+        error: "Unauthorized, Please Login Again.",
+      }
+    })
+    return
+  }
+  // create config header object
+  const config = createConfig(token)
+
+  const data = {
+    keyword:keyword
+  }
+
+  // send request to server
+  axios.post('keyword/custom/search', data, config)
+    .then((res) => {
+      
+      const custom_search_data = res.data
+
+      dispatch({
+        type: LOAD_ANALYTICS_CUSTOM_SEARCH_SUCCESSFUL,
+        payload: {
+          customsearch: custom_search_data,
+        },
+      })
+      dispatch(setAlert(res.data.message, "success"))
+    })
+    .catch((err) => {
+      const res = err.response
+      if (
+        res &&
+        (res.status === 404 || res.status === 500 || res.status === 403)
+      ) {
+        dispatch({
+          type: LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED,
+          payload: {
+            error: res.data.message
+          }
+        })
+        dispatch(setAlert(res.data.message))
+      }
+      dispatch({
+        type: LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED,
+        payload: {
+          error: "Something Went Wrong.",
+        },
+      });
       dispatch(setAlert("Something Went Wrong."))
     })
 }
