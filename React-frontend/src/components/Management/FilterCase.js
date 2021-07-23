@@ -113,7 +113,7 @@ function FilterCase() {
   const [tags, setTags] = useState("");
   const [filterType, setFilterType] = useState("tags");
 
-  let files = managementReducer.filtercase
+  let files = filterType === 'date'
     ? managementReducer.filtercase
     : managementReducer.casetags;
 
@@ -174,7 +174,7 @@ function FilterCase() {
                   className={classes.date}
                   autoFocus
                   value={from_date}
-                  onChange={(e) => setFromDate({ e })}
+                  onChange={(e) => setFromDate(e)}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
@@ -194,7 +194,7 @@ function FilterCase() {
                   type="text"
                   value={to_date}
                   className={classes.date}
-                  onChange={(e) => setToDate({ e })}
+                  onChange={(e) => setToDate(e)}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
