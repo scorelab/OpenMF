@@ -3,6 +3,7 @@ Routes related to users(admin, extractor and management).
 """
 
 from flask import Blueprint, jsonify, request
+from flask.globals import current_app
 from flask.helpers import make_response
 from api.models.admin import Admin
 from api.models.extractor import Extractor
@@ -17,6 +18,7 @@ from api.helpers.users import get_current_user
 from api.utils.jwt_decorators import (
     token_required,
     admin_token_required,
+    extractor_token_required
 )
 
 
@@ -459,7 +461,7 @@ def delete():
 @admin_token_required
 def extracted_cases():
     """
-    Route to get extracted cases of an extractor.
+    Route to get extracted cases of an extractor userd by admin.
     """
     # get Current user
     current_user = get_current_user(extracted_cases.role, extracted_cases.public_id)
@@ -499,6 +501,27 @@ def extracted_cases():
     return make_response(jsonify(response)), 200
 
 
+@user.route('/extractor/extracted-cases', methods=['GET'])
+@extractor_token_required
+def get_extracted_cases():
+    """
+    Route to get all extracted cases of an extractor,
+    Accessbile by only an extractor member.
+    """
 
+    # Get current user
+    current_user = get_current_user(get_extracted_cases.role, get_extracted_cases.public_id)
 
+    # Get extracted cases
+    cases = cases_schema.dump(current_user.extracted_cases)
+
+    # create response
+    response = {
+        "success": True,
+        "message": "Extracted cases Fetched",
+        "extracted_cases": cases
+    }
+
+    # return response
+    return make_response(jsonify(response)), 200
 
