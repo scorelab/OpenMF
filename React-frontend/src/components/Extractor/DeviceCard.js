@@ -134,7 +134,7 @@ function DeviceCard({ serial, model, deviceCodeName, transportID, isLoading, tog
                         disabled={isLoading}
                         color="secondary"
                         variant="outlined"
-                        onClick={() => handleClick(true)}
+                        onClick={() => handleClick()}
                         >Extract Data
                     </Button>
                 )

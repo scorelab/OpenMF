@@ -135,6 +135,7 @@ function ShowLiveDevices() {
                                     deviceCodeName={item.device_codename}
                                     transportID={item.transport_id}
                                     isLoading={device.isLoading}
+                                    toggleExtractDataModel={toggleExtractDataModel}
                                     key={index}
                                 />
                             )
