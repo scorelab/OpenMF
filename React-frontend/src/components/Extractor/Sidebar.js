@@ -16,13 +16,13 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
+import DevicesIcon from '@material-ui/icons/Devices';
+import WidgetsIcon from '@material-ui/icons/Widgets';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 
@@ -92,8 +92,8 @@ function Sidebar() {
 
   // User management related list items(For Admin)
   const caseManagementItems = [
-                                ['Live Devices', <SupervisorAccountIcon color="secondary"/>, "/live-devices"],
-                                ['Case Gallery', <PersonAddIcon color="secondary"/>, "/extracted-cases"],
+                                ['Live Devices', <DevicesIcon color="secondary"/>, "/live-devices"],
+                                ['Case Gallery', <WidgetsIcon color="secondary"/>, "/extracted-cases"],
                               ]
 
   // Task Management related list items(For Admin)
