@@ -9,13 +9,15 @@ import {
     Container,
     Typography
 } from '@material-ui/core';
+import moment from 'moment';
 
 
 // Custom styles
 const useStyles = makeStyles((theme) => ({
     root: {
         minWidth: theme.spacing(20),
-        maxWidth: theme.spacing(60),
+        maxWidth: theme.spacing(40),
+        maxHeight: theme.spacing(20),
         padding: theme.spacing(2),
         border: '1px solid #aaa',
         borderRadius: '4px',
@@ -23,21 +25,26 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        margin: `${theme.spacing(2)}px 0px`,
+        marginTop: theme.spacing(2),
     },
     title: {
+        fontSize: '1.2rem',
         fontWeight: '700',
         margin: '0px'
     },
     date: {
-        fontSize: theme.spacing(1.5),
+        fontSize: '.7rem',
         margin: '0',
         fontWeight: '500',
         color: '#a0a0a0',
         marginBottom: theme.spacing(1.1),
     },
+    bodyTextTitle: {
+        fontSize: '.8rem',
+        fontWeight: '600',
+    },
     bodyText: {
-        fontSize: theme.spacing(1.4),
+        fontSize: '.8rem',
         fontWeight: '400',
         marginBottom: theme.spacing(.3)
     }
@@ -58,20 +65,29 @@ function CaseCard({case_name, data_path, extracted_on, device_id}) {
             <Typography
                 variant="body1"
                 component="h4"
+                className={classes.date}
+                style={{marginBottom: '-2px'}}>
+                    <span>{moment(extracted_on).fromNow()}</span>
+            </Typography>
+            <Typography
+                variant="body1"
+                component="h4"
                 className={classes.date}>
-                    {extracted_on}
+                    {moment(extracted_on).format('DD-MM-YYYY, h:mm:ss A')}
             </Typography>
             <Typography
                 variant="body1"
                 component="h4"
                 className={classes.bodyText}>
-                    Device: {device_id}
+                    <span className={classes.bodyTextTitle}>Device: </span>
+                    {device_id}
             </Typography>
             <Typography
                 variant="body1"
                 component="h4"
                 className={classes.bodyText}>
-                    Data Path: {data_path}
+                    <span className={classes.bodyTextTitle}>Data Path: </span>
+                    {data_path}
             </Typography>
         </Container>
     )

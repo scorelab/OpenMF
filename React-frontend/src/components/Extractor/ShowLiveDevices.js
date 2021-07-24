@@ -109,7 +109,7 @@ function ShowLiveDevices() {
             {
                 // Showing Linear Progression
                 (device.isLoading || extract.isLoading) && (
-                    <LinearProgress style={{width: '100%'}}/>
+                    <LinearProgress style={{width: '100%'}} variant="query" />
                 )
             }
 
