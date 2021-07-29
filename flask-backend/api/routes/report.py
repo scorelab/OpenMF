@@ -1,3 +1,6 @@
+'''
+    Routes related to report
+'''
 import os
 import re
 from flask import Blueprint, jsonify, request
@@ -34,7 +37,7 @@ def getinfo(case_path):
     datafortable = datafortable.split('%')
 
     info = []
-    # i represents index
+    #  i represents index
     i = 0
 
     while i < (len(datafortable)):
@@ -86,7 +89,7 @@ def getinfo(case_path):
     {
         "case_name": "CaseName"
     }
-    
+
 '''
 
 
