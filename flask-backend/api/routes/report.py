@@ -3,6 +3,7 @@
 '''
 import os
 import re
+import csv
 from flask import Blueprint, jsonify, request
 from api.models.case import Case
 from api.schema.case import CaseSchema
@@ -17,7 +18,9 @@ report = Blueprint('report', __name__, url_prefix='/report')
 dirname = os.path.dirname(__file__)
 cases_data_path = os.path.join(dirname, '../../../data/')
 
+DATA_PATH = '../../../data/'
 PATH_TO_REPORT = '/report/report.txt'
+PATH_TO_LOCATION = '/tsv/savedlocation.tsv'
 
 
 def getinfo(case_path):
@@ -77,6 +80,22 @@ def getinfo(case_path):
     return info
 
 
+def get_coordinates(case_path):
+
+    coordinates = []
+
+    with open(case_path, 'r') as location:
+        location = csv.reader(location, delimiter='\t')
+        for row in (location):
+            data = [
+                row[4],
+                row[5],
+                row[7]
+            ]
+            coordinates.append(data)
+
+    return coordinates
+
 '''
     -------- APIs ------------
 
@@ -90,6 +109,16 @@ def getinfo(case_path):
         "case_name": "CaseName"
     }
 
+    2. http://127.0.0.1:5000/report/locations
+
+    This API is responsible to provide coordinates and link of
+    of the locations to map.
+
+    method = ['POST']
+    {
+        "case_name": "CaseName"
+    }
+    
 '''
 
 
@@ -126,6 +155,42 @@ def generalinfo():
 
     if datafortable:
         return jsonify(datafortable)
+
+    else:
+        return "No data found", 404
+
+
+@report.route('/locations', methods=['POST'])
+def locationinfo():
+
+    try:
+        req = request.get_json()
+        case_name_from_json = str(req['case_name'])
+
+        case = Case.query.filter_by(case_name=case_name_from_json).first()
+        # case = cases_data_path + '/' + case_name_from_json
+
+        if not case:
+            '''
+            If case is not present in database.
+            '''
+            return 'case with that name does not exist', 404
+
+        case_path = case.data_path
+        # case_path = case
+
+    except Exception as e:
+
+        print(e)
+
+        return 'Please provide valid Case', 400
+
+    case_path = os.sep.join([case_path, PATH_TO_LOCATION])
+
+    coordinates = get_coordinates(case_path)
+
+    if coordinates:
+        return jsonify(coordinates)
 
     else:
         return "No data found", 404
