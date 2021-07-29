@@ -1,3 +1,4 @@
+// Importing Dependecies
 import React, { useEffect } from 'react';
 import './App.css';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -20,6 +21,7 @@ import CaseDirsPage from './pages/Management/CaseDirsPage';
 import CaseFilePage from './pages/Management/CaseFilePage';
 import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
+import AnalyticsMain from './pages/Management/Analytics/AnalyticsMain';
 
 
 
@@ -80,6 +82,7 @@ function App() {
           <PrivateRoute path='/task/create' exact component={CreateTask} />
           <PrivateRoute path='/task/list' exact component={ShowTasks} />
           <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
+          <PrivateRoute path='/analytics' exact component={AnalyticsMain} />
           <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
           <PrivateRoute path='/file-explorer/:caseName/:dirName' component={CaseFilePage} />
           <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
