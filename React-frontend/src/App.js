@@ -54,9 +54,10 @@ function PublicRoute ({ component: Component, restricted, ...rest }) {
   useEffect(() => dispatch(loadUser()), [dispatch])
 
   return <Route {...rest} render={props => {
-    if (auth.isLoading) {
-      return <CircularProgress style={{ margin: '50vh 50vw' }} />
-    } else if (auth.isAuthenticated && restricted) {
+    // if (auth.isLoading) {
+    //   return <CircularProgress style={{ margin: '50vh 50vw' }} />
+    // }
+    if (auth.isAuthenticated && restricted) {
       return <Redirect to="/" />
     } else {
       return <Component {...props} />
