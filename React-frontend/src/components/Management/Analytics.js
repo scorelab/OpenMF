@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadCases } from '../../store/actions/case';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 import CaseFolderButton from '../Utils/CaseFolderButton';
 import {
     Container,
@@ -62,8 +62,9 @@ function Analytics() {
     const caseReducer = useSelector(state => state.case)
 
     // history
-    const history = useHistory()
+    // const history = useHistory()
 
+    // Main return statement
     return (
         <Container component="main" className={classes.root}>
 
@@ -82,7 +83,7 @@ function Analytics() {
                 {
                     (caseReducer.cases && caseReducer.cases.length > 0) ?
                         caseReducer.cases.map((caseItem) => {
-                            return (<CaseFolderButton key={caseItem.case_name} dirName={caseItem.case_name} parentDir='file-explorer'/>)
+                            return (<CaseFolderButton key={caseItem.case_name} dirName={caseItem.case_name} parentDir='analytics' isAnalyser={true} />)
                         })
                     : (
                         <span> Cases Not Found.</span>

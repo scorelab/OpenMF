@@ -75,7 +75,7 @@ function FileExplorer() {
                 {
                     (caseReducer.cases && caseReducer.cases.length > 0) ?
                         caseReducer.cases.map((caseItem) => {
-                            return (<CaseFolderButton key={caseItem.case_name} dirName={caseItem.case_name} parentDir='file-explorer'/>)
+                            return (<CaseFolderButton key={caseItem.case_name} dirName={caseItem.case_name} parentDir='file-explorer' isAnalyser={false}/>)
                         })
                     : (
                         <span> Cases Not Found.</span>

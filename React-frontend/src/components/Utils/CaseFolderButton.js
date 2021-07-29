@@ -6,9 +6,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Button
+    Button,
+    IconButton,
+    Tooltip
 } from '@material-ui/core';
 import FolderIcon from '@material-ui/icons/Folder';
+import GraphEqIcon from '@material-ui/icons/GraphicEq';
 import { useDispatch } from 'react-redux';
 import { loadCaseTree } from '../../store/actions/case';
 import { useHistory } from 'react-router-dom';
@@ -24,12 +27,21 @@ const useStyles = makeStyles((theme) => ({
         '&:focus': {
             outline: 'none'
         }
+    },
+    iconButton: {
+        color: '#000',
+        width: theme.spacing(2),
+        height: theme.spacing(2),
+        marginRight: '.5em',
+        '&:focus': {
+            outline: 'none'
+        }
     }
 }))
 
 
 // Main Functional component
-function CaseFolderButton({dirName, parentDir}) {
+function CaseFolderButton({dirName, parentDir, isAnalyser}) {
 
     // Invoke custom classes
     const classes = useStyles()
@@ -41,7 +53,7 @@ function CaseFolderButton({dirName, parentDir}) {
     const history = useHistory()
 
     // handle double click
-    const handleDoubleClick = (caseName) => {
+    const handleClick = (caseName) => {
 
         if(parentDir === 'file-explorer'){
             // dispatch caseTree
@@ -52,14 +64,32 @@ function CaseFolderButton({dirName, parentDir}) {
         history.push(`/${parentDir}/${caseName}`)
     }
 
+    // OnMouseDown handler
+    const handleOnMouseDown = (e) => {
+        e.stopPropagation()
+    }
+
     // return JSX
     return (
         <Button
             variant="outlined"
             className={classes.button}
-            onDoubleClick={() => handleDoubleClick(dirName)}
-            startIcon={<FolderIcon />}
+            onDoubleClick={() => handleClick(dirName)}
+            startIcon={(isAnalyser) ? null : <FolderIcon />}
         >
+            {
+                (isAnalyser)
+                &&
+                (<IconButton
+                    onMouseDown={handleOnMouseDown}
+                    className={classes.iconButton}
+                    onClick={() => handleClick(dirName)}
+                >
+                    <Tooltip title="Analyse">
+                        <GraphEqIcon />
+                    </Tooltip>
+                </IconButton>)
+            }
             {dirName}
         </Button>
     )
