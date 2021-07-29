@@ -23,6 +23,7 @@ import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
 import AnalyticsMain from './pages/Management/Analytics/AnalyticsMain';
 import DataVisualizer from './pages/Management/Analytics/DataVisualizer';
+import Report from './components/Management/Report';
 
 
 
@@ -90,6 +91,7 @@ function App() {
           <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
           <PrivateRoute path='/task/finished' exact component={CompletedtaskPage} />
           <PrivateRoute path='/task/todo' exact component={TodoTaskPage} />
+          <PrivateRoute path='/report' exact component={Report} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
