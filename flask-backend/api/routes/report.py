@@ -93,7 +93,7 @@ def get_coordinates(case_path):
                 row[7]
             ]
             coordinates.append(data)
-
+    coordinates.remove(coordinates[0])
     return coordinates
 
 '''
@@ -118,7 +118,7 @@ def get_coordinates(case_path):
     {
         "case_name": "CaseName"
     }
-    
+
 '''
 
 
