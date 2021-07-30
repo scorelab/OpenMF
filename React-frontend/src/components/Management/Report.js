@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { loadCases } from '../../store/actions/case';
+
 // import { useHistory } from 'react-router-dom';
 import CaseFolderButton from '../Utils/CaseFolderButton';
 import {
@@ -15,6 +16,7 @@ import {
     Divider,
     Button
 } from '@material-ui/core';
+import BrowserReport from './BrowserReport';
 
 
 // custom styles
@@ -66,33 +68,39 @@ function Report() {
 
     // Main return statement
     return (
-        <Container component="main" className={classes.root}>
-
-            {/* Header */}
-            <Typography component="h1" variant="h6">
-                <Button className={classes.title}>
-                    Case Report
-                </Button>
-            </Typography>
-
-            {/* Divider */}
-            <Divider style={{width: '100%', marginTop: '1em'}} />
-
-            {/* Rendering all cases from caseReducer */}
-            <Box component="div" className={classes.caseList}>
-                {
-                    (caseReducer.cases && caseReducer.cases.length > 0) ?
-                        caseReducer.cases.map((caseItem) => {
-                            return (<CaseFolderButton key={caseItem.case_name} dirName={caseItem.case_name} parentDir='report' isAnalyser={true} />)
-                        })
-                    : (
-                        <span> Cases Not Found.</span>
-                    )
-                }
-            </Box>
-
+      <Container component="main" className={classes.root}>
+        <Container>
+            <BrowserReport />
         </Container>
-    )
+        <Container>
+          {/* Header */}
+          <Typography component="h1" variant="h6">
+            <Button className={classes.title}>Case Report</Button>
+          </Typography>
+
+          {/* Divider */}
+          <Divider style={{ width: "100%", marginTop: "1em" }} />
+
+          {/* Rendering all cases from caseReducer */}
+          <Box component="div" className={classes.caseList}>
+            {caseReducer.cases && caseReducer.cases.length > 0 ? (
+              caseReducer.cases.map((caseItem) => {
+                return (
+                  <CaseFolderButton
+                    key={caseItem.case_name}
+                    dirName={caseItem.case_name}
+                    parentDir="report"
+                    isAnalyser={true}
+                  />
+                );
+              })
+            ) : (
+              <span> Cases Not Found.</span>
+            )}
+          </Box>
+        </Container>
+      </Container>
+    );
 }
 
 export default Report
