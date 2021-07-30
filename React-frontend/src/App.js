@@ -23,6 +23,11 @@ import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
 import ReportMain from './pages/Management/Report/ReportMain';
 import DataVisualizer from './pages/Management/Report/DataVisualizer';
+import AnalyticsPage from './pages/Management/AnalyticsPage';
+import CommonWordsPage from './pages/Management/CommonWordsPage';
+import KeywordSearchPage from './pages/Management/KeywordSearchPage';
+import FilterCasePage from './pages/Management/FilterCasePage';
+import ShowFilePage from './pages/Management/ShowFilePage';
 
 
 
@@ -85,11 +90,16 @@ function App() {
           <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
           <PrivateRoute path='/report' exact component={ReportMain} />
           <PrivateRoute path='/report/:caseName' component={DataVisualizer} />
+          <PrivateRoute path='/analytics' exact component={AnalyticsPage} />
           <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
+          <PrivateRoute path='/file-explorer/:caseName/:dirName/:fileName' component={ShowFilePage} />
           <PrivateRoute path='/file-explorer/:caseName/:dirName' component={CaseFilePage} />
           <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
           <PrivateRoute path='/task/finished' exact component={CompletedtaskPage} />
           <PrivateRoute path='/task/todo' exact component={TodoTaskPage} />
+          <PrivateRoute path='/common/Case1/Case2' exact component={CommonWordsPage} />
+          <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
+          <PrivateRoute path='/filter' exact component={FilterCasePage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>

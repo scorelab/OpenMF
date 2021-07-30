@@ -30,7 +30,7 @@ const useStyle = makeStyles((theme) => ({
         alignItems: 'flex-start'
     },
     title: {
-        fontSize: '1rem',
+        fontSize: '.8rem',
         fontWeight: 'bolder',
         '&:focus': {
             outline: 'none'

@@ -1,18 +1,22 @@
 // Component to represent case as in a tree structure
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadCaseTree } from '../../store/actions/case';
+import { loadCaseTree, loadDefaultState } from '../../store/actions/case';
+import { loadDefaultFileState, loadfile } from '../../store/actions/file';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import JsonPretty from '../Utils/JsonPretty';
+import ShowTXT from '../Utils/ShowTXT';
+import ShowTSV from '../Utils/ShowTSV';
 import {
     Container,
     TextField,
     Button,
     InputAdornment,
-    Grid
+    Grid,
+    Tooltip
 } from '@material-ui/core';
 import {
     TreeItem,
@@ -36,16 +40,63 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'flex-start'
     },
     input: {
-        marginBottom: theme.spacing(4)
+        marginBottom: theme.spacing(2)
     },
     tree: {
         height: theme.spacing(55),
-        overflow: 'auto'
     },
     dullText: {
         fontSize: '.6rem',
         fontWeight: '400',
         color: '#444'
+    },
+    rightUpperPart: {
+        overflowX: 'auto',
+        overflowY: 'auto',
+        height: '68vh',
+        '&::-webkit-scrollbar': {
+            width: '0px',
+        },
+        '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.0)',
+            webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.0)'
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, .1)',
+            outline: '1px solid slategrey'
+        }
+    },
+    treeSidebar: {
+        overflowX: 'auto',
+        overflowY: 'auto',
+        height: '68vh',
+        borderRight: '1px solid rgba(0, 0, 0, 0.3)',
+        '&::-webkit-scrollbar': {
+            width: '0px',
+        },
+        '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.0)',
+            webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.0)'
+        },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: 'rgba(0, 0, 0, .1)',
+            outline: '1px solid slategrey'
+        }
+    },
+    treeItem: {
+        fontSize: '.8rem',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        display: 'block'
+    },
+    rightPart: {
+        height: '80vh'
+    },
+    preStyle: {
+        width: '100%',
+        height: '100%',
+        overflow: 'auto'
     }
 }))
 
@@ -59,20 +110,40 @@ function CaseTreeView() {
     // Get case reducer
     const caseReducer = useSelector((state) => state.case)
 
+    // get file Reducer
+    const fileReducer = useSelector(state => state.file)
+
     // case state
     const [caseName, setCaseName] = useState('')
 
     // invoke custom styles
     const classes = useStyles()
 
+    // dispatch default state of caseReducer
+    useEffect(() => {
+        dispatch(loadDefaultState())
+        dispatch(loadDefaultFileState())
+    }, [dispatch])
+
     // Tree Component
     const renderTree = (nodes) => (
         <TreeItem
             key={nodes.id}
             nodeId={String(nodes.id)}
-            label={<><span> {nodes.name} </span> <span className={classes.dullText}> {nodes.size} </span></>}
+            label={
+                <>
+                    <Tooltip title={nodes.name} arrow>
+                        <span style={{fontSize: '.8rem'}}>{nodes.name}</span>
+                    </Tooltip>
+                    <span className={classes.dullText}>
+                        {nodes.size}
+                    </span>
+                </>
+            }
+            className={classes.treeItem}
+            onClick={() => (nodes.type === 'file') && dispatch(loadfile(nodes.path, nodes.extension))}
         >
-            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)): null}
+            {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
     )
 
@@ -113,7 +184,7 @@ function CaseTreeView() {
             />
 
             <Grid container>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={2} className={classes.treeSidebar}>
 
                     {/* Render Case Tree */}
                     {
@@ -127,17 +198,26 @@ function CaseTreeView() {
                                 {renderTree(caseReducer.caseTree)}
                             </TreeView>
                         ) : (caseReducer.error) ? (
-                            <span>{caseReducer.error}</span>
+                            <span style={{fontSize: '.8rem'}}>{caseReducer.error}</span>
                         ) : (
-                            <span>Please Provide Case Name.</span>
+                            <span style={{fontSize: '.8rem'}}>Please Provide Case Name.</span>
                         )
                     }
 
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={10} className={classes.rightUpperPart}>
 
                     {/* Render CaseTree in Pretty Json format */}
-                    <JsonPretty data={caseReducer.caseTree}/>
+                    {
+                        (caseReducer.isLoading || !caseReducer.caseTree ||fileReducer.isLoading || !fileReducer.file || !fileReducer.fileType) ? (
+                            <JsonPretty data={caseReducer.caseTree}/>
+                        ) : (fileReducer.fileType === 'report' || fileReducer.fileType === 'txt') ? (
+                            <ShowTXT data={fileReducer.file} className={classes.rightPart}/>
+                        ) : (fileReducer.fileType === 'tsv') ? (
+                            <ShowTSV data={fileReducer.file} className={classes.rightPart}/>) : (
+                                <pre className={classes.preStyle}>{fileReducer.file}</pre>
+                            )
+                    }
 
                 </Grid>
             </Grid>

@@ -83,6 +83,8 @@ def extract():
         device_id = str(req['device_id'])
         case_name = str(req['case_name'])
         data = str(req['data'])
+        tags = str(req['tags'])
+        tags = tags.split(',')
         print(data)
     except KeyError as err:
         return f'please provide {str(err)}', 400
@@ -98,26 +100,37 @@ def extract():
 
 
     sys.path.append(dirname + '../../../../apiUtility')
-    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS, apiExtractBrowser, apiExtractBluetooth, apiExtractMedia
+    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS, apiExtractBrowser, apiExtractBluetooth, apiExtractLocation, apiExtractMedia
+
 
     if(data == 'all'):
         apiExtactAll(case_name)
+        apiReport(case_name, tags)
     elif(data == 'facebook'):
         apiExtractFb(case_name)
+        apiReport(case_name, tags)
     elif(data == 'whatsapp'):
         apiExtractWa(case_name)
+        apiReport(case_name, tags)
     elif(data == 'message'):
         apiExtractSMS(case_name)
+        apiReport(case_name, tags)
     elif(data == 'phone'):
         apiExtractPhone(case_name)
+        apiReport(case_name, tags)
     elif(data == 'browser'):
         apiExtractBrowser(case_name)
+        apiReport(case_name, tags)
     elif(data == 'report'):
-        apiReport(case_name)
+        apiReport(case_name, tags)
     elif(data == 'bluetooth'):
         apiExtractBluetooth(case_name)
+        apiReport(case_name, tags)
+    elif(data == 'location'):
+        apiExtractLocation(case_name)
     elif(data == 'media'):
         apiExtractMedia(case_name)
+        apiReport(case_name, tags)
     else:
         response = {
             "success": False,
