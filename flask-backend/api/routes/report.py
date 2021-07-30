@@ -135,6 +135,16 @@ def get_browserdata(case_path):
         "case_name": "CaseName"
     }
 
+    3. http://127.0.0.1:5000/report/browserdata
+
+    This API is responsible to provide browser
+    searched links with its frequencies.
+
+    method = ['POST']
+    {
+        "case_name": "CaseName"
+    }
+    
 '''
 
 
