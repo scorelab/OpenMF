@@ -31,6 +31,15 @@ import {
   LOAD_ANALYTICS_CUSTOM_SEARCH,
   LOAD_ANALYTICS_CUSTOM_SEARCH_SUCCESSFUL,
   LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED,
+  LOAD_REPORT_GENERAL_INFO,
+  LOAD_REPORT_GENERAL_INFO_FAILED,
+  LOAD_REPORT_GENERAL_INFO_SUCCESSFUL,
+  LOAD_REPORT_BROWSER_DATA,
+  LOAD_REPORT_BROWSER_DATA_FAILED,
+  LOAD_REPORT_BROWSER_DATA_SUCCESSFUL,
+  LOAD_REPORT_LOCATION,
+  LOAD_REPORT_LOCATION_FAILED,
+  LOAD_REPORT_LOCATION_SUCCESSFUL,
 } from "../types/management";
 import { setAlert } from "./alerts";
 
@@ -628,3 +637,192 @@ export const loadCustomSearchCases = (keyword) => (dispatch) => {
       dispatch(setAlert("Something Went Wrong."));
     });
 };
+// Action generator to fetch/load general info to show in report section
+export const loadgeneralinfo = (case_name) => (dispatch) => {
+
+    // dispatch laod report data
+    dispatch({
+        type: LOAD_REPORT_GENERAL_INFO
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_REPORT_GENERAL_INFO_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case_name: case_name
+    }
+
+    // send request to server
+    axios.post('/report/generalinfo',data ,config)
+        .then((res) => {
+
+            const info_data = (res.data)
+            console.log(info_data, "  infodata from action")
+            dispatch({
+                type: LOAD_REPORT_GENERAL_INFO_SUCCESSFUL,
+                payload: {
+                    generalinfo: info_data
+                }
+            })
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                    type: LOAD_REPORT_GENERAL_INFO_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_REPORT_GENERAL_INFO_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+}
+// Action generator to fetch/load browser data for report
+export const loadBrowserReport = (case_name) => (dispatch) => {
+
+    // dispatch laod browser report data
+    dispatch({
+        type: LOAD_REPORT_BROWSER_DATA
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_REPORT_BROWSER_DATA_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case_name: case_name
+    }
+
+    // send request to server
+    axios.post('/report/browserdata',data ,config)
+        .then((res) => {
+
+            const browser_data = (res.data)
+
+            dispatch({
+              type: LOAD_REPORT_BROWSER_DATA_SUCCESSFUL,
+              payload: {
+                browserdata: browser_data,
+              },
+            });
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                    type: LOAD_REPORT_BROWSER_DATA_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_REPORT_BROWSER_DATA_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+} 
+// Action generator to fetch/load location coordinates
+export const loadLocationReport = (case_name) => (dispatch) => {
+
+    // dispatch laod browser report data
+    dispatch({
+        type: LOAD_REPORT_LOCATION
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_REPORT_LOCATION_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case_name: case_name
+    }
+
+    // send request to server
+    axios.post('/report/locations',data ,config)
+        .then((res) => {
+
+            const location_data = (res.data)
+
+            dispatch({
+              type: LOAD_REPORT_LOCATION_SUCCESSFUL,
+              payload: {
+                coordinates: location_data,
+              },
+            });
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                    type: LOAD_REPORT_LOCATION_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_REPORT_LOCATION_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+}
