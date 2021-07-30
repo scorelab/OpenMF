@@ -21,7 +21,7 @@ cases_data_path = os.path.join(dirname, '../../../data/')
 DATA_PATH = '../../../data/'
 PATH_TO_REPORT = '/report/report.txt'
 PATH_TO_LOCATION = '/tsv/savedlocation.tsv'
-
+PATH_TO_BROWSER = '/tsv/history.tsv'
 
 def getinfo(case_path):
     '''
@@ -95,6 +95,22 @@ def get_coordinates(case_path):
             coordinates.append(data)
     coordinates.remove(coordinates[0])
     return coordinates
+
+
+def get_browserdata(case_path):
+    case_path = os.sep.join([case_path, PATH_TO_BROWSER])
+    browser = []
+    with open(case_path, 'r', encoding="UTF-8") as browsers:
+        browsers = csv.reader(browsers, delimiter='\t')
+        for row in (browsers):
+            data = [
+                row[1],
+                row[2],
+                row[3]
+            ]
+            browser.append(data)
+    browser.remove(browser[0])
+    return browser
 
 '''
     -------- APIs ------------
@@ -191,6 +207,41 @@ def locationinfo():
 
     if coordinates:
         return jsonify(coordinates)
+
+    else:
+        return "No data found", 404
+
+
+@report.route('/browserdata', methods=['POST'])
+def browserdata():
+    try:
+        req = request.get_json()
+        case_name_from_json = str(req['case_name'])
+
+        case = Case.query.filter_by(case_name=case_name_from_json).first()
+        
+
+        if not case:
+            '''
+            If case is not present in database.
+            '''
+            return 'case with that name does not exist', 404
+
+        case_path = case.data_path
+        
+
+    except Exception as e:
+
+        print(e)
+
+        return 'Please provide valid Case', 400
+
+    
+
+    browser = get_browserdata(case_path)
+
+    if browser:
+        return jsonify(browser)
 
     else:
         return "No data found", 404
