@@ -13,7 +13,10 @@ import {
     LOAD_TODO_TASKS_SUCCESSFULL,
     LOAD_REPORT_GENERAL_INFO,
     LOAD_REPORT_GENERAL_INFO_FAILED,
-    LOAD_REPORT_GENERAL_INFO_SUCCESSFUL
+    LOAD_REPORT_GENERAL_INFO_SUCCESSFUL,
+    LOAD_REPORT_BROWSER_DATA,
+    LOAD_REPORT_BROWSER_DATA_FAILED,
+    LOAD_REPORT_BROWSER_DATA_SUCCESSFUL
 } from "../types/management"
 
 // initial state
@@ -23,6 +26,7 @@ const initialState = {
     todoTasks: null,
     completedTasks: null,
     generalinfo: null,
+    browserdata: null,
 }
 
 // Reducer definition
@@ -89,6 +93,27 @@ const managementReducer = (state = initialState, action) => {
               error: null,
               generalinfo: payload.generalinfo,
             }
+        case LOAD_REPORT_BROWSER_DATA_FAILED:
+            return {
+              ...state,
+              isLoading: false,
+              error: payload.error,
+              browserdata: null,
+            }
+        case LOAD_REPORT_BROWSER_DATA:
+            return {
+              ...state,
+              isLoading: true,
+              error: null,
+              browserdata: null,
+            }
+        case LOAD_REPORT_BROWSER_DATA_SUCCESSFUL:
+            return {
+              ...state,
+              isLoading: false,
+              error: null,
+              browserdata: payload.browserdata,
+            };
         default:
             return state
     }
