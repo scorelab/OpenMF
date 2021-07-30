@@ -4,11 +4,11 @@ import React from 'react';
 import HomeLogo from '../../../components/core/HomeLogo';
 import ManagementLayout from '../../../components/Management/ManagementLayout';
 import { useSelector } from 'react-redux';
-import Analytics from '../../../components/Management/Analytics';
+import Report from '../../../components/Management/Report';
 
 
 // Main Functional Component
-const AnalyticsMain = () => {
+const ReportMain = () => {
 
     // auth reducer
     const auth = useSelector(state => state.auth)
@@ -17,7 +17,7 @@ const AnalyticsMain = () => {
     if(auth && auth.isAuthenticated){
         return (
             <ManagementLayout sidebarBool={true}>
-                <Analytics />
+                <Report />
             </ManagementLayout>
         )
     }
@@ -28,4 +28,4 @@ const AnalyticsMain = () => {
     )
 }
 
-export default AnalyticsMain
+export default ReportMain
