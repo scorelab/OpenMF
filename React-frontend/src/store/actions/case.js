@@ -2,7 +2,15 @@
     Action and Action generators for Case Reducer.
 */
 
-import { LOAD_CASES, LOAD_CASES_FAILED, LOAD_CASES_SUCCESSFULL, LOAD_CASE_TREE, LOAD_CASE_TREE_FAILED, LOAD_CASE_TREE_SUCCESSFULL } from "../types/case";
+import {
+  DEFAULT_CASE_STATE,
+  LOAD_CASES,
+  LOAD_CASES_FAILED,
+  LOAD_CASES_SUCCESSFULL,
+  LOAD_CASE_TREE,
+  LOAD_CASE_TREE_FAILED,
+  LOAD_CASE_TREE_SUCCESSFULL
+} from "../types/case";
 import { setAlert } from "./alerts";
 import axios from '../../axios';
 
@@ -28,6 +36,13 @@ const createConfig = (token) => {
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++
 
+
+// Action generator for default state
+export const loadDefaultState = () => (dispatch) => {
+  dispatch({
+    type: DEFAULT_CASE_STATE
+  })
+}
 
 
 // Action generator for Loading csae tree

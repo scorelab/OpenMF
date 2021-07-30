@@ -13,6 +13,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.0",
     "mdbreact": "^4.27.0",
+    "papaparse": "^5.3.1",
     "react": "^17.0.0",
     "react-bootstrap": "^1.0.1",
     "react-bootstrap-sidebar": "0.0.1",

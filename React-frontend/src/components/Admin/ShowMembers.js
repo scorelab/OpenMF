@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
     Typography,
+    Button
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import {DataGrid} from '@material-ui/data-grid';
@@ -55,6 +56,13 @@ const useStyle = makeStyles((theme) => ({
             border: 'none'
         }
     },
+    button: {
+        fontSize: '.8rem',
+        fontWeight: 'bolder',
+        '&:focus': {
+            outline: 'none'
+        }
+    }
 }))
 
 
@@ -111,7 +119,7 @@ function ShowMembers({ extractors, managements}) {
     return (
         <Container className={classes.root}>
             <Typography component="h1" variant="h5" className={classes.title}>
-                All Members
+                <Button className={classes.button}>All Members</Button>
             </Typography>
             <DataGrid
                 rows={extractorRows}

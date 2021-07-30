@@ -20,6 +20,7 @@ import CaseDirsPage from './pages/Management/CaseDirsPage';
 import CaseFilePage from './pages/Management/CaseFilePage';
 import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
+import ShowFilePage from './pages/Management/ShowFilePage';
 
 
 
@@ -80,6 +81,7 @@ function App() {
           <PrivateRoute path='/task/list' exact component={ShowTasks} />
           <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
           <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
+          <PrivateRoute path='/file-explorer/:caseName/:dirName/:fileName' component={ShowFilePage} />
           <PrivateRoute path='/file-explorer/:caseName/:dirName' component={CaseFilePage} />
           <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
           <PrivateRoute path='/task/finished' exact component={CompletedtaskPage} />
