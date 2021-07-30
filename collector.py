@@ -25,7 +25,9 @@ from scripts.io_helper import write_to_file
 from scripts.message import store_sms_data
 from scripts.browser import store_browser_history_data
 from scripts.bluetooth import store_bluetooth_data
+from scripts.location import store_location_data
 from scripts.media import store_media_data
+
 
 
 help_str = """
@@ -72,6 +74,7 @@ FUNC_MAP = {
     'browser': store_browser_history_data,
     'general_info': print_general_info,
     'bluetooth': store_bluetooth_data,
+    'location' : store_location_data,
     'media': store_media_data,
 }
 
