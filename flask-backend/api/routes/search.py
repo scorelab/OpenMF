@@ -20,6 +20,26 @@ This API will give file path of searched keyword from the case.
     "keyword": "word"
 }
 
+3) API: http://127.0.0.1:5000/keyword/search/tags
+
+Method = ["POST"]
+
+This API will search for cases which have particular tags assigned.
+
+{
+    "tags": "tag1,tag2"
+}
+
+4) API: http://127.0.0.1:5000/keyword/custom/search
+
+Method = ["POST"]
+
+This API will find cases which have all keywords in them.
+
+{
+    "keyword": "keyword1,keyword2,keyword3"
+}
+
 '''
 
 import sys
@@ -27,7 +47,7 @@ import os
 import re
 import sqlite3 as sql
 from types import new_class
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, make_response
 from api.models.case import Case
 from api.schema.case import CaseSchema
 from api.extansions import db
@@ -144,6 +164,80 @@ def search_keyword_from_case(case, keyword):
     return file_list
 
 
+def searchtag(tags):
+    '''
+    searchtag() search the case tags which are set while extracting the case
+    '''
+    case_list_tags = []
+
+    for subdir, dirs, files in os.walk(cases_data_path):
+
+        if subdir[-6:] == "report":
+
+            for filename in files:
+
+                filepath = os.sep.join([subdir, filename])
+                
+
+                if filepath.endswith(".txt"):
+
+                    open_path_file = open(filepath, "r", encoding="UTF-8")
+
+                    read_path_file = open_path_file.read()
+
+                    '''
+                        tags_bool stores bool if tags are present or not
+                    '''
+                    tags_bool = all(ele in read_path_file for ele in tags)
+                    open_path_file.close()
+
+                    if tags_bool:
+
+                        '''
+                            if tag found in report
+                        '''
+
+                        case_list_tags.append(os.path.dirname(
+                            os.path.dirname(filepath)))
+
+    return case_list_tags
+
+def custom_keyword_search(keyword):
+    case_list_with_custom_keywords = []
+
+    for subdir, dirs, files in os.walk(cases_data_path):
+
+        if subdir[-2:] != "db":
+
+            for filename in files:
+
+                filepath = os.sep.join([subdir, filename])
+                
+
+                if filepath.endswith(".txt") or filepath.endswith(".tsv"):
+
+                    open_path_file = open(filepath, "r", encoding="UTF-8")
+
+                    read_path_file = open_path_file.read()
+
+                    '''
+                        custom_keyword_bool stores bool if all keywords are present or not
+                    '''
+                    custom_keyword_bool = all(ele in read_path_file for ele in keyword)
+                    open_path_file.close()
+
+                    if custom_keyword_bool:
+
+                        '''
+                            if all keyword found
+                        '''
+
+                        case_list_with_custom_keywords.append(os.path.dirname(
+                            os.path.dirname(filepath)))
+
+    return case_list_with_custom_keywords
+
+
 '''
  -------- APIs ------------
 
@@ -167,6 +261,26 @@ This API will give file path of searched keyword from the case.
 {
     "case_name": "Case1",
     "keyword": "word"
+}
+
+3. API: http://127.0.0.1:5000/keyword/search/tags
+
+Method = ["POST"]
+
+This API will search for cases which have particular tags assigned.
+
+{
+    "tags": "tag1,tag2"
+}
+
+4. API: http://127.0.0.1:5000/keyword/custom/search
+
+Method = ["POST"]
+
+This API will find cases which have all keywords in them.
+
+{
+    "keyword": "keyword1,keyword2,keyword3"
 }
 
 '''
@@ -238,3 +352,63 @@ def searchfromCase(case_name):
     else:
 
         return "Keyword not found in this case", 404
+
+
+@keyword.route('/search/tags', methods=['POST'])
+def searchtags():
+    try:
+        req = request.get_json()
+
+        tags = str(req['tags'])
+        tags = tags.split(',')
+
+    except Exception as e:
+
+        print(e)
+
+        return 'Please provide tags', 400
+
+    caselisttags = searchtag(tags)
+
+    if caselisttags:
+        '''
+            If cases found with the desired tags.
+        '''
+        return jsonify(caselisttags)
+
+    else:
+        response = {
+            "success": False,
+            "message": "No case found with this tag"
+        }
+    return make_response(jsonify(response)), 404
+
+
+@keyword.route('/custom/search', methods=['POST'])
+def customsearch():
+    try:
+        req = request.get_json()
+
+        custom_keywords = str(req['keyword'])
+        custom_keywords = custom_keywords.split(',')
+
+    except Exception as e:
+
+        print(e)
+
+        return 'Please provide tags', 400
+
+    custom_keyword_cases = custom_keyword_search(custom_keywords)
+
+    if custom_keyword_cases:
+        '''
+            If cases found with the desired keywords.
+        '''
+        return jsonify(custom_keyword_cases)
+
+    else:
+        response = {
+            "success": False,
+            "message": "No case found with these keyword combinations"
+        }
+    return make_response(jsonify(response)), 404

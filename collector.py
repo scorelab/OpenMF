@@ -59,6 +59,7 @@ OPTION_KEYS = {"--option", "-o"}
 SESSION_KEYS = {"--session_name", "-sn"}
 HELP_KEYS = {"-h", "--help"}
 REPORT_GEN_KEYS = {"-rp", "--report"}
+CASE_TAG = {"--tag"}
 
 
 def print_general_info(session_name):
@@ -79,9 +80,10 @@ FUNC_MAP = {
 }
 
 
-def collect_data(extract_options, session_name):
+def collect_data(extract_options, session_name, tags):
     print('Options to parse are : ', extract_options)
     print('Session name : ', session_name)
+    print('Tags : ', tags)
     print('Extracting all common databases ...')
     dbm.start_download_databases(session_name)
     print('databases extraction completed...')
@@ -92,11 +94,12 @@ def collect_data(extract_options, session_name):
     print(REPORT)
 
 
-def save_report(session_name):
+def save_report(session_name, tags):
     db_store_path = ROOT_DIR + SEP + 'data' + SEP + session_name
     file_path = db_store_path + SEP + 'report' + SEP + 'report.txt'
     mkdir(db_store_path+ SEP + 'report')
     REPORT.append(["Case Name", session_name])
+    REPORT.append(["Tags", tags])
     return write_to_file(file_path, REPORT)
 
 
@@ -120,6 +123,7 @@ if __name__ == '__main__':
 
         first_flag = next(arg_iter)
         options = []
+        tags = []
         session_name = ''
         if OPTION_KEYS.__contains__(first_flag):
             print('Running data extraction for selected options : ')
@@ -131,6 +135,9 @@ if __name__ == '__main__':
 
             if SESSION_KEYS.__contains__(option):
                 session_name = next(arg_iter)
+                option = next(arg_iter)
+            if CASE_TAG.__contains__(option):
+                tags.extend(next(arg_iter).split(','))
         else:
             print('Incorrectly options are provided, correct way is : ')
             print('collector.py -o facebook whatsapp phone -sn case_007_james-bond')
@@ -140,8 +147,8 @@ if __name__ == '__main__':
             extract_all_data(session_name)
             print('databases extraction completed...')
         else:
-            collect_data(options, session_name)
-        if save_report(session_name):
+            collect_data(options, session_name, tags)
+        if save_report(session_name, tags):
             print('Saved report successfully')
         else:
             print('Unable to save report file')
