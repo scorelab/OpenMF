@@ -17,6 +17,7 @@ import {
     Button
 } from '@material-ui/core';
 import BrowserReport from './BrowserReport';
+import LocationReport from './LocationReport';
 
 
 // custom styles
@@ -70,6 +71,7 @@ function Report() {
     return (
       <Container component="main" className={classes.root}>
         <Container>
+            <LocationReport />
             <BrowserReport />
         </Container>
         <Container>
