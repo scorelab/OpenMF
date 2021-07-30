@@ -16,7 +16,10 @@ import {
     LOAD_REPORT_GENERAL_INFO_SUCCESSFUL,
     LOAD_REPORT_BROWSER_DATA,
     LOAD_REPORT_BROWSER_DATA_FAILED,
-    LOAD_REPORT_BROWSER_DATA_SUCCESSFUL
+    LOAD_REPORT_BROWSER_DATA_SUCCESSFUL,
+    LOAD_REPORT_LOCATION,
+    LOAD_REPORT_LOCATION_FAILED,
+    LOAD_REPORT_LOCATION_SUCCESSFUL
 } from "../types/management"
 
 // initial state
@@ -27,6 +30,7 @@ const initialState = {
     completedTasks: null,
     generalinfo: null,
     browserdata: null,
+    coordinates: null,
 }
 
 // Reducer definition
@@ -113,7 +117,28 @@ const managementReducer = (state = initialState, action) => {
               isLoading: false,
               error: null,
               browserdata: payload.browserdata,
-            };
+            }
+        case LOAD_REPORT_LOCATION_FAILED:
+            return {
+              ...state,
+              isLoading: false,
+              error: payload.error,
+              coordinates: null,
+            }
+        case LOAD_REPORT_LOCATION:
+            return {
+              ...state,
+              isLoading: true,
+              error: null,
+              coordinates: null,
+            }
+        case LOAD_REPORT_LOCATION_SUCCESSFUL:
+            return {
+              ...state,
+              isLoading: false,
+              error: null,
+              coordinates: payload.coordinates,
+            }
         default:
             return state
     }
