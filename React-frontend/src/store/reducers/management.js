@@ -10,15 +10,6 @@ import {
   LOAD_TODO_TASKS,
   LOAD_TODO_TASKS_FAILED,
   LOAD_TODO_TASKS_SUCCESSFULL,
-  LOAD_REPORT_GENERAL_INFO,
-  LOAD_REPORT_GENERAL_INFO_FAILED,
-  LOAD_REPORT_GENERAL_INFO_SUCCESSFUL,
-  LOAD_REPORT_BROWSER_DATA,
-  LOAD_REPORT_BROWSER_DATA_FAILED,
-  LOAD_REPORT_BROWSER_DATA_SUCCESSFUL,
-  LOAD_REPORT_LOCATION,
-  LOAD_REPORT_LOCATION_FAILED,
-  LOAD_REPORT_LOCATION_SUCCESSFUL,
   LOAD_ANALYTICS_COMMON_WORD,
   LOAD_ANALYTICS_COMMON_WORD_FAILED,
   LOAD_ANALYTICS_COMMON_WORD_SUCCESSFUL,
@@ -48,9 +39,6 @@ const initialState = {
   error: null,
   todoTasks: null,
   completedTasks: null,
-  generalinfo: null,
-  browserdata: null,
-  coordinates: null,
   commonwords: null,
   maxcommonwords: null,
   keyword: null,
@@ -101,69 +89,6 @@ const managementReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         completedTasks: payload.tasks,
-      };
-    case LOAD_REPORT_GENERAL_INFO_FAILED:
-      return {
-        ...state,
-        isLoading: false,
-        error: payload.error,
-        generalinfo: null,
-      };
-    case LOAD_REPORT_GENERAL_INFO:
-      return {
-        ...state,
-        isLoading: true,
-        error: null,
-        generalinfo: null,
-      };
-    case LOAD_REPORT_GENERAL_INFO_SUCCESSFUL:
-      return {
-        ...state,
-        isLoading: false,
-        error: null,
-        generalinfo: payload.generalinfo,
-      };
-    case LOAD_REPORT_BROWSER_DATA_FAILED:
-      return {
-        ...state,
-        isLoading: false,
-        error: payload.error,
-        browserdata: null,
-      };
-    case LOAD_REPORT_BROWSER_DATA:
-      return {
-        ...state,
-        isLoading: true,
-        error: null,
-        browserdata: null,
-      };
-    case LOAD_REPORT_BROWSER_DATA_SUCCESSFUL:
-      return {
-        ...state,
-        isLoading: false,
-        error: null,
-        browserdata: payload.browserdata,
-      };
-    case LOAD_REPORT_LOCATION_FAILED:
-      return {
-        ...state,
-        isLoading: false,
-        error: payload.error,
-        coordinates: null,
-      };
-    case LOAD_REPORT_LOCATION:
-      return {
-        ...state,
-        isLoading: true,
-        error: null,
-        coordinates: null,
-      };
-    case LOAD_REPORT_LOCATION_SUCCESSFUL:
-      return {
-        ...state,
-        isLoading: false,
-        error: null,
-        coordinates: payload.coordinates,
       };
     case LOAD_ANALYTICS_COMMON_WORD_FAILED:
       return {
