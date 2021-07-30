@@ -7,7 +7,7 @@ import sqlite3 as sql
 import os
 import json
 import datetime
-from flask import Blueprint, jsonify, request, make_response
+from flask import Blueprint, jsonify, request, make_response, send_file
 from api.models.case import Case
 from api.models.extractor import Extractor
 from api.schema.case import CaseSchema
@@ -171,6 +171,59 @@ def filter():
             "message": "No case found in this range"
         }
         return make_response(jsonify(response)), 404
+
+
+@case.route('/get-file', methods=['POST'])
+@token_required
+def _get_file():
+    """
+    Route to handle sending file content from
+    server.
+
+    Parameters:
+    1. file_pathname: Name of the file that user want to get.
+
+    Result:
+    Returns a file object, otherwise error object.
+    """
+
+    # Get current user object
+    current_user = get_current_user(_get_file.role, _get_file.public_id)
+
+    # Get file pathname
+    try:
+        req = request.get_json()
+        file_pathname = req['file_pathname']
+
+    # Throw Error if file_pathname is not provided
+    except Exception as e:
+        response = {
+            "success": False,
+            "message": "Please Provide File Pathname."
+        }
+        return make_response(jsonify(response)), 422
+
+    # send file of provided file name
+    try:
+        file = send_file(filename_or_fp=file_pathname, as_attachment=False, mimetype='application/blob')
+        return make_response(file), 200
+
+    # handle FileNOtFOund error
+    except FileNotFoundError as e:
+        response = {
+            "success": False,
+            "message": "File Not Found."
+        }
+        return make_response(jsonify(response)), 404
+
+    # Handle other errors
+    except Exception as e:
+        print(e)
+        response = {
+            "success": False,
+            "message": "Something went wrong."
+        }
+        return make_response(jsonify(response)), 500
 
 
 @case.route('/extracted-cases', methods=["GET"])

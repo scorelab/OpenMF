@@ -5,12 +5,13 @@
 
 // Types for case reducers
 import {
+    DEFAULT_CASE_STATE,
     LOAD_CASES,
     LOAD_CASES_FAILED,
     LOAD_CASES_SUCCESSFULL,
     LOAD_CASE_TREE,
     LOAD_CASE_TREE_FAILED,
-    LOAD_CASE_TREE_SUCCESSFULL
+    LOAD_CASE_TREE_SUCCESSFULL,
 } from "../types/case"
 
 
@@ -31,6 +32,16 @@ const caseReducer = (state = inittialState, action) => {
 
     //// define cases
     switch(type){
+        case DEFAULT_CASE_STATE:
+            return {
+                ...state,
+                isLoading: false,
+                caseTree: null,
+                cases: null,
+                selected_case: null,
+                error: null
+            }
+
         case LOAD_CASE_TREE:
         case LOAD_CASES:
             return {
@@ -64,6 +75,7 @@ const caseReducer = (state = inittialState, action) => {
                 error: null,
                 cases: payload.cases
             }
+
         default:
             return state
     }

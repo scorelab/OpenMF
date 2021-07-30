@@ -24,6 +24,7 @@ import AnalyticsPage from './pages/Management/AnalyticsPage';
 import CommonWordsPage from './pages/Management/CommonWordsPage';
 import KeywordSearchPage from './pages/Management/KeywordSearchPage';
 import FilterCasePage from './pages/Management/FilterCasePage';
+import ShowFilePage from './pages/Management/ShowFilePage';
 
 
 
@@ -85,6 +86,7 @@ function App() {
           <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
           <PrivateRoute path='/analytics' exact component={AnalyticsPage} />
           <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
+          <PrivateRoute path='/file-explorer/:caseName/:dirName/:fileName' component={ShowFilePage} />
           <PrivateRoute path='/file-explorer/:caseName/:dirName' component={CaseFilePage} />
           <PrivateRoute path='/file-explorer/:caseName' component={CaseDirsPage} />
           <PrivateRoute path='/task/finished' exact component={CompletedtaskPage} />

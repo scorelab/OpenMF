@@ -100,7 +100,8 @@ def extract():
 
 
     sys.path.append(dirname + '../../../../apiUtility')
-    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS, apiExtractBrowser, apiExtractBluetooth, apiExtractMedia
+    from apiUtils import apiExtactAll, apiExtractFb, apiExtractWa, apiExtractPhone, apiReport, apiExtractSMS, apiExtractBrowser, apiExtractBluetooth, apiExtractLocation, apiExtractMedia
+
 
     if(data == 'all'):
         apiExtactAll(case_name)
@@ -125,6 +126,8 @@ def extract():
     elif(data == 'bluetooth'):
         apiExtractBluetooth(case_name)
         apiReport(case_name, tags)
+    elif(data == 'location'):
+        apiExtractLocation(case_name)
     elif(data == 'media'):
         apiExtractMedia(case_name)
         apiReport(case_name, tags)
