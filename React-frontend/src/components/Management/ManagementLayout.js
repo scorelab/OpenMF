@@ -7,6 +7,7 @@
 import React from 'react';
 import Navbar from '../core/Navbar';
 import Sidebar from './Sidebar';
+import AnalyticsSidebar from './AnalyticsSidebar';
 import Footer from '../core/Footer';
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -27,23 +28,31 @@ const useStyles = makeStyles((theme) => ({
 
 
 // Display main content of layout
-export default function ManagementLayout ({ children, sidebarBool=true, background=true}) {
+export default function ManagementLayout ({ children,analyticssidebarbool = false, sidebarBool=true, background=true}) {
   const classes = useStyles()
-
+  analyticssidebarbool = !sidebarBool
   return (
     <>
       <main className={classes.root}>
         <Navbar />
         <Grid container>
-        {
+       {  
           (sidebarBool) ?
           <div className={classes.content}>
               <Sidebar />
               {children}
-          </div>:
+          </div>
+          : (analyticssidebarbool) ?
+          (<div className={classes.content}>
+              <AnalyticsSidebar />
+              {children}
+          </div>)
+          : (
           <>
             {children}
           </>
+          )
+          
         }
         </Grid>
         <Footer />

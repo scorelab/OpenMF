@@ -36,7 +36,7 @@ const useStyle = makeStyles((theme) => ({
         justifyContent: 'center'
     },
     button: {
-        fontSize: '1rem',
+        fontSize: '.8rem',
         fontWeight: 'bolder',
         '&:focus': {
             outline: 'none'
