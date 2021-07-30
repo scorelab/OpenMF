@@ -31,7 +31,7 @@ const useStyle = makeStyles((theme) => ({
         alignItems: 'flex-start'
     },
     title: {
-        fontSize: '1rem',
+        fontSize: '.9rem',
         fontWeight: 'bolder',
         '&:focus': {
             outline: 'none'
@@ -69,9 +69,9 @@ function Report() {
         <Container component="main" className={classes.root}>
 
             {/* Header */}
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h6">
                 <Button className={classes.title}>
-                    Case Analyser
+                    Case Report
                 </Button>
             </Typography>
 

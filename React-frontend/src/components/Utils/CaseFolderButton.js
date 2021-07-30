@@ -7,7 +7,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Button,
-    IconButton,
     Tooltip
 } from '@material-ui/core';
 import FolderIcon from '@material-ui/icons/Folder';
@@ -20,7 +19,9 @@ import { useHistory } from 'react-router-dom';
 // Custom styles
 const useStyles = makeStyles((theme) => ({
     button: {
-        color: '#888',
+        fontSize: '.8rem',
+        color: '#555',
+        fontWeight: 'bold',
         borderColor: '#666',
         marginRight: theme.spacing(2),
         marginBottom: theme.spacing(2),
@@ -28,14 +29,8 @@ const useStyles = makeStyles((theme) => ({
             outline: 'none'
         }
     },
-    iconButton: {
+    icon: {
         color: '#000',
-        width: theme.spacing(2),
-        height: theme.spacing(2),
-        marginRight: '.5em',
-        '&:focus': {
-            outline: 'none'
-        }
     }
 }))
 
@@ -64,32 +59,17 @@ function CaseFolderButton({dirName, parentDir, isAnalyser}) {
         history.push(`/${parentDir}/${caseName}`)
     }
 
-    // OnMouseDown handler
-    const handleOnMouseDown = (e) => {
-        e.stopPropagation()
-    }
-
     // return JSX
     return (
         <Button
             variant="outlined"
             className={classes.button}
             onDoubleClick={() => handleClick(dirName)}
-            startIcon={(isAnalyser) ? null : <FolderIcon />}
+            startIcon={(isAnalyser) ?
+                <Tooltip title="Report"><GraphEqIcon className={classes.icon}/></Tooltip>
+                :
+                <FolderIcon />}
         >
-            {
-                (isAnalyser)
-                &&
-                (<IconButton
-                    onMouseDown={handleOnMouseDown}
-                    className={classes.iconButton}
-                    onClick={() => handleClick(dirName)}
-                >
-                    <Tooltip title="Analyse">
-                        <GraphEqIcon />
-                    </Tooltip>
-                </IconButton>)
-            }
             {dirName}
         </Button>
     )
