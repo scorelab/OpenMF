@@ -671,7 +671,7 @@ export const loadgeneralinfo = (case_name) => (dispatch) => {
         .then((res) => {
 
             const info_data = (res.data)
-            console.log(info_data, "  infodata from action")
+            
             dispatch({
                 type: LOAD_REPORT_GENERAL_INFO_SUCCESSFUL,
                 payload: {
