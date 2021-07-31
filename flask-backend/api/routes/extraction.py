@@ -128,6 +128,7 @@ def extract():
         apiReport(case_name, tags)
     elif(data == 'location'):
         apiExtractLocation(case_name)
+        apiReport(case_name, tags)
     elif(data == 'media'):
         apiExtractMedia(case_name)
         apiReport(case_name, tags)
