@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import BrowserCharts from "../Charts/BrowserCharts";
 import LocationReport from "./LocationReport";
+import GeneralReport from "./GeneralReport";
 
 // custom styles
 const useStyle = makeStyles((theme) => ({
@@ -146,7 +147,9 @@ function CaseVisaulizer() {
               ? selected_case && (
                   <LocationReport case_name={selected_case.case_name} />
                 )
-              : null}
+              : reportOption === "generalInfo" ? selected_case && (
+                    <GeneralReport case_name={selected_case.case_name} />
+              ) : null}
           </Grid>
         }
       </Grid>
