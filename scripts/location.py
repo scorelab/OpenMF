@@ -86,10 +86,12 @@ def store_saved_location():
             feature_fprint = str(row[SAVED_LOCATION_FEATURE_FPRINT])
 
         if row[SAVED_LOCATION_LATITUDE] is not None:
-            latitude = str(row[SAVED_LOCATION_LATITUDE])
+            latitude = (row[SAVED_LOCATION_LATITUDE])
+            latitude = str(float(latitude/1000000))
 
         if row[SAVED_LOCATION_LONGITUDE] is not None:
-            longitude = str(row[SAVED_LOCATION_LONGITUDE])
+            longitude = (row[SAVED_LOCATION_LONGITUDE])
+            longitude = str(float(longitude/1000000))
 
         if row[SAVED_LOCATION_IS_LOCAL] is not None:
             is_local = str(row[SAVED_LOCATION_IS_LOCAL])
