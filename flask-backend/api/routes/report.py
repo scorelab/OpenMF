@@ -47,7 +47,7 @@ def getinfo(case_path):
 
         if i+1 < len(datafortable) and datafortable[i] != "Accounts" and datafortable[i] != "Tags":
 
-            info.append({datafortable[i]: datafortable[i+1]})
+            info.append([datafortable[i], datafortable[i+1]])
 
             i = i+2
         else:
@@ -62,7 +62,7 @@ def getinfo(case_path):
                     text.append(datafortable[i])
                     i += 1
 
-                info.append({"Accounts": text})
+                info.append(["Accounts", text])
 
             if datafortable[i] == "Tags":
 
@@ -74,7 +74,7 @@ def getinfo(case_path):
 
                     text.append(datafortable[i])
 
-                info.append({"Tags": text})
+                info.append(["Tags", text])
                 break
 
     return info
