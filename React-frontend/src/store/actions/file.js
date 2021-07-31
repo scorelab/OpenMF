@@ -9,6 +9,7 @@ import {
     LOAD_FILE_SUCCESSFULL
 } from "../types/file";
 import axios from '../../axios';
+import { parse } from 'papaparse';
 
 
 
@@ -28,7 +29,6 @@ const createConfig = (token) => {
     //// return object
     return config
   }
-
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -81,12 +81,26 @@ export const loadfile = (file_pathname, fileType) => (dispatch) => {
         try{
           const stream = await res.data.text()
 
+          // parse the data
+          let parsedData = null
+          if(fileType === 'tsv'){
+            parse(stream, {
+              download: false,
+              skipEmptyLines: true,
+              complete: function(res, data){
+                parsedData = res
+              }
+            })
+          }
+
+
           // dispatch successful result
           dispatch({
             type: LOAD_FILE_SUCCESSFULL,
             payload: {
               file: stream,
-              fileType: fileType
+              fileType: fileType,
+              parsedData: parsedData
             }
           })
 
