@@ -87,11 +87,12 @@ def get_coordinates(case_path):
     with open(case_path, 'r') as location:
         location = csv.reader(location, delimiter='\t')
         for row in (location):
-            data = [
-                row[4],
-                row[5],
-                row[7]
-            ]
+           
+            data = (
+                 row[4],
+                 row[5],
+                 row[7]
+            )
             coordinates.append(data)
     coordinates.remove(coordinates[0])
     return coordinates
