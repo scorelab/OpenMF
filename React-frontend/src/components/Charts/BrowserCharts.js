@@ -5,7 +5,8 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-    Box
+    Box,
+    Typography
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -126,7 +127,9 @@ function BrowserCharts({ filepath }) {
                     )  : (
                     <span>Loading...</span>
                 ) : (
-                    <span className={classes.errorText} >Oops! This Case doesn't contain browser history data.</span>
+                    <Typography variant="body1" align="center" color="secondary">
+                        Oops! This Case doesn't contain browser history data.
+                    </Typography>
                 )
             }
         </Box>
