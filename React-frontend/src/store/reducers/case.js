@@ -12,6 +12,9 @@ import {
     LOAD_CASE_TREE,
     LOAD_CASE_TREE_FAILED,
     LOAD_CASE_TREE_SUCCESSFULL,
+    SELECT_CASE,
+    SELECT_CASE_FAILED,
+    SELECT_CASE_SUCCESSFULL,
 } from "../types/case"
 
 
@@ -44,6 +47,7 @@ const caseReducer = (state = inittialState, action) => {
 
         case LOAD_CASE_TREE:
         case LOAD_CASES:
+        case SELECT_CASE:
             return {
                 ...state,
                 isLoading: true,
@@ -74,6 +78,20 @@ const caseReducer = (state = inittialState, action) => {
                 isLoading: false,
                 error: null,
                 cases: payload.cases
+            }
+
+        case SELECT_CASE_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload.error
+            }
+
+        case SELECT_CASE_SUCCESSFULL:
+            return {
+                ...state,
+                isLoading: false,
+                selected_case: payload.case
             }
 
         default:
