@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router-dom";
 import { loadBrowserReport } from "../../store/actions/management";
-import { withStyles } from "@material-ui/core/styles";
 import {
   Container,
   Typography,
   TextField,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Divider,
 } from "@material-ui/core";
 // custom styles
 const useStyles = makeStyles((theme) => ({
@@ -70,8 +60,7 @@ function BrowserReport() {
 
   // Get management reducer
   const managementReducer = useSelector((state) => state.management);
-  // history
-  const history = useHistory();
+
   // invoke custom styles
   const classes = useStyles();
   const [case_name, setCase_name] = useState("");
@@ -83,6 +72,9 @@ function BrowserReport() {
         return file;
       });
       console.log(files, "   from browserreport.js")
+
+  console.log(file)
+
   function dispatchonClick() {
      dispatch(loadBrowserReport(case_name));
   }

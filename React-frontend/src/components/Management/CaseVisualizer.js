@@ -3,9 +3,10 @@
 */
 
 // Importing depedencies
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
     Container,
     Typography,
@@ -15,6 +16,7 @@ import {
     List,
     ListItem,
 } from '@material-ui/core';
+import BrowserCharts from '../Charts/BrowserCharts';
 
 
 // custom styles
@@ -44,13 +46,15 @@ const useStyle = makeStyles((theme) => ({
     },
     reportSection: {
         height: '70vh',
-        border: '1px solid #000'
     },
     activeItem: {
         backgroundColor: '#f4f4f4'
     }
 }))
 
+
+
+// Main Functional component
 function CaseVisaulizer() {
 
     // invoke custom styles
@@ -65,12 +69,11 @@ function CaseVisaulizer() {
     // History
     const history = useHistory()
 
+    // Get selected_case from case reducer
+    const { selected_case } = useSelector(state => state.case)
+
     // state variables
     const [ reportOption, setReportOption ] = useState('generalInfo')
-
-    useEffect(() => {
-        console.log(reportOption)
-    }, [reportOption])
 
     // Main return statement
     return (
@@ -97,7 +100,7 @@ function CaseVisaulizer() {
                             <List component="nav" aria-label="report options">
                                 <ListItem button className={(reportOption==='generalInfo')? classes.activeItem : null } onClick={() => setReportOption('generalInfo')}>General Info</ListItem>
                                 <ListItem button className={(reportOption==='location')? classes.activeItem : null } onClick={() => setReportOption('location')}>Location</ListItem>
-                                <ListItem button className={(reportOption==='kdfjdkf')? classes.activeItem : null } onClick={() => setReportOption('kdfjdkf')}>kdfjdkf</ListItem>
+                                <ListItem button className={(reportOption==='browser')? classes.activeItem : null } onClick={() => setReportOption('browser')}>Browser</ListItem>
                                 <ListItem button className={(reportOption==='jdkfjdkfd')? classes.activeItem : null } onClick={() => setReportOption('jdkfjdkfd')}>jdkfjdkfd</ListItem>
                             </List>
                         </Grid>
@@ -107,7 +110,11 @@ function CaseVisaulizer() {
                     // Grid to show case report/ data Visualization
                     (
                         <Grid item sm={10} className={classes.reportSection}>
-                            {reportOption}
+                            {
+                                (reportOption === 'browser') ? (selected_case) && (
+                                    <BrowserCharts filepath={`${selected_case.data_path}/tsv/history.tsv`}/>
+                                ) : null
+                            }
                         </Grid>
                     )
                 }

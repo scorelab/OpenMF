@@ -12,7 +12,7 @@ import {
 import FolderIcon from '@material-ui/icons/Folder';
 import GraphEqIcon from '@material-ui/icons/GraphicEq';
 import { useDispatch } from 'react-redux';
-import { loadCaseTree } from '../../store/actions/case';
+import { loadCaseTree, selectCase } from '../../store/actions/case';
 import { useHistory } from 'react-router-dom';
 
 
@@ -53,6 +53,11 @@ function CaseFolderButton({dirName, parentDir, isAnalyser}) {
         if(parentDir === 'file-explorer'){
             // dispatch caseTree
             dispatch(loadCaseTree(caseName))
+        }
+
+        if(parentDir === 'report'){
+            // select the click case
+            dispatch(selectCase(caseName))
         }
 
         // redirect
