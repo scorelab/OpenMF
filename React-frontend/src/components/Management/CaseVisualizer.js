@@ -24,7 +24,6 @@ import GeneralReport from "./GeneralReport";
 const useStyle = makeStyles((theme) => ({
   root: {
     width: "80vw",
-    overflowX: "auto",
     marginTop: "10vh",
     height: "82.5vh",
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,

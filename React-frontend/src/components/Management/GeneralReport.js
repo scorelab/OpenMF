@@ -20,10 +20,8 @@ import {
 // custom styles
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: "80vw",
-    overflowX: "auto",
-    marginTop: "10vh",
-    height: "82.5vh",
+    width: "100%",
+    height: "70vh",
     padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
     display: "flex",
     flexDirection: "column",
@@ -49,11 +47,24 @@ const useStyle = makeStyles((theme) => ({
     backgroundColor: "#f4f4f4",
   },
   paper: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(1),
     display: "flex",
-    overflowX: "auto",
+    overflow: "auto",
+    height: '65vh',
     minWidth: "35vw",
     maxWidth: "85vw",
+    position: 'sticky',
+    '&::-webkit-scrollbar': {
+      width: '0px',
+    },
+    '&::-webkit-scrollbar-track': {
+      boxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.0)',
+      webkitBoxShadow: 'inset 0 0 6px rgba(0, 0, 0, 0.0)'
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: 'rgba(0, 0, 0, .1)',
+      outline: '1px solid slategrey'
+    }
   },
   table: {
     minWidth: 650,
@@ -90,18 +101,18 @@ function GeneralReport({case_name}) {
   useEffect(() => {
     dispatch(loadgeneralinfo(case_name));
   }, [dispatch, case_name]);
-  
+
 
   return (
-    <Container>
+    <Container className={classes.root}>
       <Container>
         <Typography component="h1" variant="h5">
           General Information
         </Typography>
       </Container>
-      <Container>
+      <Container >
         {managementReducer.generalinfo ? (
-          <TableContainer component={Paper} className={classes.paper.root}>
+          <TableContainer component={Paper} className={classes.paper}>
             <Table stickyHeader aria-label="Common words">
               <TableHead>
                 <StyledTableRow>
