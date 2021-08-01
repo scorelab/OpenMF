@@ -7,6 +7,7 @@ FETCH_EXTRACTED_CASES,
 FETCH_EXTRACTED_CASES_FAILED,
 FETCH_EXTRACTED_CASES_SUCCESSFULL} from "../types/extractor";
 import { setAlert } from './alerts';
+import { createConfig } from './utils';
 
 
 // action generator to set deafault
@@ -19,7 +20,7 @@ export const extractor_default = () => (dispatch) => {
 
 
 
-// Action generator for fetching extracted cases
+// Action generator for fetching extracted cases (Accessbile by an admin)
 export const fetch_extracted_cases = (extractor_email) => (dispatch) => {
 
     // fetch extracted cases
@@ -69,7 +70,7 @@ export const fetch_extracted_cases = (extractor_email) => (dispatch) => {
             // Error response
             const res = err.response
             console.log(err.message)
-            if(res.data && (res.status === 404 || res.status === 409 || res.status === 401)){
+            if(res.data && (res.status === 404 || res.status === 409 || res.status === 401 || res.status === 403)){
                 dispatch({
                     type: FETCH_EXTRACTED_CASES_FAILED,
                     payload: {
@@ -87,5 +88,63 @@ export const fetch_extracted_cases = (extractor_email) => (dispatch) => {
                 }
             })
             dispatch(setAlert('Something went wrong.'))
+        })
+}
+
+
+// Action Generator to get extracted cases ( Accessible by an Extractor )
+export const fetch_my_extracted_cases = () => (dispatch) => {
+
+    // dipatch FETCH_EXTRACTED_CASES
+    dispatch({
+        type: FETCH_EXTRACTED_CASES
+    })
+
+    // get token
+    const token = localStorage.getItem('openmf_token')
+
+    // validata token
+    if(!token) {
+
+        // Dispatch failure action
+        dispatch({
+            type: FETCH_EXTRACTED_CASES_FAILED,
+            payload: {
+                error: 'You are not authorized, Please log in.'
+            }
+        })
+
+        // set alert
+        dispatch(setAlert('You are not authorized, Please log in.'))
+
+    }
+
+    // create config
+    const config = createConfig(token)
+
+    // send request to server
+    axios.get('user/extractor/extracted-cases',config)
+        .then((res) => {
+
+            // Dispatch successfull Action
+            dispatch({
+                type: FETCH_EXTRACTED_CASES_SUCCESSFULL,
+                payload: {
+                    extracted_cases: res.data.extracted_cases
+                }
+            })
+        })
+        .catch((err) => {
+
+            // Dispatch Failure Action
+            dispatch({
+                type: FETCH_EXTRACTED_CASES_FAILED,
+                payload: {
+                    error: 'Something went wrong.'
+                }
+            })
+
+            // set Alert
+            dispatch(setAlert('Something Went Wrong, Please Try Again.'))
         })
 }
