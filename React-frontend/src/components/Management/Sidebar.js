@@ -27,7 +27,6 @@ import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import FolderIcon from '@material-ui/icons/Folder';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import PollIcon from '@material-ui/icons/Poll';
-import BugReportIcon from '@material-ui/icons/BugReport';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
 
@@ -102,7 +101,6 @@ function Sidebar() {
                             ['File Explorer', <FolderIcon color='secondary' />, '/file-explorer'],
                             ['case Tree', <AccountTreeIcon color='secondary' />, '/case-tree'],
                             ['Analytics', <PollIcon color='secondary' />, '/analytics'],
-                            ['Report', <BugReportIcon color="secondary"/>, '/report']
                           ]
 
   // Task Management related list items(For Admin)
