@@ -16,7 +16,7 @@ const DataVisualizer = () => {
     // Check is user authenticated
     if(auth && auth.isAuthenticated){
         return (
-            <ManagementLayout sidebarBool={true}>
+            <ManagementLayout sidebarBool={false}>
                 <CaseVisaulizer />
             </ManagementLayout>
         )
