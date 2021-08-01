@@ -671,14 +671,13 @@ export const loadgeneralinfo = (case_name) => (dispatch) => {
         .then((res) => {
 
             const info_data = (res.data)
-            
+
             dispatch({
                 type: LOAD_REPORT_GENERAL_INFO_SUCCESSFUL,
                 payload: {
                     generalinfo: info_data
                 }
             })
-            dispatch(setAlert(res.data.message, 'success'))
         })
         .catch((err) => {
             const res = err.response

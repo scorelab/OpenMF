@@ -41,14 +41,16 @@ const useStyle = makeStyles((theme) => ({
   },
   sideBarStyles: {
     height: "70vh",
-    border: "1px solid #000",
     backgroundColor: "#fff",
+    borderTop: `2px solid #000`,
+    borderRadius: '1em'
   },
   reportSection: {
     height: "70vh",
   },
   activeItem: {
     backgroundColor: "#f4f4f4",
+    fontWeight: 'bolder',
   },
 }));
 
@@ -120,15 +122,6 @@ function CaseVisaulizer() {
                 onClick={() => setReportOption("browser")}
               >
                 Browser
-              </ListItem>
-              <ListItem
-                button
-                className={
-                  reportOption === "jdkfjdkfd" ? classes.activeItem : null
-                }
-                onClick={() => setReportOption("jdkfjdkfd")}
-              >
-                jdkfjdkfd
               </ListItem>
             </List>
           </Grid>
