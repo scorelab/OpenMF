@@ -1,3 +1,4 @@
+// component responsible for browser reports
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,9 +72,6 @@ function BrowserReport() {
       data.map((file, index) => {
         return file;
       });
-      console.log(files, "   from browserreport.js")
-
-  console.log(file)
 
   function dispatchonClick() {
      dispatch(loadBrowserReport(case_name));
