@@ -8,6 +8,7 @@ import Layout from '../components/core/Layout'
 import HomeLogo from '../components/core/HomeLogo';
 import { useSelector } from 'react-redux';
 import ManagementLayout from '../components/Management/ManagementLayout';
+import ExtractorLayout from '../components/Extractor/ExtractorLayout';
 
 const HomePage = () => {
 
@@ -29,6 +30,15 @@ const HomePage = () => {
             <ManagementLayout sidebarBool={true}>
                 <HomeLogo />
             </ManagementLayout>
+        )
+    }
+
+    // Check for Extractor user
+    else if (auth && auth.isAuthenticated && auth.user && auth.user.role === "extractor"){
+        return (
+            <ExtractorLayout sidebarBool={true}>
+                <HomeLogo />
+            </ExtractorLayout>
         )
     }
 
