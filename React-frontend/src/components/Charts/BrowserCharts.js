@@ -102,7 +102,7 @@ function BrowserCharts({ filepath }) {
                                             label: 'Title Of Visited URLs',
                                             data: fileReducer.parsedData.data.map((item, index) => {
                                                     return item[3]
-                                                }).sort((a, b) => b[3] - a[3]).slice(0, 8),
+                                                }).sort((a, b) => b - a).slice(0, 8),
                                             backgroundColor: 'rgba(255, 99, 132, .9)'
                                     }]
                                 }}
