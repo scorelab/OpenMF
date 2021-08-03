@@ -22,6 +22,7 @@ from api.routes.commonwords import common as common_blueprint
 from api.routes.data import data as data_blueprint
 from api.routes.task import task as task_blueprint
 from api.routes.search import keyword as keyword_blueprint
+from api.routes.commonreport import commonreport as commonreport_blueprint
 
 
 def create_app():
@@ -47,6 +48,7 @@ def create_app():
     app.register_blueprint(task_blueprint)
     app.register_blueprint(common_blueprint)
     app.register_blueprint(keyword_blueprint)
+    app.register_blueprint(commonreport_blueprint)
 
 
     # Register a shell context
