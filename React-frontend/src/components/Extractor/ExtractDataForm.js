@@ -69,11 +69,17 @@ function ExtractDataForm({ toggleExtractDataModel }) {
     // dispatcher
     const dispatch = useDispatch()
 
+    // Input states
+    const [caseName, setCaseName] = useState('')
+    const [caseType, setCaseType] = useState('')
+    const [tags, setTags] = useState('')
+
     // function to handle add member request
     function handleExtractData(){
-        dispatch(extractData(extract.deviceID, caseName, caseType, history,toggleExtractDataModel ))
+        dispatch(extractData(extract.deviceID, caseName, caseType, tags, history,toggleExtractDataModel ))
         setCaseName('')
         setCaseType('')
+        setTags('')
     }
 
     // option array to display inside select box
@@ -87,11 +93,8 @@ function ExtractDataForm({ toggleExtractDataModel }) {
         { value: 'report', name: 'Report' },
         { value: 'bluetooth', name: 'BlueTooth' },
         { value: 'media', name: 'Media' },
+        { value: 'location', name: 'Location'}
     ]
-
-    // states
-    const [caseName, setCaseName] = useState('')
-    const [caseType, setCaseType] = useState('')
 
     // Return Statement
     return (
@@ -128,12 +131,28 @@ function ExtractDataForm({ toggleExtractDataModel }) {
                         placeholder='Select Case Type'
                     />
 
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required={true}
+                        fullWidth={true}
+                        id="tags"
+                        name="tags"
+                        label="Tags"
+                        autoFocus
+                        className={classes.inputs}
+                        value={tags}
+                        onChange={e => setTags(e.target.value)}
+                        helperText="Use Comma for multiple tags."
+                        style={{marginBottom: "2em"}}
+                    />
+
                     <Button
                         fullWidth
                         variant='contained'
                         color='primary'
                         className={classes.submit}
-                        disabled={ !caseName || !caseType || extract.isLoading}
+                        disabled={ !caseName || !caseType || !tags ||extract.isLoading}
                         onClick={handleExtractData}
                     >
                         {(extract.isLoading) ? (<span>Extracting...</span>) : (<span>Extract Data</span>)}
