@@ -187,7 +187,7 @@ function LoginForm() {
                         </Link>
                     </Grid>
                     <Grid item style={{margin: 'auto'}}>
-                        <Link component={RouterLink} to="#" variant="body2" >
+                        <Link component={RouterLink} to="/forgot-password" variant="body2" >
                             {"Forget password ?"}
                         </Link>
                     </Grid>

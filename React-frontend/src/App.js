@@ -27,6 +27,7 @@ import CommonWordsPage from './pages/Management/CommonWordsPage';
 import KeywordSearchPage from './pages/Management/KeywordSearchPage';
 import FilterCasePage from './pages/Management/FilterCasePage';
 import ShowFilePage from './pages/Management/ShowFilePage';
+import ForgotPassword from './pages/ForgotPassword';
 
 
 
@@ -80,6 +81,7 @@ function App() {
           <PublicRoute path='/' exact component={HomePage} />
           <PublicRoute path='/about' exact component={AboutPage} />
           <PublicRoute path='/contact' exact component={ContactPage} />
+          <PublicRoute path='/forgot-password' exact component={ForgotPassword} />
           <PrivateRoute path='/admin' component={AdminPage} />
           <PrivateRoute path='/list-members' exact component={MemberList} />
           <PrivateRoute path='/list-members/member/:id' component={SelectedMember} />
