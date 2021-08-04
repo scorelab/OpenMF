@@ -23,6 +23,7 @@ PATH_TO_REPORT = '/report/report.txt'
 PATH_TO_LOCATION = '/tsv/savedlocation.tsv'
 PATH_TO_BROWSER = '/tsv/history.tsv'
 PATH_TO_CALLLOGS = '/tsv/phone_calllogs.tsv'
+PATH_TO_SMS = '/tsv/sms.tsv'
 
 
 def get_common_call_report(case1, case2):
@@ -114,6 +115,35 @@ def get_common_browser_history(Case1, Case2):
     
     return common_history
 
+
+def get_common_sms(case1, case2):
+    '''
+        get_common_sms() is responsible for fetching common
+        message(sms) between two case.
+    '''
+    common_sms = []
+
+    sms_one = []
+    sms_two = []
+
+    with open(case1, 'r', encoding="UTF-8") as first:
+        first = csv.reader(first, delimiter='\t')
+        for row in first:
+            if len(row) == 11:
+                data = (row[2], row[6])
+                sms_one.append(data)
+
+    with open(case2, 'r', encoding="UTF-8") as second:
+        second = csv.reader(second, delimiter='\t')
+        for row in second:
+            if len(row) == 11:
+                data = (row[2],row[6])
+                sms_two.append(data)
+
+    common_sms = list(set(sms_one).intersection(set(sms_two)))
+    
+    return common_sms
+
 '''
     -------- APIs ------------
     
@@ -143,7 +173,18 @@ def get_common_browser_history(Case1, Case2):
 
     This API is responsible for fetching common browser
     searched history details between two cases.
-    
+
+    method = ['POST']
+    {
+        "case_one": "case1",
+        "case_two": "case2"
+    }
+
+    4. http://127.0.0.1:5000/commonreport/sms
+
+    This API is responsible for fetching common message
+    details between two cases.
+
     method = ['POST']
     {
         "case_one": "case1",
@@ -298,6 +339,57 @@ def commonhistory():
 
     if history_list:
         return jsonify(history_list)
+
+    else:
+        return "No Data Found", 404
+
+
+@commonreport.route('/sms', methods=['POST'])
+def commonsms():
+    '''
+    This API is responsible for getting common
+    sms(message) details between two cases.
+    '''
+    try:
+        req = request.get_json()
+
+        case_one = str(req['case_one'])
+
+        case_two = str(req['case_two'])
+
+        case_one = Case.query.filter_by(case_name=case_one).first()
+
+        case_two = Case.query.filter_by(case_name=case_two).first()
+
+        if not case_one:
+            '''
+            If case one is not present in database.
+            '''
+            return 'case one with that name does not exist', 404
+
+        if not case_two:
+            '''
+            If case two is not present in database.
+            '''
+            return 'case two with that name does not exist', 404
+
+        case_one_path = case_one.data_path
+
+        case_two_path = case_two.data_path
+
+    except Exception as e:
+
+        print(e)
+
+        return 'Please provide valid Case', 400
+
+    case_one_path = os.sep.join([case_one_path, PATH_TO_SMS])
+    case_two_path = os.sep.join([case_two_path, PATH_TO_SMS])
+
+    sms_details = get_common_sms(case_one_path, case_two_path)
+
+    if sms_details:
+        return jsonify(sms_details)
 
     else:
         return "No Data Found", 404
