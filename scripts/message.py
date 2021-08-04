@@ -75,6 +75,7 @@ def store_sms_messages():
 
         if row[SMS_BODY] is not None:
             body = str(row[SMS_BODY])
+            body.replace('\n', ' ')
 
         if row[SMS_CREATOR] is not None:
             creator = str(row[SMS_CREATOR])
