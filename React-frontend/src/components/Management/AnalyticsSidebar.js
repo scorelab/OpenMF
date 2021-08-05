@@ -102,12 +102,9 @@ function AnalyticsSidebar() {
 
   const analyticsItems = [
     ["Common word", <BlurOnIcon color="secondary" />, "/common/Case1/Case2"],
-    [
-      "Key Word Search",
-      <SearchIcon color="secondary" />,
-      "/keywordsearch",
-    ],
+    ["Key Word Search", <SearchIcon color="secondary" />, "/keywordsearch"],
     ["Filter", <FilterListIcon color="secondary" />, "/filter"],
+    ["Compare Cases", <FilterListIcon color="secondary" />, "/compare"],
   ];
 
   // Other items
