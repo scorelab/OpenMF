@@ -33,7 +33,10 @@ import {
   LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED,
   LOAD_COMPARE_CALLS,
   LOAD_COMPARE_CALLS_SUCCESSFUL,
-  LOAD_COMPARE_CALLS_FAILED
+  LOAD_COMPARE_CALLS_FAILED,
+  LOAD_COMPARE_LOCATIONS,
+  LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
+  LOAD_COMPARE_LOCATIONS_FAILED
 } from "../types/management";
 import { setAlert } from './alerts';
 
@@ -629,7 +632,7 @@ export const loadCustomSearchCases = (keyword) => (dispatch) => {
     })
 }
 
-// Action generator to fetch/load common calls detais
+// Action generator to fetch/load common calls details
 export const loadCompareCalls = (case1, case2) => (dispatch) => {
 
     // dispatch laod analytics common Calls details
@@ -686,6 +689,71 @@ export const loadCompareCalls = (case1, case2) => (dispatch) => {
             }
             dispatch({
               type: LOAD_COMPARE_CALLS_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+}
+
+// Action generator to fetch/load common coordinates details
+export const loadCompareLocations = (case1, case2) => (dispatch) => {
+
+    // dispatch laod analytics common Calls details
+    dispatch({
+        type: LOAD_COMPARE_LOCATIONS
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_COMPARE_LOCATIONS_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case_one: case1,
+        case_two: case2
+    }
+
+    // send request to server
+    axios.post('/commonreport/coordinates',data ,config)
+        .then((res) => {
+
+            const common_locations = (res.data)
+
+            dispatch({
+              type: LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
+              payload: {
+                comparelocations: common_locations,
+              },
+            });
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                  type: LOAD_COMPARE_LOCATIONS_FAILED,
+                  payload: {
+                    error: res.data.message,
+                  },
+                });
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_COMPARE_LOCATIONS_FAILED,
               payload: {
                 error: "Something Went Wrong.",
               },
