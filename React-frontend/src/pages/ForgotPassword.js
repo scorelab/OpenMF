@@ -8,7 +8,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Layout from '../components/core/Layout';
-import ForgotPasswordComponent from '../components/ForgotPassword';
+import ForgotPasswordComponent from '../components/core/ForgotPassword';
 
 
 // Main Functional Component
