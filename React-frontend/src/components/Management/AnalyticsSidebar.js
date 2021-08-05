@@ -27,6 +27,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import BlurOnIcon from "@material-ui/icons/BlurOn";
 import Poll from "@material-ui/icons/Poll";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import FeaturedPlayListIcon from "@material-ui/icons/FeaturedPlayList";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 // custom styles
@@ -104,7 +105,7 @@ function AnalyticsSidebar() {
     ["Common word", <BlurOnIcon color="secondary" />, "/common/Case1/Case2"],
     ["Key Word Search", <SearchIcon color="secondary" />, "/keywordsearch"],
     ["Filter", <FilterListIcon color="secondary" />, "/filter"],
-    ["Compare Cases", <FilterListIcon color="secondary" />, "/compare"],
+    ["Compare Cases", <FeaturedPlayListIcon color="secondary" />, "/compare"],
   ];
 
   // Other items
