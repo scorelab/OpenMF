@@ -30,7 +30,10 @@ import {
   LOAD_ANALYTICS_SEARCHED_TAGS_FAILED,
   LOAD_ANALYTICS_CUSTOM_SEARCH,
   LOAD_ANALYTICS_CUSTOM_SEARCH_SUCCESSFUL,
-  LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED
+  LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED,
+  LOAD_COMPARE_CALLS,
+  LOAD_COMPARE_CALLS_SUCCESSFUL,
+  LOAD_COMPARE_CALLS_FAILED
 } from "../types/management";
 import { setAlert } from './alerts';
 
@@ -624,4 +627,69 @@ export const loadCustomSearchCases = (keyword) => (dispatch) => {
       });
       dispatch(setAlert("Something Went Wrong."))
     })
+}
+
+// Action generator to fetch/load common calls detais
+export const loadCompareCalls = (case1, case2) => (dispatch) => {
+
+    // dispatch laod analytics common Calls details
+    dispatch({
+        type: LOAD_COMPARE_CALLS
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_COMPARE_CALLS_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case_one: case1,
+        case_two: case2
+    }
+
+    // send request to server
+    axios.post('/commonreport/calls',data ,config)
+        .then((res) => {
+
+            const common_calls = (res.data)
+
+            dispatch({
+              type: LOAD_COMPARE_CALLS_SUCCESSFUL,
+              payload: {
+                comparecalls: common_calls,
+              },
+            });
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                  type: LOAD_COMPARE_CALLS_FAILED,
+                  payload: {
+                    error: res.data.message,
+                  },
+                });
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_COMPARE_CALLS_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
+            dispatch(setAlert('Something Went Wrong.'))
+        })
 }

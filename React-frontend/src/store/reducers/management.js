@@ -31,7 +31,10 @@ import {
   LOAD_ANALYTICS_SEARCHED_TAGS_SUCCESSFUL,
   LOAD_ANALYTICS_CUSTOM_SEARCH,
   LOAD_ANALYTICS_CUSTOM_SEARCH_FAILED,
-  LOAD_ANALYTICS_CUSTOM_SEARCH_SUCCESSFUL
+  LOAD_ANALYTICS_CUSTOM_SEARCH_SUCCESSFUL,
+  LOAD_COMPARE_CALLS,
+  LOAD_COMPARE_CALLS_FAILED,
+  LOAD_COMPARE_CALLS_SUCCESSFUL
 } from "../types/management";
 
 // initial state
@@ -47,6 +50,7 @@ const initialState = {
     filtercase: null,
     casetags: null,
     customsearch: null,
+    comparecalls: null,
 }
 
 // Reducer definition
@@ -238,6 +242,27 @@ const managementReducer = (state = initialState, action) => {
             isLoading: false,
             error: null,
             customsearch: payload.customsearch,
+          }
+        case LOAD_COMPARE_CALLS_FAILED:
+          return {
+            ...state,
+            isLoading: false,
+            error: payload.error,
+            comparecalls: null,
+          }
+        case LOAD_COMPARE_CALLS:
+          return {
+            ...state,
+            isLoading: true,
+            error: null,
+            comparecalls: null,
+          }
+        case LOAD_COMPARE_CALLS_SUCCESSFUL:
+          return {
+            ...state,
+            isLoading: false,
+            error: null,
+            comparecalls: payload.comparecalls,
           }
         default:
             return state
