@@ -40,7 +40,10 @@ import {
   LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
   LOAD_COMPARE_BROWSER_HISTORY,
   LOAD_COMPARE_BROWSER_HISTORY_FAILED,
-  LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL
+  LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL,
+  LOAD_COMPARE_SMS,
+  LOAD_COMPARE_SMS_FAILED,
+  LOAD_COMPARE_SMS_SUCCESSFUL
 } from "../types/management";
 
 // initial state
@@ -59,6 +62,7 @@ const initialState = {
     comparecalls: null,
     comparelocations: null,
     comparehistory: null,
+    comparesms: null,
 }
 
 // Reducer definition
@@ -313,6 +317,27 @@ const managementReducer = (state = initialState, action) => {
           isLoading: false,
           error: null,
           comparehistory: payload.comparehistory,
+        };
+      case LOAD_COMPARE_SMS_FAILED:
+        return {
+          ...state,
+          isLoading: false,
+          error: payload.error,
+          comparesms: null,
+        };
+      case LOAD_COMPARE_SMS:
+        return {
+          ...state,
+          isLoading: true,
+          error: null,
+          comparesms: null,
+        };
+      case LOAD_COMPARE_SMS_SUCCESSFUL:
+        return {
+          ...state,
+          isLoading: false,
+          error: null,
+          comparesms: payload.comparesms,
         };
       default:
         return state;

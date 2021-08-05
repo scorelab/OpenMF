@@ -39,7 +39,10 @@ import {
   LOAD_COMPARE_LOCATIONS_FAILED,
   LOAD_COMPARE_BROWSER_HISTORY,
   LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL,
-  LOAD_COMPARE_BROWSER_HISTORY_FAILED
+  LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+  LOAD_COMPARE_SMS,
+  LOAD_COMPARE_SMS_SUCCESSFUL,
+  LOAD_COMPARE_SMS_FAILED
 } from "../types/management";
 import { setAlert } from './alerts';
 
@@ -822,6 +825,71 @@ export const loadCompareHistory = (case1, case2) => (dispatch) => {
             }
             dispatch({
               type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+}
+
+// Action generator to fetch/load common sms details
+export const loadCompareSms = (case1, case2) => (dispatch) => {
+
+    // dispatch laod analytics common sms details
+    dispatch({
+        type: LOAD_COMPARE_SMS
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+          type: LOAD_COMPARE_SMS_FAILED,
+          payload: {
+            error: "Unauthorized, Please Login Again.",
+          },
+        });
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case_one: case1,
+        case_two: case2
+    }
+
+    // send request to server
+    axios.post('/commonreport/sms',data ,config)
+        .then((res) => {
+
+            const common_sms = (res.data)
+
+            dispatch({
+              type: LOAD_COMPARE_SMS_SUCCESSFUL,
+              payload: {
+                comparesms: common_sms,
+              },
+            });
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                  type: LOAD_COMPARE_SMS_FAILED,
+                  payload: {
+                    error: res.data.message,
+                  },
+                });
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_COMPARE_SMS_FAILED,
               payload: {
                 error: "Something Went Wrong.",
               },
