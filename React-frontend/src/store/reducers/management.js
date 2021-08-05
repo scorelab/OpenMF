@@ -37,7 +37,10 @@ import {
   LOAD_COMPARE_CALLS_SUCCESSFUL,
   LOAD_COMPARE_LOCATIONS,
   LOAD_COMPARE_LOCATIONS_FAILED,
-  LOAD_COMPARE_LOCATIONS_SUCCESSFUL
+  LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
+  LOAD_COMPARE_BROWSER_HISTORY,
+  LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+  LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL
 } from "../types/management";
 
 // initial state
@@ -55,6 +58,7 @@ const initialState = {
     customsearch: null,
     comparecalls: null,
     comparelocations: null,
+    comparehistory: null,
 }
 
 // Reducer definition
@@ -288,6 +292,27 @@ const managementReducer = (state = initialState, action) => {
           isLoading: false,
           error: null,
           comparelocations: payload.comparelocations,
+        };
+      case LOAD_COMPARE_BROWSER_HISTORY_FAILED:
+        return {
+          ...state,
+          isLoading: false,
+          error: payload.error,
+          comparehistory: null,
+        };
+      case LOAD_COMPARE_BROWSER_HISTORY:
+        return {
+          ...state,
+          isLoading: true,
+          error: null,
+          comparehistory: null,
+        };
+      case LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL:
+        return {
+          ...state,
+          isLoading: false,
+          error: null,
+          comparehistory: payload.comparehistory,
         };
       default:
         return state;

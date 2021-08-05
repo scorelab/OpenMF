@@ -36,7 +36,10 @@ import {
   LOAD_COMPARE_CALLS_FAILED,
   LOAD_COMPARE_LOCATIONS,
   LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
-  LOAD_COMPARE_LOCATIONS_FAILED
+  LOAD_COMPARE_LOCATIONS_FAILED,
+  LOAD_COMPARE_BROWSER_HISTORY,
+  LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL,
+  LOAD_COMPARE_BROWSER_HISTORY_FAILED
 } from "../types/management";
 import { setAlert } from './alerts';
 
@@ -700,7 +703,7 @@ export const loadCompareCalls = (case1, case2) => (dispatch) => {
 // Action generator to fetch/load common coordinates details
 export const loadCompareLocations = (case1, case2) => (dispatch) => {
 
-    // dispatch laod analytics common Calls details
+    // dispatch laod analytics common locations details
     dispatch({
         type: LOAD_COMPARE_LOCATIONS
     })
@@ -754,6 +757,71 @@ export const loadCompareLocations = (case1, case2) => (dispatch) => {
             }
             dispatch({
               type: LOAD_COMPARE_LOCATIONS_FAILED,
+              payload: {
+                error: "Something Went Wrong.",
+              },
+            });
+            dispatch(setAlert('Something Went Wrong.'))
+        })
+}
+
+// Action generator to fetch/load common browser history details
+export const loadCompareHistory = (case1, case2) => (dispatch) => {
+
+    // dispatch laod analytics common browser history details
+    dispatch({
+        type: LOAD_COMPARE_BROWSER_HISTORY
+    })
+
+    // Get jwt token from local Storage
+    const token = localStorage.getItem('openmf_token')
+
+    // check if token exists or not
+    if(!token){
+        dispatch({
+            type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+            payload: {
+                error: 'Unauthorized, Please Login Again.'
+            }
+        })
+        return
+    }
+    // create config header object
+    const config = createConfig(token)
+
+
+    const data = {
+        case_one: case1,
+        case_two: case2
+    }
+
+    // send request to server
+    axios.post('/commonreport/browser',data ,config)
+        .then((res) => {
+
+            const common_browser_history = (res.data)
+
+            dispatch({
+              type: LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL,
+              payload: {
+                comparehistory: common_browser_history,
+              },
+            });
+            dispatch(setAlert(res.data.message, 'success'))
+        })
+        .catch((err) => {
+            const res = err.response
+            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
+                dispatch({
+                  type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+                  payload: {
+                    error: res.data.message,
+                  },
+                });
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch({
+              type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
               payload: {
                 error: "Something Went Wrong.",
               },
