@@ -4,6 +4,7 @@ Authentication Route for User.
 
 from flask import Blueprint, request, jsonify
 from flask.helpers import make_response
+from werkzeug.datastructures import FileStorage
 from api.models.admin import Admin
 from api.models.extractor import Extractor
 from api.models.management import Management
@@ -12,6 +13,7 @@ from api.extansions import db
 from api.helpers.auth import (
     _create_auth_successfull_response
 )
+from api.helpers.mail import send_reset_link_mail
 from api.utils.jwt_decorators import (
     token_required
 )
@@ -107,3 +109,58 @@ def logout():
             "message": "Unable to authenticate, something went wrong."
         }
         return make_response(jsonify(response)), 501
+
+
+@auth.route('/forgot-password', methods=["POST"])
+def forgot_password():
+    """
+    Route to handle and send forgot-password mail message.
+    """
+
+    # Get Recipient email address
+    try:
+        req = request.get_json()
+        recipientEmail = req["email"]
+
+    except:
+        response = {
+            "success": False,
+            "message": "Please Provide Recipient Email Address."
+        }
+        return make_response(jsonify(response)), 422
+
+    # Check if user exists or not
+    user = ( Admin.query.filter_by(email=recipientEmail).first() or
+             Extractor.query.filter_by(email=recipientEmail).first() or
+             Management.query.filter_by(email=recipientEmail).first() )
+
+    # return if user not exist
+    if(not user):
+        response = {
+            "success": False,
+            "message": "User Not Found, Please a Registered Email ID."
+        }
+        return make_response(jsonify(response)), 404
+
+    # create access token
+    token = user.encode_access_token()
+
+    # Reset Url
+    reset_link = f"http://localhost:3000/reset-password/{token}"
+
+
+    # Send reset link meail message
+    try:
+        send_reset_link_mail(recipient=recipientEmail, reset_link=reset_link)
+        response = {
+            "success": True,
+            "message": f"Reset Link has been sent to {recipientEmail}"
+        }
+        return make_response(jsonify(response)), 201
+
+    except Exception as e:
+        response = {
+            "success": False,
+            "message": 'Something went wrong.',
+        }
+        return make_response(jsonify(response)), 500
