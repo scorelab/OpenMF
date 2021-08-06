@@ -11,13 +11,17 @@ import {
   USER_LOAD_ERROR,
   LOGOUT_PROCESS,
   LOGOUT,
-  LOGOUT_FAILED
+  LOGOUT_FAILED,
+  FORGOT_PASSWORD_SEND_LINK,
+  FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL,
+  FORGOT_PASSWORD_SEND_LINK_FAILED
 } from '../types/auth';
 
 const initialState = {
   isRegistered: false,
   isAuthenticated: false,
   isLoading: false,
+  isSendingLink: false,
   auth_token: '',
   user: null,
   error: ''
@@ -125,6 +129,19 @@ const reducer = (state = initialState, action) => {
         ...state,
         isLoading: false,
         error: payload.data.error
+      }
+
+    case FORGOT_PASSWORD_SEND_LINK:
+      return {
+        ...state,
+        isSendingLink: true
+      }
+
+    case FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL:
+    case FORGOT_PASSWORD_SEND_LINK_FAILED:
+      return {
+        ...state,
+        isSendingLink: false,
       }
 
     default:

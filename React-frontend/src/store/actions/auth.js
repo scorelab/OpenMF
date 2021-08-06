@@ -6,6 +6,9 @@
 import axios from '../../axios';
 import {
   AUTH_DEFAULT,
+  FORGOT_PASSWORD_SEND_LINK,
+  FORGOT_PASSWORD_SEND_LINK_FAILED,
+  FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL,
   LOGIN_FAILED,
   LOGIN_PROCESS,
   LOGIN_SUCCESSFULL,
@@ -222,5 +225,53 @@ export const logout = (history) => (dispatch) => {
           }
         }
       })
+    })
+}
+
+
+
+// Action generator for sending forgot password link
+export const sendResetLink = (recipientEmail) => (dispatch) => {
+
+  // Dispatch Start Process
+  dispatch({
+    type: FORGOT_PASSWORD_SEND_LINK
+  })
+
+  // create data body object
+  const data = {
+    email: recipientEmail
+  }
+
+  // send request to server
+  axios.post('/forgot-password', data)
+    .then((res) => {
+      // Dispatch success action
+      dispatch({
+        type: FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL
+      })
+
+      // set Alert
+      dispatch(setAlert(res.data.message, 'success'))
+    })
+    .catch((err) => {
+
+      // Create response from error object
+      const res = err.response
+
+      // Dispatch fail action
+      dispatch({
+        type: FORGOT_PASSWORD_SEND_LINK_FAILED
+      })
+
+      if(res && (res.status === 404 || res.status === 422 || res.status === 500))
+      {
+        // Set ALert for the above status codes
+        dispatch(setAlert(res.data.message))
+        return
+      }
+
+      // Set error alert
+      dispatch(setAlert('Something went wrong.'))
     })
 }

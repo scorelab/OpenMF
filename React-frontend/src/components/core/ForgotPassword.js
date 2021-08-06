@@ -6,6 +6,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { sendResetLink } from '../../store/actions/auth';
 import {
     Container,
     Typography,
@@ -23,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
         height: '92vh',
         marginTop: '8vh',
         padding: '2em',
-        // backgroundColor: '#f0f0f0',
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
@@ -56,6 +57,22 @@ function ForgotPassword() {
 
     // State to hold emali input
     const [ email, setEmail ] = useState('')
+
+    // Get Auth reducer's loading state
+    const { isSendingLink } = useSelector(state => state.auth)
+
+    // Dipatcher
+    const dispatch = useDispatch()
+
+    // Handler for sending reset link
+    const handleSendLink = (email) => {
+
+        // Dipatch sendResetLink
+        dispatch(sendResetLink(email))
+
+        // Reset Email input field
+        setEmail('')
+    }
 
     return (
         <Container className={classes.root}>
@@ -104,9 +121,14 @@ function ForgotPassword() {
                     disableRipple
                     disableElevation
                     color='secondary'
-                    disabled={!email}
+                    disabled={!email || isSendingLink}
                     style={{ marginRight: '1em'}}
-                >Send Reset Link</Button>
+                    onClick={() => handleSendLink(email)}
+                >
+                    {
+                        (isSendingLink) ? (<span>Reset Link Sending...</span>) : (<span>Send Reset Link</span>)
+                    }
+                </Button>
 
                 {/* Back to Home Page button */}
                 <Button
