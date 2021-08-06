@@ -167,7 +167,7 @@ function HomeLogo() {
               </Button>
               <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
                 <DialogContent >
-                  <LoginForm />
+                  <LoginForm setOpenLogin={setOpenLogin}/>
                 </DialogContent>
                 <DialogActions>
                   <Button
@@ -189,7 +189,7 @@ function HomeLogo() {
               </Button>
               <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
                 <DialogContent >
-                  <RegisterForm />
+                  <RegisterForm setOpenSignUp={setOpenSignUp}/>
                 </DialogContent>
                 <DialogActions>
                   <Button

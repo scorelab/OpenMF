@@ -13,6 +13,11 @@ import {
 const useStyle = makeStyles((theme) => ({
     select: {
         height: theme.spacing(6),
+    },
+    inputs: {
+        '&:focus': {
+            outline: 'none'
+        }
     }
 }))
 
