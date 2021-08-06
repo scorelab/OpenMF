@@ -85,9 +85,14 @@ def extract():
         data = str(req['data'])
         tags = str(req['tags'])
         tags = tags.split(',')
-        print(data)
+
     except KeyError as err:
-        return f'please provide {str(err)}', 400
+        # Create failed response
+        response = {
+            "success": False,
+            "message": f"Please Provide {str(err)}."
+        }
+        return make_response(jsonify(response)), 400
 
     # Check if case with similar name exits
     case = Case.query.filter_by(case_name=case_name).first()
