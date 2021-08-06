@@ -5,7 +5,7 @@ from flask.json import jsonify
 from flask_cors import CORS
 
 from .config import get_config
-from .extansions import db, ma, migrate, bcrypt
+from .extansions import db, ma, migrate, bcrypt, mail
 
 from api.models.admin import Admin
 from api.models.extractor import Extractor
@@ -36,6 +36,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
+    mail.init_app(app)
 
     # Register routes
     app.register_blueprint(auth_blueprint)
