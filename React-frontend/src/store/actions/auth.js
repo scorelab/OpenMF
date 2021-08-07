@@ -14,6 +14,9 @@ import {
   LOGIN_SUCCESSFULL,
   LOGOUT_FAILED,
   LOGOUT_PROCESS,
+  RESET_PASSWORD,
+  RESET_PASSWORD_FAILED,
+  RESET_PASSWORD_SUCCESSFULL,
   SIGNUP_FAILED,
   SIGNUP_PROCESS,
   SIGNUP_SUCCESSFULL,
@@ -262,6 +265,60 @@ export const sendResetLink = (recipientEmail) => (dispatch) => {
       // Dispatch fail action
       dispatch({
         type: FORGOT_PASSWORD_SEND_LINK_FAILED
+      })
+
+      if(res && (res.status === 404 || res.status === 422 || res.status === 500))
+      {
+        // Set ALert for the above status codes
+        dispatch(setAlert(res.data.message))
+        return
+      }
+
+      // Set error alert
+      dispatch(setAlert('Something went wrong.'))
+    })
+}
+
+
+
+// Action generator for reset passwword
+export const resetPassword = (token, password, history, setPassword) => (dispatch) => {
+
+  // Dispatch start action
+  dispatch({
+    type: RESET_PASSWORD
+  })
+
+  // Create data body object
+  const data = {
+    token: token,
+    password: password
+  }
+
+  // Send request to server
+  axios.post('/reset-password', data)
+    .then((res) => {
+      // Dispatch success action
+      dispatch({
+        type: RESET_PASSWORD_SUCCESSFULL
+      })
+
+      // set Alert
+      dispatch(setAlert(res.data.message, 'success'))
+
+      // Reset Email input field
+      setPassword('')
+
+      // Redirect
+      history.push('/')
+    })
+    .catch((err) => {
+      // Create response from error object
+      const res = err.response
+
+      // Dispatch fail action
+      dispatch({
+        type: RESET_PASSWORD_FAILED
       })
 
       if(res && (res.status === 404 || res.status === 422 || res.status === 500))

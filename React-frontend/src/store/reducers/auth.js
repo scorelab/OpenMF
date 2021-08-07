@@ -14,7 +14,10 @@ import {
   LOGOUT_FAILED,
   FORGOT_PASSWORD_SEND_LINK,
   FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL,
-  FORGOT_PASSWORD_SEND_LINK_FAILED
+  FORGOT_PASSWORD_SEND_LINK_FAILED,
+  RESET_PASSWORD,
+  RESET_PASSWORD_FAILED,
+  RESET_PASSWORD_SUCCESSFULL
 } from '../types/auth';
 
 const initialState = {
@@ -22,6 +25,7 @@ const initialState = {
   isAuthenticated: false,
   isLoading: false,
   isSendingLink: false,
+  isResettingPassword: false,
   auth_token: '',
   user: null,
   error: ''
@@ -142,6 +146,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isSendingLink: false,
+      }
+
+    case RESET_PASSWORD:
+      return {
+        ...state,
+        isResettingPassword: true
+      }
+
+    case RESET_PASSWORD_FAILED:
+    case RESET_PASSWORD_SUCCESSFULL:
+      return {
+        ...state,
+        isResettingPassword: false
       }
 
     default:
