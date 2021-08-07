@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function RegisterPage() {
+function RegisterPage({setOpenSignUp}) {
     const classes = useStyles()
     const history = useHistory()
     const auth = useSelector(state => state.auth)
@@ -161,7 +161,7 @@ function RegisterPage() {
                         color="primary"
                         className={classes.submit}
                         disabled={!username || !email || !password || !accept || auth.isLoading}
-                        onClick={() => dispatch(signUp(username, email, password, "admin", history))}
+                        onClick={() => dispatch(signUp(username, email, password, "admin", history, setOpenSignUp))}
                     >
                         Sign Up | Register
                     </Button>

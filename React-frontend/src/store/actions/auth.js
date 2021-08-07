@@ -99,7 +99,7 @@ export const loadUser = () => (dispatch, getState) => {
 
 
 // Action generator to handle login
-export const login = (email, password, role, remember) => async dispatch => {
+export const login = (email, password, role, remember, callback) => async dispatch => {
   // Login data
   const loginData = {
     email: email,
@@ -124,6 +124,7 @@ export const login = (email, password, role, remember) => async dispatch => {
           type: LOGIN_SUCCESSFULL,
           payload: {data: {auth_token: res.data.access_token}}
         })
+        callback(false)
         dispatch(loadUser())
         dispatch(setAlert(res.data.message, 'success'))
       }
@@ -149,7 +150,7 @@ export const login = (email, password, role, remember) => async dispatch => {
 
 
 // Action generator to handle signup
-export const signUp = (username, email, password, role, history) => (dispatch) => {
+export const signUp = (username, email, password, role, history, callback) => (dispatch) => {
   // Body for post request
   const body = {
     name: username,
@@ -170,6 +171,7 @@ export const signUp = (username, email, password, role, history) => (dispatch) =
     .then((res) => {
       if(res && (res.status === 200 || res.status === 201)){
         dispatch({type: SIGNUP_SUCCESSFULL})
+        callback(false)
         history.push('/')
         dispatch(setAlert(res.data.message, 'success'))
         window.location.reload()

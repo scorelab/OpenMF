@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function LoginForm() {
+function LoginForm({setOpenLogin}) {
 
     // Invoke custorm classes
     const classes = useStyles()
@@ -174,9 +174,9 @@ function LoginForm() {
                         color="primary"
                         className={classes.submit}
                         disabled={ auth.isLoading ||!email || !password || !role}
-                        onClick={() => dispatch(login(email, password, role, remember))}
+                        onClick={() => dispatch(login(email, password, role, remember, setOpenLogin))}
                     >
-                        Login
+                        {(auth.isLoading) ? (<span>Logging...</span>) : (<span>Login</span>)}
                     </Button>
                 </form>
 

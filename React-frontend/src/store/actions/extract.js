@@ -20,7 +20,7 @@ export const defaultState = (model) => (dispatch) => {
 
 
 // Action Generator to Extract Data
-export const extractData = (deviceID, caseName, dataType, history, callback) => (dispatch) => {
+export const extractData = (deviceID, caseName, dataType, tags, history, callback) => (dispatch) => {
 
     // dispatch extract data
     dispatch({
@@ -31,7 +31,8 @@ export const extractData = (deviceID, caseName, dataType, history, callback) => 
     const body = {
         device_id: deviceID,
         case_name: caseName,
-        data: dataType
+        data: dataType,
+        tags: tags
     }
 
     // get token

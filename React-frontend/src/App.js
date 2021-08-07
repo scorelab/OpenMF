@@ -1,3 +1,4 @@
+// Importing Dependecies
 import React, { useEffect } from 'react';
 import './App.css';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -20,6 +21,8 @@ import CaseDirsPage from './pages/Management/CaseDirsPage';
 import CaseFilePage from './pages/Management/CaseFilePage';
 import CompletedtaskPage from './pages/Management/CompletedTaskPage';
 import TodoTaskPage from './pages/Management/TodoTaskPage';
+import ReportMain from './pages/Management/Report/ReportMain';
+import DataVisualizer from './pages/Management/Report/DataVisualizer';
 import LiveDevices from './pages/Extractor/LiveDevices';
 import ExtractedCasesPage from './pages/Extractor/ExtractedCasesPage';
 import AnalyticsPage from './pages/Management/AnalyticsPage';
@@ -63,9 +66,10 @@ function PublicRoute ({ component: Component, restricted, ...rest }) {
   useEffect(() => dispatch(loadUser()), [dispatch])
 
   return <Route {...rest} render={props => {
-    if (auth.isLoading) {
-      return <CircularProgress style={{ margin: '50vh 50vw' }} />
-    } else if (auth.isAuthenticated && restricted) {
+    // if (auth.isLoading) {
+    //   return <CircularProgress style={{ margin: '50vh 50vw' }} />
+    // }
+    if (auth.isAuthenticated && restricted) {
       return <Redirect to="/" />
     } else {
       return <Component {...props} />
@@ -90,6 +94,8 @@ function App() {
           <PrivateRoute path='/task/create' exact component={CreateTask} />
           <PrivateRoute path='/task/list' exact component={ShowTasks} />
           <PrivateRoute path='/case-tree' exact component={CaseTreePage} />
+          <PrivateRoute path='/report' exact component={ReportMain} />
+          <PrivateRoute path='/report/:caseName' component={DataVisualizer} />
           <PrivateRoute path='/analytics' exact component={AnalyticsPage} />
           <PrivateRoute path='/file-explorer' exact component={FileExplorerPage} />
           <PrivateRoute path='/file-explorer/:caseName/:dirName/:fileName' component={ShowFilePage} />
