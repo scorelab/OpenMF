@@ -17,7 +17,8 @@ const inittialState = {
     isLoading: false,
     error: null,
     file: null,
-    fileType: null
+    fileType: null,
+    parsedData: null
 }
 
 // Case reducer
@@ -34,7 +35,8 @@ const fileReducer = (state = inittialState, action) => {
                 isLoading: false,
                 error: null,
                 file: null,
-                fileType: null
+                fileType: null,
+                parsedData: null
             }
 
         case LOAD_FILE:
@@ -43,7 +45,8 @@ const fileReducer = (state = inittialState, action) => {
                 isLoading: true,
                 error: null,
                 file: null,
-                fileType: null
+                fileType: null,
+                parsedData: null
             }
 
         case LOAD_FILE_FAILED:
@@ -52,7 +55,8 @@ const fileReducer = (state = inittialState, action) => {
                 isLoading: false,
                 error: payload.error,
                 file: null,
-                fileType: null
+                fileType: null,
+                parsedData: null,
             }
 
         case LOAD_FILE_SUCCESSFULL:
@@ -61,7 +65,8 @@ const fileReducer = (state = inittialState, action) => {
                 isLoading: false,
                 error: null,
                 file: payload.file,
-                fileType: payload.fileType
+                fileType: payload.fileType,
+                parsedData: payload.parsedData
             }
         default:
             return state

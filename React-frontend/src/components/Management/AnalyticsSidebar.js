@@ -18,9 +18,6 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import HomeIcon from "@material-ui/icons/Home";
-import InfoIcon from "@material-ui/icons/Info";
-import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import Folder from "@material-ui/icons/Folder";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
 import SearchIcon from "@material-ui/icons/Search";
@@ -28,6 +25,8 @@ import BlurOnIcon from "@material-ui/icons/BlurOn";
 import Poll from "@material-ui/icons/Poll";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import FeaturedPlayListIcon from "@material-ui/icons/FeaturedPlayList";
+import BugReportIcon from "@material-ui/icons/BugReport";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 // custom styles
@@ -94,25 +93,22 @@ function AnalyticsSidebar() {
 
   // state for add member model
 
-  // Management related items
+  // Management specific sidebar items
   const managementItems = [
     ["File Explorer", <Folder color="secondary" />, "/file-explorer"],
     ["case Tree", <AccountTreeIcon color="secondary" />, "/case-tree"],
     ["Analytics", <Poll color="secondary" />, "/analytics"],
+    ["Back", <ArrowBackIosIcon color="secondary" />, "/"]
   ];
 
+
+  // Analytics specific sidebar items
   const analyticsItems = [
     ["Common word", <BlurOnIcon color="secondary" />, "/common/Case1/Case2"],
     ["Key Word Search", <SearchIcon color="secondary" />, "/keywordsearch"],
     ["Filter", <FilterListIcon color="secondary" />, "/filter"],
+    ["Report", <BugReportIcon color="secondary"/>, "/report"],
     ["Compare Cases", <FeaturedPlayListIcon color="secondary" />, "/compare"],
-  ];
-
-  // Other items
-  const otherItems = [
-    ["Home", <HomeIcon color="secondary" />],
-    ["Contact", <ContactSupportIcon color="secondary" />],
-    ["About", <InfoIcon color="secondary" />],
   ];
 
   return (
@@ -188,19 +184,7 @@ function AnalyticsSidebar() {
           </ListItem>
         ))}
       </List>
-
-      {/*
-          Mapping other items
-      */}
       <Divider />
-      <List>
-        {otherItems.map((item, index) => (
-          <ListItem button key={item[0]}>
-            <ListItemIcon>{item[1]}</ListItemIcon>
-            <ListItemText primary={item[0]} />
-          </ListItem>
-        ))}
-      </List>
     </Drawer>
   );
 }

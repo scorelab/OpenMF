@@ -9,7 +9,10 @@ import {
   LOAD_CASES_SUCCESSFULL,
   LOAD_CASE_TREE,
   LOAD_CASE_TREE_FAILED,
-  LOAD_CASE_TREE_SUCCESSFULL
+  LOAD_CASE_TREE_SUCCESSFULL,
+  SELECT_CASE,
+  SELECT_CASE_FAILED,
+  SELECT_CASE_SUCCESSFULL
 } from "../types/case";
 import { setAlert } from "./alerts";
 import axios from '../../axios';
@@ -166,3 +169,55 @@ export const loadCases = () => (dispatch) => {
           dispatch(setAlert(err.message))
       })
 }
+
+
+// Action Generator to select a case
+export const selectCase = (caseName) => (dispatch) => {
+
+  // Dispatch select case
+  dispatch({
+    type: SELECT_CASE
+  })
+
+  // Get Token from localstorage
+  const token = localStorage.getItem('openmf_token')
+
+  // Check token
+  if(!token){
+    dispatch({
+      type: SELECT_CASE_FAILED,
+      payload: {
+        error: 'You are not authorized, Please Login Again.'
+      }
+    })
+  }
+
+  // Create Config
+  const config = createConfig(token)
+
+  // send request to server
+  axios.get(`/case/get_case/${caseName}`, config)
+    .then((res) => {
+
+      // Dispatch successfull result
+      dispatch({
+        type: SELECT_CASE_SUCCESSFULL,
+        payload: {
+          case: res.data.case
+        }
+      })
+
+    })
+
+    .catch((err) => {
+      console.log(err)
+
+      // Dispatch fail result
+      dispatch({
+        type: SELECT_CASE_FAILED,
+        payload: {
+          error: "Something went wrong."
+        }
+      })
+    })
+} 

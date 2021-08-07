@@ -843,260 +843,264 @@ export const loadLocationReport = (case_name) => (dispatch) => {
 
 // Action generator to fetch/load common calls details
 export const loadCompareCalls = (case1, case2) => (dispatch) => {
+  // dispatch laod analytics common Calls details
+  dispatch({
+    type: LOAD_COMPARE_CALLS,
+  });
 
-    // dispatch laod analytics common Calls details
+  // Get jwt token from local Storage
+  const token = localStorage.getItem("openmf_token");
+
+  // check if token exists or not
+  if (!token) {
     dispatch({
-        type: LOAD_COMPARE_CALLS
+      type: LOAD_COMPARE_CALLS_FAILED,
+      payload: {
+        error: "Unauthorized, Please Login Again.",
+      },
+    });
+    return;
+  }
+  // create config header object
+  const config = createConfig(token);
+
+  const data = {
+    case_one: case1,
+    case_two: case2,
+  };
+
+  // send request to server
+  axios
+    .post("/commonreport/calls", data, config)
+    .then((res) => {
+      const common_calls = res.data;
+
+      dispatch({
+        type: LOAD_COMPARE_CALLS_SUCCESSFUL,
+        payload: {
+          comparecalls: common_calls,
+        },
+      });
+      dispatch(setAlert(res.data.message, "success"));
     })
-
-    // Get jwt token from local Storage
-    const token = localStorage.getItem('openmf_token')
-
-    // check if token exists or not
-    if(!token){
+    .catch((err) => {
+      const res = err.response;
+      if (
+        res &&
+        (res.status === 404 || res.status === 500 || res.status === 403)
+      ) {
         dispatch({
-            type: LOAD_COMPARE_CALLS_FAILED,
-            payload: {
-                error: 'Unauthorized, Please Login Again.'
-            }
-        })
-        return
-    }
-    // create config header object
-    const config = createConfig(token)
-
-
-    const data = {
-        case_one: case1,
-        case_two: case2
-    }
-
-    // send request to server
-    axios.post('/commonreport/calls',data ,config)
-        .then((res) => {
-
-            const common_calls = (res.data)
-
-            dispatch({
-              type: LOAD_COMPARE_CALLS_SUCCESSFUL,
-              payload: {
-                comparecalls: common_calls,
-              },
-            });
-            dispatch(setAlert(res.data.message, 'success'))
-        })
-        .catch((err) => {
-            const res = err.response
-            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
-                dispatch({
-                  type: LOAD_COMPARE_CALLS_FAILED,
-                  payload: {
-                    error: res.data.message,
-                  },
-                });
-                dispatch(setAlert(res.data.message))
-            }
-            dispatch({
-              type: LOAD_COMPARE_CALLS_FAILED,
-              payload: {
-                error: "Something Went Wrong.",
-              },
-            });
-            dispatch(setAlert('Something Went Wrong.'))
-        })
-}
+          type: LOAD_COMPARE_CALLS_FAILED,
+          payload: {
+            error: res.data.message,
+          },
+        });
+        dispatch(setAlert(res.data.message));
+      }
+      dispatch({
+        type: LOAD_COMPARE_CALLS_FAILED,
+        payload: {
+          error: "Something Went Wrong.",
+        },
+      });
+      dispatch(setAlert("Something Went Wrong."));
+    });
+};
 
 // Action generator to fetch/load common coordinates details
 export const loadCompareLocations = (case1, case2) => (dispatch) => {
+  // dispatch laod analytics common locations details
+  dispatch({
+    type: LOAD_COMPARE_LOCATIONS,
+  });
 
-    // dispatch laod analytics common locations details
+  // Get jwt token from local Storage
+  const token = localStorage.getItem("openmf_token");
+
+  // check if token exists or not
+  if (!token) {
     dispatch({
-        type: LOAD_COMPARE_LOCATIONS
+      type: LOAD_COMPARE_LOCATIONS_FAILED,
+      payload: {
+        error: "Unauthorized, Please Login Again.",
+      },
+    });
+    return;
+  }
+  // create config header object
+  const config = createConfig(token);
+
+  const data = {
+    case_one: case1,
+    case_two: case2,
+  };
+
+  // send request to server
+  axios
+    .post("/commonreport/coordinates", data, config)
+    .then((res) => {
+      const common_locations = res.data;
+
+      dispatch({
+        type: LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
+        payload: {
+          comparelocations: common_locations,
+        },
+      });
+      dispatch(setAlert(res.data.message, "success"));
     })
-
-    // Get jwt token from local Storage
-    const token = localStorage.getItem('openmf_token')
-
-    // check if token exists or not
-    if(!token){
+    .catch((err) => {
+      const res = err.response;
+      if (
+        res &&
+        (res.status === 404 || res.status === 500 || res.status === 403)
+      ) {
         dispatch({
-            type: LOAD_COMPARE_LOCATIONS_FAILED,
-            payload: {
-                error: 'Unauthorized, Please Login Again.'
-            }
-        })
-        return
-    }
-    // create config header object
-    const config = createConfig(token)
-
-
-    const data = {
-        case_one: case1,
-        case_two: case2
-    }
-
-    // send request to server
-    axios.post('/commonreport/coordinates',data ,config)
-        .then((res) => {
-
-            const common_locations = (res.data)
-
-            dispatch({
-              type: LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
-              payload: {
-                comparelocations: common_locations,
-              },
-            });
-            dispatch(setAlert(res.data.message, 'success'))
-        })
-        .catch((err) => {
-            const res = err.response
-            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
-                dispatch({
-                  type: LOAD_COMPARE_LOCATIONS_FAILED,
-                  payload: {
-                    error: res.data.message,
-                  },
-                });
-                dispatch(setAlert(res.data.message))
-            }
-            dispatch({
-              type: LOAD_COMPARE_LOCATIONS_FAILED,
-              payload: {
-                error: "Something Went Wrong.",
-              },
-            });
-            dispatch(setAlert('Something Went Wrong.'))
-        })
-}
+          type: LOAD_COMPARE_LOCATIONS_FAILED,
+          payload: {
+            error: res.data.message,
+          },
+        });
+        dispatch(setAlert(res.data.message));
+      }
+      dispatch({
+        type: LOAD_COMPARE_LOCATIONS_FAILED,
+        payload: {
+          error: "Something Went Wrong.",
+        },
+      });
+      dispatch(setAlert("Something Went Wrong."));
+    });
+};
 
 // Action generator to fetch/load common browser history details
 export const loadCompareHistory = (case1, case2) => (dispatch) => {
+  // dispatch laod analytics common browser history details
+  dispatch({
+    type: LOAD_COMPARE_BROWSER_HISTORY,
+  });
 
-    // dispatch laod analytics common browser history details
+  // Get jwt token from local Storage
+  const token = localStorage.getItem("openmf_token");
+
+  // check if token exists or not
+  if (!token) {
     dispatch({
-        type: LOAD_COMPARE_BROWSER_HISTORY
+      type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+      payload: {
+        error: "Unauthorized, Please Login Again.",
+      },
+    });
+    return;
+  }
+  // create config header object
+  const config = createConfig(token);
+
+  const data = {
+    case_one: case1,
+    case_two: case2,
+  };
+
+  // send request to server
+  axios
+    .post("/commonreport/browser", data, config)
+    .then((res) => {
+      const common_browser_history = res.data;
+
+      dispatch({
+        type: LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL,
+        payload: {
+          comparehistory: common_browser_history,
+        },
+      });
+      dispatch(setAlert(res.data.message, "success"));
     })
-
-    // Get jwt token from local Storage
-    const token = localStorage.getItem('openmf_token')
-
-    // check if token exists or not
-    if(!token){
+    .catch((err) => {
+      const res = err.response;
+      if (
+        res &&
+        (res.status === 404 || res.status === 500 || res.status === 403)
+      ) {
         dispatch({
-            type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
-            payload: {
-                error: 'Unauthorized, Please Login Again.'
-            }
-        })
-        return
-    }
-    // create config header object
-    const config = createConfig(token)
-
-
-    const data = {
-        case_one: case1,
-        case_two: case2
-    }
-
-    // send request to server
-    axios.post('/commonreport/browser',data ,config)
-        .then((res) => {
-
-            const common_browser_history = (res.data)
-
-            dispatch({
-              type: LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL,
-              payload: {
-                comparehistory: common_browser_history,
-              },
-            });
-            dispatch(setAlert(res.data.message, 'success'))
-        })
-        .catch((err) => {
-            const res = err.response
-            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
-                dispatch({
-                  type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
-                  payload: {
-                    error: res.data.message,
-                  },
-                });
-                dispatch(setAlert(res.data.message))
-            }
-            dispatch({
-              type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
-              payload: {
-                error: "Something Went Wrong.",
-              },
-            });
-            dispatch(setAlert('Something Went Wrong.'))
-        })
-}
+          type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+          payload: {
+            error: res.data.message,
+          },
+        });
+        dispatch(setAlert(res.data.message));
+      }
+      dispatch({
+        type: LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+        payload: {
+          error: "Something Went Wrong.",
+        },
+      });
+      dispatch(setAlert("Something Went Wrong."));
+    });
+};
 
 // Action generator to fetch/load common sms details
 export const loadCompareSms = (case1, case2) => (dispatch) => {
+  // dispatch laod analytics common sms details
+  dispatch({
+    type: LOAD_COMPARE_SMS,
+  });
 
-    // dispatch laod analytics common sms details
+  // Get jwt token from local Storage
+  const token = localStorage.getItem("openmf_token");
+
+  // check if token exists or not
+  if (!token) {
     dispatch({
-        type: LOAD_COMPARE_SMS
+      type: LOAD_COMPARE_SMS_FAILED,
+      payload: {
+        error: "Unauthorized, Please Login Again.",
+      },
+    });
+    return;
+  }
+  // create config header object
+  const config = createConfig(token);
+
+  const data = {
+    case_one: case1,
+    case_two: case2,
+  };
+
+  // send request to server
+  axios
+    .post("/commonreport/sms", data, config)
+    .then((res) => {
+      const common_sms = res.data;
+
+      dispatch({
+        type: LOAD_COMPARE_SMS_SUCCESSFUL,
+        payload: {
+          comparesms: common_sms,
+        },
+      });
+      dispatch(setAlert(res.data.message, "success"));
     })
-
-    // Get jwt token from local Storage
-    const token = localStorage.getItem('openmf_token')
-
-    // check if token exists or not
-    if(!token){
+    .catch((err) => {
+      const res = err.response;
+      if (
+        res &&
+        (res.status === 404 || res.status === 500 || res.status === 403)
+      ) {
         dispatch({
           type: LOAD_COMPARE_SMS_FAILED,
           payload: {
-            error: "Unauthorized, Please Login Again.",
+            error: res.data.message,
           },
         });
-        return
-    }
-    // create config header object
-    const config = createConfig(token)
-
-
-    const data = {
-        case_one: case1,
-        case_two: case2
-    }
-
-    // send request to server
-    axios.post('/commonreport/sms',data ,config)
-        .then((res) => {
-
-            const common_sms = (res.data)
-
-            dispatch({
-              type: LOAD_COMPARE_SMS_SUCCESSFUL,
-              payload: {
-                comparesms: common_sms,
-              },
-            });
-            dispatch(setAlert(res.data.message, 'success'))
-        })
-        .catch((err) => {
-            const res = err.response
-            if(res && (res.status === 404 || res.status === 500 || res.status === 403)){
-                dispatch({
-                  type: LOAD_COMPARE_SMS_FAILED,
-                  payload: {
-                    error: res.data.message,
-                  },
-                });
-                dispatch(setAlert(res.data.message))
-            }
-            dispatch({
-              type: LOAD_COMPARE_SMS_FAILED,
-              payload: {
-                error: "Something Went Wrong.",
-              },
-            });
-            dispatch(setAlert('Something Went Wrong.'))
-        })
-} 
+        dispatch(setAlert(res.data.message));
+      }
+      dispatch({
+        type: LOAD_COMPARE_SMS_FAILED,
+        payload: {
+          error: "Something Went Wrong.",
+        },
+      });
+      dispatch(setAlert("Something Went Wrong."));
+    });
+};

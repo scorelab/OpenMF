@@ -6,30 +6,37 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
-    Button
+    Button,
+    Tooltip
 } from '@material-ui/core';
 import FolderIcon from '@material-ui/icons/Folder';
+import GraphEqIcon from '@material-ui/icons/GraphicEq';
 import { useDispatch } from 'react-redux';
-import { loadCaseTree } from '../../store/actions/case';
+import { loadCaseTree, selectCase } from '../../store/actions/case';
 import { useHistory } from 'react-router-dom';
 
 
 // Custom styles
 const useStyles = makeStyles((theme) => ({
     button: {
-        color: '#888',
+        fontSize: '.8rem',
+        color: '#555',
+        fontWeight: 'bold',
         borderColor: '#666',
         marginRight: theme.spacing(2),
         marginBottom: theme.spacing(2),
         '&:focus': {
             outline: 'none'
         }
+    },
+    icon: {
+        color: '#000',
     }
 }))
 
 
 // Main Functional component
-function CaseFolderButton({dirName, parentDir}) {
+function CaseFolderButton({dirName, parentDir, isAnalyser}) {
 
     // Invoke custom classes
     const classes = useStyles()
@@ -41,11 +48,16 @@ function CaseFolderButton({dirName, parentDir}) {
     const history = useHistory()
 
     // handle double click
-    const handleDoubleClick = (caseName) => {
+    const handleClick = (caseName) => {
 
         if(parentDir === 'file-explorer'){
             // dispatch caseTree
             dispatch(loadCaseTree(caseName))
+        }
+
+        if(parentDir === 'report'){
+            // select the click case
+            dispatch(selectCase(caseName))
         }
 
         // redirect
@@ -57,8 +69,11 @@ function CaseFolderButton({dirName, parentDir}) {
         <Button
             variant="outlined"
             className={classes.button}
-            onDoubleClick={() => handleDoubleClick(dirName)}
-            startIcon={<FolderIcon />}
+            onDoubleClick={() => handleClick(dirName)}
+            startIcon={(isAnalyser) ?
+                <Tooltip title="Report"><GraphEqIcon className={classes.icon}/></Tooltip>
+                :
+                <FolderIcon />}
         >
             {dirName}
         </Button>

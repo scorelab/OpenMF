@@ -8,6 +8,7 @@ import os
 import json
 import datetime
 from flask import Blueprint, jsonify, request, make_response, send_file
+from flask.wrappers import Response
 from api.models.case import Case
 from api.models.extractor import Extractor
 from api.schema.case import CaseSchema
@@ -341,3 +342,30 @@ def case_tree():
             "message": "something went wrong."
         }
         return make_response(jsonify(response)), 500
+
+
+@token_required
+@case.route('/get_case/<casename>', methods=["GET"])
+def getCase(casename):
+    """
+    Route to get details of a case.
+    """
+
+    # get case from Case Model
+    case = Case.query.filter_by(case_name=casename).first()
+
+    # Check is case exits
+    if(not case):
+        response = {
+            "success": False,
+            "message": "Case Not Found."
+        }
+        return make_response(jsonify(response)), 404
+
+    # IF case exits
+    response = {
+        "success": True,
+        "message": "Case Fetched.",
+        "case": case_schema.dump(case)
+    }
+    return make_response(jsonify(response)), 200
