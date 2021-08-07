@@ -4,7 +4,6 @@ Authentication Route for User.
 
 from flask import Blueprint, request, jsonify
 from flask.helpers import make_response
-from werkzeug.datastructures import FileStorage
 from api.models.admin import Admin
 from api.models.extractor import Extractor
 from api.models.management import Management
@@ -164,3 +163,72 @@ def forgot_password():
             "message": 'Something went wrong.',
         }
         return make_response(jsonify(response)), 500
+
+
+
+@auth.route('/reset-password', methods=["POST"])
+def reset_password():
+    """
+    Route to handle/Reset Password.
+    """
+    try:
+        req = request.get_json()
+        token = req['token']
+        password = req['password']
+    except:
+        response = {
+            "success": False,
+            "message": "Please Provide all Fields."
+        }
+        return make_response(jsonify(response)), 422
+
+    try:
+        # Decode Token
+        res = Admin.decode_access_token(token).value
+
+        # user details
+        public_id = res["public_id"]
+        role = res["role"]
+
+        # Get User as per role
+        User = None
+        if(role == "admin"):
+            User = Admin.query.filter_by(public_id=public_id).first()
+        elif (role == "extractor"):
+            User = Extractor.query.filter_by(public_id=public_id).first()
+        elif (role == "management"):
+            User = Management.query.filter_by(public_id=public_id).first()
+        else:
+            response = {
+                "success": False,
+                "message": "Token Expired."
+            }
+            return make_response(jsonify(response)), 404
+
+        # Check for User existance
+        if(not User):
+            response = {
+                "success": False,
+                "message": "User Not Found."
+            }
+            return make_response(jsonify(response)), 404
+
+        # Reset Password
+        User.password = password
+
+        # commit changes
+        db.session.commit()
+
+        response = {
+            "success": True,
+            "message": "Password Reset Successfully."
+        }
+        return make_response(jsonify(response)), 201
+
+    # If decode generates error
+    except Exception:
+        response = {
+            "success": False,
+            "message": "Something Went Wrong, Please Use Valid Reset Password Link."
+        }
+        return make_response(jsonify(response)), 422
