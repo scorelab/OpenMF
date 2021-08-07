@@ -49,8 +49,8 @@ def create_app():
     app.register_blueprint(task_blueprint)
     app.register_blueprint(common_blueprint)
     app.register_blueprint(keyword_blueprint)
-    app.register_blueprint(commonreport_blueprint)
     app.register_blueprint(report_blueprint)
+    app.register_blueprint(commonreport_blueprint)
 
 
     # Register a shell context

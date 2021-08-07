@@ -14,7 +14,7 @@ ROOT_DIR = os.getcwd()
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 
-commonreport = Blueprint('report', __name__, url_prefix='/commonreport')
+commonreport = Blueprint('commonreport', __name__, url_prefix='/commonreport')
 dirname = os.path.dirname(__file__)
 cases_data_path = os.path.join(dirname, '../../../data/')
 
