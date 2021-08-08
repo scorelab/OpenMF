@@ -17,7 +17,13 @@ import {
   FORGOT_PASSWORD_SEND_LINK_FAILED,
   RESET_PASSWORD,
   RESET_PASSWORD_FAILED,
-  RESET_PASSWORD_SUCCESSFULL
+  RESET_PASSWORD_SUCCESSFULL,
+  EMAIL_VERIFY_SEND_LINK,
+  EMAIL_VERIFY_SEND_LINK_FAILED,
+  EMAIL_VERIFY_SEND_LINK_SUCCESSFULLY,
+  VERIFY_EMAIL,
+  VERIFY_EMAIL_FAILED,
+  VERIFY_EMAIL_SUCCESSFULLY
 } from '../types/auth';
 
 const initialState = {
@@ -26,6 +32,8 @@ const initialState = {
   isLoading: false,
   isSendingLink: false,
   isResettingPassword: false,
+  isVerified: false,
+  isVerifing: false,
   auth_token: '',
   user: null,
   error: ''
@@ -136,6 +144,7 @@ const reducer = (state = initialState, action) => {
       }
 
     case FORGOT_PASSWORD_SEND_LINK:
+    case EMAIL_VERIFY_SEND_LINK:
       return {
         ...state,
         isSendingLink: true
@@ -143,6 +152,8 @@ const reducer = (state = initialState, action) => {
 
     case FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL:
     case FORGOT_PASSWORD_SEND_LINK_FAILED:
+    case EMAIL_VERIFY_SEND_LINK_FAILED:
+    case EMAIL_VERIFY_SEND_LINK_SUCCESSFULLY:
       return {
         ...state,
         isSendingLink: false,
@@ -159,6 +170,26 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         isResettingPassword: false
+      }
+
+    case VERIFY_EMAIL:
+      return {
+        ...state,
+        isVerifing: true,
+      }
+
+    case VERIFY_EMAIL_FAILED:
+      return {
+        ...state,
+        isVerifing: false,
+        isVerified: false
+      }
+
+    case VERIFY_EMAIL_SUCCESSFULLY:
+      return {
+        ...state,
+        isVerified: true,
+        isVerifing: false,
       }
 
     default:
