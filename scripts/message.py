@@ -1,3 +1,6 @@
+'''
+    This script is responsible for extracting message data
+'''
 import sys
 import sqlite3
 import os
