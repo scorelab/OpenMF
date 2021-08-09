@@ -1,3 +1,6 @@
+'''
+    This script is responsible for extracting phone data.
+'''
 import sys
 import sqlite3
 import os
