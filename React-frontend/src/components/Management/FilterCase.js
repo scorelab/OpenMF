@@ -1,3 +1,4 @@
+// component responsible for filter cases 
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
