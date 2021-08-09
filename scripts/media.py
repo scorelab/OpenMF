@@ -1,3 +1,6 @@
+'''
+    This script is responsible for extracting EXIF data
+'''
 import sys
 import sqlite3
 import os
