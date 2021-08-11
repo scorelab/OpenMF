@@ -1,11 +1,17 @@
 """
 Class definition of extractor user model.
 """
+
+# Importing Dependecies
 from api.models.base_user import BaseUser
 from api.extansions import db
 
+
+# Model Class Definition
 class Extractor(BaseUser):
     __tablename__="extractor"
+
+    # Property Declaration
     id = db.Column(db.Integer, unique=True, primary_key=True)
     role = db.Column(db.String(255), default="extractor")
     admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"))
