@@ -1,10 +1,13 @@
 """
 Config settings for for development, testing and production environments.
 """
+
+# Importing Depedecies
 import os
 from pathlib import Path
 
 
+# Declare Global Variables for SQLITE Path
 HERE = Path(__file__).parent
 SQLITE_DEV = "sqlite:///" + str(HERE / "app_dev.db")
 SQLITE_TEST = "sqlite:///" + str(HERE / "app_test.db")
