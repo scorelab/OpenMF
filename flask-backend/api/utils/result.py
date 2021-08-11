@@ -2,9 +2,13 @@
 Result class to represent output of an operation.
 """
 
+# Class Result Definition
 class Result:
 
     def __init__(self, success, error, value):
+        """
+        Contructor for Result Class.
+        """
         self.success = success
         self.error = error
         self.value = value
