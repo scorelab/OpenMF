@@ -8,7 +8,8 @@ OpenMF - Flask Backend
 
 1. **Fork** :-  If You want to Contribute to this project you will need to have your own   copy of the project as your Remote repository over GitHub. For this purpose, you can fork the project by clicking the **Fork** Button that you can be found on the top right corner of the landing page of this repository.Refer the below picture :-
     <br ></br>
-    ![image](https://user-images.githubusercontent.com/64790109/129162937-4bbcd6f3-d1d2-49f2-ac7e-a9dd447045fc.png)
+    ![forkImage](https://user-images.githubusercontent.com/64790109/129328021-89fcf73b-5b3c-4a4a-95c6-8fc96961d196.jpeg)
+
 
 1. **Clone** :- After forking the Project, run the following command inside any  specific directory :-
 
