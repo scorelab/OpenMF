@@ -30,11 +30,11 @@ import CommonWordsPage from './pages/Management/CommonWordsPage';
 import KeywordSearchPage from './pages/Management/KeywordSearchPage';
 import FilterCasePage from './pages/Management/FilterCasePage';
 import ShowFilePage from './pages/Management/ShowFilePage';
+import LocationPage from './pages/Management/LocationPage'
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import ComparePage from './pages/Management/ComparePage';
-
 
 
 // private route accessbile for only authenticated users
@@ -111,6 +111,7 @@ function App() {
           <PrivateRoute path='/common/Case1/Case2' exact component={CommonWordsPage} />
           <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
           <PrivateRoute path='/filter' exact component={FilterCasePage} />
+          <PrivateRoute path='/location' exact component={LocationPage} />
           <PrivateRoute path='/compare' exact component={ComparePage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
