@@ -28,6 +28,7 @@ import FolderIcon from '@material-ui/icons/Folder';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import PollIcon from '@material-ui/icons/Poll';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import VerifyButton from '../Utils/VerifyButton';
 
 
 // custom styles
@@ -145,6 +146,13 @@ function Sidebar() {
           <Typography className={classes.profileText}>
             {(auth.user && !auth.isLoading) ?
               auth.user.email :
+              (<span>wait...</span>)
+            }
+          </Typography>
+
+          <Typography className={classes.profileText}>
+            {(auth.user && !auth.isLoading) ?
+              (<VerifyButton />) :
               (<span>wait...</span>)
             }
           </Typography>
