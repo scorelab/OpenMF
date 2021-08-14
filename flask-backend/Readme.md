@@ -2,59 +2,10 @@ OpenMF - Flask Backend
 ==================================
 
 # SetUp and Run
-----------------
 
 ## Fork, Clone and Remote
 
-1. **Fork** :-  If You want to Contribute to this project you will need to have your own   copy of the project as your Remote repository over GitHub. For this purpose, you can fork the project by clicking the **Fork** Button that you can be found on the top right corner of the landing page of this repository.Refer the below picture :-
-    <br ></br>
-    ![forkImage](https://user-images.githubusercontent.com/64790109/129328021-89fcf73b-5b3c-4a4a-95c6-8fc96961d196.jpeg)
-
-
-1. **Clone** :- After forking the Project, run the following command inside any  specific directory :-
-
-    ```
-    $ git clone https://github.com/YOUR_GITHUB_USER_NAME/OpenMF.git
-    ```
-2. **Remote** :- By defualt after clonning the remote pointing to your remote repository is the **origin** remote. To keep track of the original repository, you should add another remote named **upstream**. For this Project, it can be done by running the following command -
-
-    ```
-    $ git remote add upstream https://github.com/scorelab/OpenMF.git
-    ```
-    You can also check out whether **upstream** remote is correctly added or not by using the following command :-
-    ```
-    $ git remote -v
-    ```
-    You should see the following output :-
-    ```text
-    origin  https://github.com/YOUR_GITHUB_USER_NAME/OpenMF.git (fetch)
-    origin  https://github.com/YOUR_GITHUB_USER_NAME/OpenMF.git (push)
-    upstream        https://github.com/scorelab/OpenMF.git (fetch)
-    upstream        https://github.com/scorelab/OpenMF.git (push)
-    ```
-
-## Sync with Upstream
-
-Always keep your local copy of repository updated with the original repository.
-
-Before making any changes and/or in an appropriate interval, run the following commands carefully to update your local repository.
-
-```sh
-# Fetch all remote repositories and delete any deleted remote branches
-$ git fetch --all --prune
-
-# Switch to `master` branch
-$ git checkout master
-
-# Reset local `main` branch to match `upstream` repository's `master` branch
-$ git reset --hard upstream/master
-
-# Push changes to your forked `OpenMF` repo
-$ git push origin master
-
-```
-
-**Note**: Always keep remmeber to sync your local repository to the upstream repository before raising a PR.
+If you have not forked and cloned this repository before, please go to this [Forking and Cloning](https://github.com/scorelab/OpenMF/wiki/Forking-and-Cloning) wiki page to get instructions regarding the same.
 
 ## Update Enviornment Variables
 To run the project you need to update the following ENVIORNMENT VARIABLES.
