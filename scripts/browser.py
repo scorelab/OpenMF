@@ -1,3 +1,6 @@
+'''
+    script for extracting browsers history
+'''
 import sys
 import sqlite3
 import os
@@ -94,6 +97,9 @@ def store_browser_history():
     browser_conn.close()
     browser_output_file = OUTPUT + SEP + "history.tsv"
     browser_file = open(browser_output_file, "w+", encoding="utf-8")
+    '''
+        storing data in history.tsv 
+    '''
     browser_file.write(
         "urls_id\turls\turls_title\turls_visit_count\turls_typed_count\turls_last_visit_time\turls_hidden\tvisits_time\tvisits_from_visit\tvisits_duration\tvisits_transition\n")
 
