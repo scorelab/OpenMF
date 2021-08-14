@@ -2,3 +2,8 @@ export FLASK_APP="api"
 export FLASK_ENV="development"
 
 SECRET_KEY="chooseasecretkey"
+
+MAIL_USERNAME="<Enter Mail User Name />"
+MAIL_PASSWORD="<Enter Mail App Password />"
+MAIL_SERVER="<Enter Mail Server />"
+MAIL_PORT="<Enter Mail Port Number />"

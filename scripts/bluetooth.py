@@ -1,3 +1,6 @@
+'''
+    scripts for bluetooth data extraction
+'''
 import sys
 import sqlite3
 import os
@@ -28,7 +31,9 @@ def store_btopp():
     bluetooth_cursor = bluetooth_conn.cursor()
     bluetooth_cursor.execute(bluetooth_query)
 
-
+    '''
+    creating columns
+    '''
     BLUETOOTH_ID = 0
     BLUETOOTH_URI = 1
     BLUETOOTH_HINT = 2
@@ -113,7 +118,9 @@ def store_btopp():
     bluetooth_conn.close()
     bluetooth_output_file = OUTPUT + SEP + "bluetooth.tsv"
     bluetooth_file = open(bluetooth_output_file, "w+", encoding="utf-8")
-
+    '''
+     store data in bluetooth.tsv
+    '''
     bluetooth_file.write("_id\turi\thint\t_data\tmimetype\tdirection\tdestination\tvisibility\tconfirm\tstatus\ttotal_bytes\tcurrent_bytes\ttimestamp\tscanned\tdevice_name\treserved\n")
 
     for index in bluetooth_dict:

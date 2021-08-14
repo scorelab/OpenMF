@@ -6,17 +6,29 @@
 import axios from '../../axios';
 import {
   AUTH_DEFAULT,
+  EMAIL_VERIFY_SEND_LINK,
+  EMAIL_VERIFY_SEND_LINK_FAILED,
+  EMAIL_VERIFY_SEND_LINK_SUCCESSFULLY,
+  FORGOT_PASSWORD_SEND_LINK,
+  FORGOT_PASSWORD_SEND_LINK_FAILED,
+  FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL,
   LOGIN_FAILED,
   LOGIN_PROCESS,
   LOGIN_SUCCESSFULL,
   LOGOUT_FAILED,
   LOGOUT_PROCESS,
+  RESET_PASSWORD,
+  RESET_PASSWORD_FAILED,
+  RESET_PASSWORD_SUCCESSFULL,
   SIGNUP_FAILED,
   SIGNUP_PROCESS,
   SIGNUP_SUCCESSFULL,
   USER_LOADED,
   USER_LOADING,
-  USER_LOAD_ERROR
+  USER_LOAD_ERROR,
+  VERIFY_EMAIL,
+  VERIFY_EMAIL_FAILED,
+  VERIFY_EMAIL_SUCCESSFULLY
 } from '../types/auth';
 import { setAlert } from './alerts';
 export const LOGIN = 'LOGIN';
@@ -226,3 +238,208 @@ export const logout = (history) => (dispatch) => {
       })
     })
 }
+
+
+
+// Action generator for sending forgot password link
+export const sendResetLink = (recipientEmail) => (dispatch) => {
+
+  // Dispatch Start Process
+  dispatch({
+    type: FORGOT_PASSWORD_SEND_LINK
+  })
+
+  // create data body object
+  const data = {
+    email: recipientEmail
+  }
+
+  // send request to server
+  axios.post('/forgot-password', data)
+    .then((res) => {
+      // Dispatch success action
+      dispatch({
+        type: FORGOT_PASSWORD_SEND_LINK_SUCCESSFULL
+      })
+
+      // set Alert
+      dispatch(setAlert(res.data.message, 'success'))
+    })
+    .catch((err) => {
+
+      // Create response from error object
+      const res = err.response
+
+      // Dispatch fail action
+      dispatch({
+        type: FORGOT_PASSWORD_SEND_LINK_FAILED
+      })
+
+      if(res && (res.status === 404 || res.status === 422 || res.status === 500))
+      {
+        // Set ALert for the above status codes
+        dispatch(setAlert(res.data.message))
+        return
+      }
+
+      // Set error alert
+      dispatch(setAlert('Something went wrong.'))
+    })
+}
+
+
+
+// Action generator for reset passwword
+export const resetPassword = (token, password, history, setPassword) => (dispatch) => {
+
+  // Dispatch start action
+  dispatch({
+    type: RESET_PASSWORD
+  })
+
+  // Create data body object
+  const data = {
+    token: token,
+    password: password
+  }
+
+  // Send request to server
+  axios.post('/reset-password', data)
+    .then((res) => {
+      // Dispatch success action
+      dispatch({
+        type: RESET_PASSWORD_SUCCESSFULL
+      })
+
+      // set Alert
+      dispatch(setAlert(res.data.message, 'success'))
+
+      // Reset Email input field
+      setPassword('')
+
+      // Redirect
+      history.push('/')
+    })
+    .catch((err) => {
+      // Create response from error object
+      const res = err.response
+
+      // Dispatch fail action
+      dispatch({
+        type: RESET_PASSWORD_FAILED
+      })
+
+      if(res && (res.status === 404 || res.status === 422 || res.status === 500))
+      {
+        // Set ALert for the above status codes
+        dispatch(setAlert(res.data.message))
+        return
+      }
+
+      // Set error alert
+      dispatch(setAlert('Something went wrong.'))
+    })
+}
+
+
+
+// Action generator for sending verify email link
+export const sendEmailVerifyLink = (recipientEmail) => (dispatch) => {
+
+  // Dispatch Start Process
+  dispatch({
+    type: EMAIL_VERIFY_SEND_LINK
+  })
+
+  // create data body object
+  const data = {
+    email: recipientEmail
+  }
+
+  // send request to server
+  axios.post('/send-verify-email', data)
+    .then((res) => {
+      // Dispatch success action
+      dispatch({
+        type: EMAIL_VERIFY_SEND_LINK_SUCCESSFULLY
+      })
+
+      // set Alert
+      dispatch(setAlert(res.data.message, 'success'))
+    })
+    .catch((err) => {
+
+      // Create response from error object
+      const res = err.response
+
+      // Dispatch fail action
+      dispatch({
+        type: EMAIL_VERIFY_SEND_LINK_FAILED
+      })
+
+      if(res && (res.status === 404 || res.status === 422 || res.status === 500))
+      {
+        // Set ALert for the above status codes
+        dispatch(setAlert(res.data.message))
+        return
+      }
+
+      // Set error alert
+      dispatch(setAlert('Something went wrong.'))
+    })
+}
+
+
+
+// Action generator for verify email
+export const verifyEmail = (token, history) => (dispatch) => {
+
+  // Dispatch start action
+  dispatch({
+    type: VERIFY_EMAIL
+  })
+
+  // Create data body object
+  const data = {
+    token: token,
+  }
+
+  // Send request to server
+  axios.post('/verify-email', data)
+    .then((res) => {
+      // Dispatch success action
+      dispatch({
+        type: VERIFY_EMAIL_SUCCESSFULLY
+      })
+
+      // Update the user state
+      dispatch(loadUser())
+
+      // Redireact to homepage
+      history.push('/')
+
+      // set Alert
+      dispatch(setAlert(res.data.message, 'success'))
+
+    })
+    .catch((err) => {
+      // Create response from error object
+      const res = err.response
+
+      // Dispatch fail action
+      dispatch({
+        type: VERIFY_EMAIL_FAILED
+      })
+
+      if(res && (res.status === 404 || res.status === 422 || res.status === 500))
+      {
+        // Set ALert for the above status codes
+        dispatch(setAlert(res.data.message))
+        return
+      }
+
+      // Set error alert
+      dispatch(setAlert('Something went wrong.'))
+    })
+}
+

@@ -1,3 +1,6 @@
+'''
+    This script is responsible for getting Device General Information.
+'''
 import sys
 import time
 import re
@@ -125,7 +128,6 @@ if Popen([ADB, 'shell', SUC, 'ls', SIM_LOC], stdout=PIPE, stderr=STDOUT).stdout.
             if PRV_SIM_MSISDN != '' and PRV_SIM_MSISDN != 'null':
                 REPORT.append(['SIM MSISDN (Previous)', PRV_SIM_MSISDN])
 
-#
 # Accounts
 ALLACC = Popen([ADB, 'shell', SUC, 'dumpsys', 'account'], stdout=PIPE, stderr=STDOUT).stdout.read().decode('UTF-8')
 all_acc = re.compile('Account {name=', re.DOTALL).finditer(ALLACC)

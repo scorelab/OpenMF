@@ -212,7 +212,7 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
+            if(res && (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403)){
                 dispatch({
                     type: MEMBER_ADD_FAILED,
                     payload: {
@@ -220,6 +220,7 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
                     }
                 })
                 dispatch(setAlert(res.data.message))
+                return
             }
             dispatch(setAlert('Something went wrong.'))
         })
