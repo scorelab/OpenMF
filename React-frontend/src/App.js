@@ -33,6 +33,7 @@ import ShowFilePage from './pages/Management/ShowFilePage';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
+import ComparePage from './pages/Management/ComparePage';
 
 
 
@@ -110,6 +111,7 @@ function App() {
           <PrivateRoute path='/common/Case1/Case2' exact component={CommonWordsPage} />
           <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
           <PrivateRoute path='/filter' exact component={FilterCasePage} />
+          <PrivateRoute path='/compare' exact component={ComparePage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>

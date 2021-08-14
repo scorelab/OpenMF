@@ -24,6 +24,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import BlurOnIcon from "@material-ui/icons/BlurOn";
 import Poll from "@material-ui/icons/Poll";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import FeaturedPlayListIcon from "@material-ui/icons/FeaturedPlayList";
 import BugReportIcon from "@material-ui/icons/BugReport";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
@@ -104,13 +105,10 @@ function AnalyticsSidebar() {
   // Analytics specific sidebar items
   const analyticsItems = [
     ["Common word", <BlurOnIcon color="secondary" />, "/common/Case1/Case2"],
-    [
-      "Key Word Search",
-      <SearchIcon color="secondary" />,
-      "/keywordsearch",
-    ],
+    ["Key Word Search", <SearchIcon color="secondary" />, "/keywordsearch"],
     ["Filter", <FilterListIcon color="secondary" />, "/filter"],
     ["Report", <BugReportIcon color="secondary"/>, "/report"],
+    ["Compare Cases", <FeaturedPlayListIcon color="secondary" />, "/compare"],
   ];
 
   return (

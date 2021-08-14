@@ -40,6 +40,18 @@ import {
   LOAD_REPORT_LOCATION,
   LOAD_REPORT_LOCATION_FAILED,
   LOAD_REPORT_LOCATION_SUCCESSFUL,
+  LOAD_COMPARE_CALLS,
+  LOAD_COMPARE_CALLS_FAILED,
+  LOAD_COMPARE_CALLS_SUCCESSFUL,
+  LOAD_COMPARE_LOCATIONS,
+  LOAD_COMPARE_LOCATIONS_FAILED,
+  LOAD_COMPARE_LOCATIONS_SUCCESSFUL,
+  LOAD_COMPARE_BROWSER_HISTORY,
+  LOAD_COMPARE_BROWSER_HISTORY_FAILED,
+  LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL,
+  LOAD_COMPARE_SMS,
+  LOAD_COMPARE_SMS_FAILED,
+  LOAD_COMPARE_SMS_SUCCESSFUL,
 } from "../types/management";
 
 // initial state
@@ -58,6 +70,10 @@ const initialState = {
   generalinfo: null,
   browserdata: null,
   coordinates: null,
+  comparecalls: null,
+  comparelocations: null,
+  comparehistory: null,
+  comparesms: null,
 };
 
 // Reducer definition
@@ -311,6 +327,90 @@ const managementReducer = (state = initialState, action) => {
         isLoading: false,
         error: null,
         coordinates: payload.coordinates,
+      };
+    case LOAD_COMPARE_CALLS_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        error: payload.error,
+        comparecalls: null,
+      };
+    case LOAD_COMPARE_CALLS:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+        comparecalls: null,
+      };
+    case LOAD_COMPARE_CALLS_SUCCESSFUL:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        comparecalls: payload.comparecalls,
+      };
+    case LOAD_COMPARE_LOCATIONS_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        error: payload.error,
+        comparelocations: null,
+      };
+    case LOAD_COMPARE_LOCATIONS:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+        comparelocations: null,
+      };
+    case LOAD_COMPARE_LOCATIONS_SUCCESSFUL:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        comparelocations: payload.comparelocations,
+      };
+    case LOAD_COMPARE_BROWSER_HISTORY_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        error: payload.error,
+        comparehistory: null,
+      };
+    case LOAD_COMPARE_BROWSER_HISTORY:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+        comparehistory: null,
+      };
+    case LOAD_COMPARE_BROWSER_HISTORY_SUCCESSFUL:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        comparehistory: payload.comparehistory,
+      };
+    case LOAD_COMPARE_SMS_FAILED:
+      return {
+        ...state,
+        isLoading: false,
+        error: payload.error,
+        comparesms: null,
+      };
+    case LOAD_COMPARE_SMS:
+      return {
+        ...state,
+        isLoading: true,
+        error: null,
+        comparesms: null,
+      };
+    case LOAD_COMPARE_SMS_SUCCESSFUL:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        comparesms: payload.comparesms,
       };
     default:
       return state;
