@@ -24,6 +24,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import BlurOnIcon from "@material-ui/icons/BlurOn";
 import Poll from "@material-ui/icons/Poll";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import FeaturedPlayListIcon from "@material-ui/icons/FeaturedPlayList";
 import BugReportIcon from "@material-ui/icons/BugReport";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import RoomIcon from "@material-ui/icons/Room";
@@ -109,6 +110,8 @@ function AnalyticsSidebar() {
     ["Filter", <FilterListIcon color="secondary" />, "/filter"],
     ["Location", <RoomIcon color="secondary" />, "/location"],
     ["Report", <BugReportIcon color="secondary" />, "/report"],
+    ["Report", <BugReportIcon color="secondary"/>, "/report"],
+    ["Compare Cases", <FeaturedPlayListIcon color="secondary" />, "/compare"],
   ];
 
   return (

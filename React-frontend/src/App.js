@@ -31,6 +31,7 @@ import KeywordSearchPage from './pages/Management/KeywordSearchPage';
 import FilterCasePage from './pages/Management/FilterCasePage';
 import ShowFilePage from './pages/Management/ShowFilePage';
 import LocationPage from './pages/Management/LocationPage'
+import ComparePage from './pages/Management/ComparePage';
 
 
 // private route accessbile for only authenticated users
@@ -105,6 +106,7 @@ function App() {
           <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
           <PrivateRoute path='/filter' exact component={FilterCasePage} />
           <PrivateRoute path='/location' exact component={LocationPage} />
+          <PrivateRoute path='/compare' exact component={ComparePage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
