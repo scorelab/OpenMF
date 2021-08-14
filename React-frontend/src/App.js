@@ -30,6 +30,7 @@ import CommonWordsPage from './pages/Management/CommonWordsPage';
 import KeywordSearchPage from './pages/Management/KeywordSearchPage';
 import FilterCasePage from './pages/Management/FilterCasePage';
 import ShowFilePage from './pages/Management/ShowFilePage';
+import ComparePage from './pages/Management/ComparePage';
 
 
 
@@ -104,6 +105,7 @@ function App() {
           <PrivateRoute path='/common/Case1/Case2' exact component={CommonWordsPage} />
           <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
           <PrivateRoute path='/filter' exact component={FilterCasePage} />
+          <PrivateRoute path='/compare' exact component={ComparePage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
