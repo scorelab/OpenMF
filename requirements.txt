@@ -15,7 +15,7 @@ Flask-Migrate==3.0.1
 Flask-SQLAlchemy==2.4.4
 isort==4.3.21
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 lazy-object-proxy==1.4.3
 Mako==1.1.4
 MarkupSafe==1.1.1
