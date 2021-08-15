@@ -40,7 +40,7 @@ def apiExtactAll(case_name):
     store_phone_data(case_name)
     store_bluetooth_data(case_name)
     store_location_data(case_name)
-    store_media_data
+    store_media_data(case_name)
 
 def apiExtractFb(case_name):
     dbm.start_download_databases(case_name)
