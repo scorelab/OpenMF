@@ -1,3 +1,8 @@
+/*
+* Component for footer.
+*/
+
+
 import React from 'react';
 import Cpr from '../../images/copyright.png';
 import Glogo from '../../images/github.png';

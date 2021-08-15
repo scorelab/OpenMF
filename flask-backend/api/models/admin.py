@@ -1,11 +1,17 @@
 """
 Class definition of admin model
 """
+
+# Importing Dependencies
 from api.models.base_user import BaseUser
 from api.extansions import db
 
+
+# Model Class Definition
 class Admin(BaseUser):
     __tablename__="admin"
+
+    # Properties Declaration
     id = db.Column(db.Integer, unique=True, primary_key=True)
     role = db.Column(db.String(255), default="admin")
     extractor_members = db.relationship("Extractor", backref="admin", cascade="all, delete, delete-orphan", lazy=True)

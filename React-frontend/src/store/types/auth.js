@@ -1,3 +1,8 @@
+/*
+* Auth reducer related types.
+*/
+
+// Types Declaration
 export const SIGNUP_FAILED = "SIGNUP_FAILED"
 export const SIGNUP_SUCCESSFULL = "SIGNUP_SUCCESSFULL"
 export const SIGNUP_PROCESS = "SIGNUP_PROCESS"

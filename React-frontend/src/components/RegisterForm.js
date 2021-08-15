@@ -1,3 +1,8 @@
+/*
+* Register Page component.
+*/
+
+// Import Dependecies.
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -15,15 +20,15 @@ import {
     InputAdornment,
     Avatar
 } from '@material-ui/core';
-
+import logo from '../images/logo.png';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import logo from '../images/logo.png';
-
 import { authDefault, signUp } from '../store/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
+
+// Custom Styles
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(1),
@@ -57,9 +62,17 @@ const useStyles = makeStyles((theme) => ({
 
 
 function RegisterPage({setOpenSignUp}) {
+
+    // Invoking custom styles
     const classes = useStyles()
+
+    // history object
     const history = useHistory()
+
+    // auth reducer
     const auth = useSelector(state => state.auth)
+
+    // dispatcher
     const dispatch = useDispatch()
 
     // setting up default auth state

@@ -1,6 +1,8 @@
-// Extract Data Form
-// It will be mounted over
-// ExtractDataModel
+/*
+* Extract Data Form
+* It will be mounted over
+* ExtractDataModel
+*/
 
 
 // Importing Dependencies

@@ -1,3 +1,8 @@
+/*
+* LoginPage component.
+*/
+
+// Import Dependecies
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -9,6 +14,8 @@ import logo from '../images/logo.png';
 import LoginForm from '../components/LoginForm';
 import Layout from '../components/core/Layout';
 
+
+// Custom Styles
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '90vh',
@@ -40,15 +47,23 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }))
+
+
+// Main LoginPage Component
 function LoginPage() {
+
+    // Invoking Custom Styles
     const classes = useStyles()
 
+    // Get Auth Reducer
     const { isLoading, isAuthenticated } = useSelector(state => state.auth);
 
+    // Check for authenticated users
     if (!isLoading && isAuthenticated) {
         return <Redirect to='/' />;
     }
 
+    // Main return statement
     return (
         <Layout sidebarBool={false} background={false}>
             <Grid container component="main" className={classes.root}>

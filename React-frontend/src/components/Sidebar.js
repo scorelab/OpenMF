@@ -1,3 +1,8 @@
+/*
+* main sidebar component for admin.
+*/
+
+// Import Dependecies
 import React, { useState } from 'react';
 import { useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -81,8 +86,10 @@ function Sidebar() {
   // invoking custom styles
   const classes = useStyles()
 
-  // history and location
+  // history
   const history = useHistory()
+
+  // location object
   const location = useLocation()
 
   // get auth reducer

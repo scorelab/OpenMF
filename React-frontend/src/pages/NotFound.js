@@ -1,11 +1,16 @@
-// Page to display Page Not Found (i.e. 404) error.
-import React, { useEffect } from 'react'
+/*
+* Page to display Page Not Found (i.e. 404) error.
+*/
 
+// Import Dependecies
+import React, { useEffect } from 'react'
 import { Container, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Button } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
+
+// Custom Styles
 const useStyles = makeStyles((theme) => ({
   header: {
     width: '100vw',
@@ -18,14 +23,22 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
+
+// Main NotFound Component
 function NotFound () {
+
+  // Invoking custom styles
   const classes = useStyles()
+
+  // History object
   const history = useHistory()
 
+  // useEffect to change title
   useEffect(() => {
     document.title = 'Not Found - OpenMF '
   })
 
+  // Main return statement
   return (
     <Container maxWidth="lg" className={classes.header}>
       <Typography variant="h1" align="center" gutterBottom>

@@ -1,3 +1,7 @@
+'''
+Routes to Extract Data and Get Live Connected Devices.
+'''
+
 import sys
 import os
 import sqlite3 as sql
@@ -15,21 +19,21 @@ from api.utils.jwt_decorators import admin_or_extractor_token_required, extracto
 from api.helpers.users import get_current_user
 from api.models.case import Case
 
-
+# Root Directory path
 ROOT_DIR = os.getcwd()
 
+# Create Schemas
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
-
 
 # Extraction blueprint
 extraction = Blueprint('extraction', __name__, url_prefix='/extraction')
 
-
+# Global variable for directory name
 dirname = os.path.abspath(os.path.dirname(__file__))
+
+# Global variable for cases path (data directory)
 cases_path = os.path.abspath(os.path.join(dirname, '../../../data'))
-
-
 
 # Assigning adb path accourding to os
 OS_TYPE = sys.platform
@@ -44,6 +48,9 @@ elif OS_TYPE== 'darwin':
 @extraction.route('/list_devices', methods=["GET"])
 @admin_or_extractor_token_required
 def list_devices():
+    '''
+    This Route lists all the live connected devices.
+    '''
     with open(os.devnull, 'wb') as devnull:
         subprocess.check_call([adb_path, 'start-server'], stdout=devnull,
                               stderr=devnull)
@@ -70,6 +77,10 @@ def list_devices():
 @extraction.route('/extract_data', methods=["POST"])
 @extractor_token_required
 def extract():
+    '''
+    This Route handles data extraction
+    from the connected device.
+    '''
     # current extractor
     current_user = get_current_user(extract.role, extract.public_id)
     # if no data is provided at all

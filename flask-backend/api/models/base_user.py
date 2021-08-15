@@ -1,21 +1,24 @@
 """
 Class definition for Base User Model.
 """
-from flask import current_app
-# from flask_login import UserMixin
-import jwt
 
+# Importing Dependencies
+from flask import current_app
+import jwt
 from api.extansions import db, bcrypt
 from api.utils.result import Result
 from api.models.token_blacklist import BlacklistedToken
-
 from uuid import uuid4
 from datetime import datetime, timezone, timedelta
 
 
+
+# Model Class Definition
 class BaseUser(db.Model):
     """ Class definition for Base User Model."""
     __abstract__=True
+
+    # Properties Declaration
     name = db.Column(db.String(255), nullable=False, unique=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password_hash = db.Column(db.String(255), nullable=False)
@@ -62,6 +65,7 @@ class BaseUser(db.Model):
             f"<User email={self.email}, public_id={self.public_id}"
         )
 
+    # Class Method for searching in Admin Class
     @classmethod
     def find_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
@@ -74,18 +78,29 @@ class BaseUser(db.Model):
     def find_by_pubic_id(cls, public_id):
         return cls.query.filter_by(public_id=public_id)
 
+    # Methods for encoding and Decoding
     def encode_access_token(self):
         """
         Generating jwt access tokens.
         """
+
+        # Token Properties
         now = datetime.now(timezone.utc)
         token_age_h = current_app.config.get("TOKEN_EXPIRE_HOURS")
         token_age_min = current_app.config.get("TOKEN_EXPIRE_MINUTES")
         expires = now + timedelta(hours=token_age_h, minutes=token_age_min)
+
+        # Check for TESTING environment
         if current_app.config.get("TESIING"):
             expires = now + timedelta(seconds=5)
+
+        # Create Payload
         payload = dict(exp=expires, iat=now, sub=self.public_id, role=self.role)
+
+        # Get secret key
         key = current_app.config.get("SECRET_KEY")
+
+        # Return encoded user
         return jwt.encode(payload, key, algorithm="HS256")
 
     @staticmethod
@@ -93,8 +108,12 @@ class BaseUser(db.Model):
         """
         Decodes the access token.
         """
+
+        # Check for token type
         if isinstance(access_token, bytes):
             access_token = access_token.decode("ascii")
+
+        # Check for Bearer
         if access_token.startswith("Bearer"):
             split = access_token.split("Bearer")
             access_token = split[1].strip()
@@ -102,6 +121,7 @@ class BaseUser(db.Model):
             key = current_app.config.get("SECRET_KEY")
             payload = jwt.decode(access_token, key, algorithms="HS256")
 
+        # Handle Errors
         except jwt.ExpiredSignatureError:
             error = "Access token expired, Please login again."
             return Result.Fail(error_message=error)

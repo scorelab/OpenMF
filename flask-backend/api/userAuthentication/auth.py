@@ -18,7 +18,9 @@ from api.utils.jwt_decorators import (
 )
 
 
+# Declare auth Blueprint
 auth = Blueprint('auth', __name__)
+
 
 @auth.route('/login', methods=['POST'])
 def login_post():
@@ -91,6 +93,9 @@ def login_post():
 @auth.route('/logout', methods=['POST'])
 @token_required
 def logout():
+    '''
+    This Route handle User Logout.
+    '''
     try:
         access_token = logout.token
         blacklisted_token = BlacklistedToken(token=access_token)

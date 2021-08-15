@@ -22,6 +22,7 @@ from api.utils.jwt_decorators import (
 )
 
 
+# Schema creation
 admin_schema = AdminSchema()
 admins_schema = AdminSchema(many=True)
 management_schema = ManagementSchema()
@@ -31,7 +32,10 @@ extractors_schema = ExtractorSchema(many=True)
 case_schema = CaseSchema()
 cases_schema = CaseSchema(many=True)
 
+# Declare Blueprint
 user = Blueprint('user', __name__, url_prefix='/user')
+
+
 
 @user.route('/profile', methods=["GET"])
 @token_required

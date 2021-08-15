@@ -1,11 +1,17 @@
 """
 Class definition of management user model.
 """
+
+# Importing Depedencies
 from api.models.base_user import BaseUser
 from api.extansions import db
 
+
+# Model Class Definition
 class Management(BaseUser):
     __tablename__="management"
+
+    # Property Declaration
     id = db.Column(db.Integer, unique=True, primary_key=True)
     role = db.Column(db.String(255), default="management")
     admin_id = db.Column(db.Integer, db.ForeignKey("admin.id"))

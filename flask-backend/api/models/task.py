@@ -1,11 +1,17 @@
 """
 Class definition of Task Model.
 """
+
+# Importing Dependecies
 from api.extansions import db
 import datetime as dt
 
+
+# Model Class Definition
 class Task(db.Model):
     __tablename__="task"
+
+    # Property Declaration
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
