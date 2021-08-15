@@ -27,7 +27,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 import AddMemberModel from './Admin/AddMemberModel';
-
+import VerifyButton from './Utils/VerifyButton';
 
 // styles
 const useStyles = makeStyles((theme) => ({
@@ -149,6 +149,14 @@ function Sidebar() {
               (<span>wait...</span>)
             }
           </Typography>
+
+          <Typography className={classes.profileText}>
+            {(auth.user && !auth.isLoading) ?
+              (<VerifyButton />) :
+              (<span>wait...</span>)
+            }
+          </Typography>
+
         </ListItem>
       </List>
 

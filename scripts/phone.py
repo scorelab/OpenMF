@@ -1,3 +1,6 @@
+'''
+    This script is responsible for extracting phone data.
+'''
 import sys
 import sqlite3
 import os
@@ -144,28 +147,35 @@ def store_call_logs():
         return
 
     calllogs_cursor = calllogs_conn.cursor()
-    calllogs_query = "select _id, formatted_number, date, duration, type, name, geocoded_location " \
+    calllogs_query = "select _id, normalized_number, date, duration, type, name, geocoded_location, frequent " \
                      "from calls order by _id ;"
     calllogs_cursor.execute(calllogs_query)
 
+    CALLLOGS_ID = 0
     CALLLOGS_NUMBER_INDX = 1
     CALLLOGS_DATE_INDX = 2
     CALLLOGS_DURATION_INDX = 3
     CALLLOGS_TYPE_INDX = 4
     CALLLOGS_NAME_INDX = 5
     CALLLOGS_LOCATION_INDX = 6
+    CALLLOGS_FREQUENT = 7
 
     calllogs_dict = {}
 
     row = calllogs_cursor.fetchone()
     while row:
 
+        id = " "
         number = " "
         date = " "
         duration = " "
         ctype = " "
         name = " "
         location = " "
+        frequent = " "
+
+        if row[CALLLOGS_ID] is not None:
+            id = row[CALLLOGS_ID]
 
         if row[CALLLOGS_NUMBER_INDX] is not None:
             number = row[CALLLOGS_NUMBER_INDX]
@@ -201,38 +211,38 @@ def store_call_logs():
         if row[CALLLOGS_LOCATION_INDX] is not None:
             location = row[CALLLOGS_LOCATION_INDX]
 
-        calllogs_dict[row[0]] = (number, date, duration, ctype, name, location)
+        if row[CALLLOGS_FREQUENT] is not None:
+            frequent = str(row[CALLLOGS_FREQUENT])
+
+        calllogs_dict[row[0]] = (id, number, date, duration, ctype, name, location, frequent)
         row = calllogs_cursor.fetchone()
 
     calllogs_cursor.close()
     calllogs_conn.close()
 
-    CALLLOGS_DATE_COL_INDX = 1
-    CALLLOGS_DURATION_COL_INDX = 2
-    CALLLOGS_LOCATION_COL_INDX = 5
-    CALLLOGS_NAME_COL_INDX = 4
-    CALLLOGS_NUMBER_COL_INDX = 0
-    CALLLOGS_TYPE_COL_INDX = 3
+    
 
     calllogs_output_file = OUTPUT + SEP + "phone_calllogs.tsv"
 
     calllogs_file = open(calllogs_output_file, "w+", encoding="utf-8")
-    calllogs_file.write("number\tname\tdate\tduration\ttype\tlocation\n")
+    calllogs_file.write("id\tnumber\tname\tdate\tduration\ttype\tlocation\tfrequent\n")
 
     for value in calllogs_dict:
 
-        if calllogs_dict[value][CALLLOGS_DATE_COL_INDX] > 0:
-            datetimestr = datetime.datetime.fromtimestamp(calllogs_dict[value][CALLLOGS_DATE_COL_INDX] / 1000)\
+        if calllogs_dict[value][CALLLOGS_DATE_INDX] > 0:
+            datetimestr = datetime.datetime.fromtimestamp(calllogs_dict[value][CALLLOGS_DATE_INDX] / 1000)\
                 .strftime('%Y-%m-%dT%H:%M:%S')
         else:
-            datetimestr = str(calllogs_dict[value][CALLLOGS_DATE_COL_INDX])
+            datetimestr = str(calllogs_dict[value][CALLLOGS_DATE_INDX])
 
-        calllogs_file.write(calllogs_dict[value][CALLLOGS_NUMBER_COL_INDX] +
-                            "\t" + calllogs_dict[value][CALLLOGS_NAME_COL_INDX] +
+        calllogs_file.write(str(calllogs_dict[value][CALLLOGS_ID]) +
+                            "\t" + str(calllogs_dict[value][CALLLOGS_NUMBER_INDX]) +
+                            "\t" + str(calllogs_dict[value][CALLLOGS_NAME_INDX]) +
                             "\t" + datetimestr +
-                            "\t" + calllogs_dict[value][CALLLOGS_DURATION_COL_INDX] +
-                            "\t" + calllogs_dict[value][CALLLOGS_TYPE_COL_INDX] +
-                            "\t" + calllogs_dict[value][CALLLOGS_LOCATION_COL_INDX] + "\n"
+                            "\t" + str(calllogs_dict[value][CALLLOGS_DURATION_INDX]) +
+                            "\t" + str(calllogs_dict[value][CALLLOGS_TYPE_INDX]) +
+                            "\t" + str(calllogs_dict[value][CALLLOGS_LOCATION_INDX]) + 
+                            "\t"+ str(calllogs_dict[value][CALLLOGS_FREQUENT]) + "\n"
                             )
     print("\n" + str(len(calllogs_dict.values())) + " call logs were processed")
 
@@ -245,7 +255,7 @@ def store_phone_data(session_name):
     OUTPUT = OUTPUT + SEP + 'data' + SEP + session_name
     msgsdb = OUTPUT + SEP + "db/bugle_db"
     contactsdb = OUTPUT + SEP + "db/dialer.db"
-    calllogsdb = OUTPUT + SEP + "db/calllog.db"
+    calllogsdb = OUTPUT + SEP + "db/contacts2.db"
     OUTPUT = OUTPUT + SEP + 'tsv'
     mkdir(OUTPUT)
     store_call_logs()

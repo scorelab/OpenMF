@@ -30,7 +30,11 @@ import CommonWordsPage from './pages/Management/CommonWordsPage';
 import KeywordSearchPage from './pages/Management/KeywordSearchPage';
 import FilterCasePage from './pages/Management/FilterCasePage';
 import ShowFilePage from './pages/Management/ShowFilePage';
-
+import LocationPage from './pages/Management/LocationPage'
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import VerifyEmail from './pages/VerifyEmail';
+import ComparePage from './pages/Management/ComparePage';
 
 
 // private route accessbile for only authenticated users
@@ -84,6 +88,9 @@ function App() {
           <PublicRoute path='/' exact component={HomePage} />
           <PublicRoute path='/about' exact component={AboutPage} />
           <PublicRoute path='/contact' exact component={ContactPage} />
+          <PublicRoute path='/forgot-password' exact component={ForgotPassword} />
+          <PublicRoute path='/reset-password/:token' component={ResetPassword} />
+          <PublicRoute path='/verify-email/:token' component={VerifyEmail} />
           <PrivateRoute path='/admin' component={AdminPage} />
           <PrivateRoute path='/list-members' exact component={MemberList} />
           <PrivateRoute path='/list-members/member/:id' component={SelectedMember} />
@@ -104,6 +111,8 @@ function App() {
           <PrivateRoute path='/common/Case1/Case2' exact component={CommonWordsPage} />
           <PrivateRoute path='/keywordsearch' exact component={KeywordSearchPage} />
           <PrivateRoute path='/filter' exact component={FilterCasePage} />
+          <PrivateRoute path='/location' exact component={LocationPage} />
+          <PrivateRoute path='/compare' exact component={ComparePage} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
