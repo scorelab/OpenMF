@@ -1,3 +1,9 @@
+/*
+* Auth Reducer.
+*/
+
+
+// Import types
 import {
   SIGNUP_FAILED,
   SIGNUP_SUCCESSFULL,
@@ -14,6 +20,8 @@ import {
   LOGOUT_FAILED
 } from '../types/auth';
 
+
+// Initial State for auth redcuer
 const initialState = {
   isRegistered: false,
   isAuthenticated: false,
@@ -23,6 +31,8 @@ const initialState = {
   error: ''
 };
 
+
+// Auth Reudcer.
 const reducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
