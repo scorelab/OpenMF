@@ -47,4 +47,4 @@ Step3: Run the react server:
 
 And use localhost:3000 to browse.
 
-**Note :-** To run the Frontend side of the application is recommended to run the backend server too. For more details regarding Flask Backend Setup instrucstions, Please refer [Flask Backend-Setup](https://github.com/scorelab/OpenMF/wiki/Flask-Backend---Setup) wiki page.
+**Note :-** To run the Frontend side of the application is recommended to run the backend server too. For more details regarding Flask Backend Setup instrucstions, Please refer [Flask Backend-Setup](https://github.com/scorelab/OpenMF/wiki/OpenMF-Set-up#openmf---flask-backend) wiki page.
