@@ -1,8 +1,15 @@
+/*
+* Component for displaying Alert.
+*/
+
+// Import Dependecies
 import React from 'react';
 import Alert from '@material-ui/lab/Alert';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
+
+// Custom Styles
 const useStyle = makeStyles((theme) => ({
   alert: {
     position: 'fixed',
@@ -28,9 +35,6 @@ const CustomAlert = () => {
 
   // Iterate and represent alerts
   return alerts.map(alert => (
-    // <Alert className='m-0' key={alert.id} variant={alert.type}>
-    //   {alert.msg}
-    // </Alert>
     <Alert severity={alert.type} key={alert.id} className={classes.alert}>
       {alert.msg}
     </Alert>
