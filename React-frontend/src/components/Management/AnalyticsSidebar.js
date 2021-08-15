@@ -28,6 +28,7 @@ import FeaturedPlayListIcon from "@material-ui/icons/FeaturedPlayList";
 import BugReportIcon from "@material-ui/icons/BugReport";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import RoomIcon from "@material-ui/icons/Room";
+import VerifyButton from '../Utils/VerifyButton';
 import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 // custom styles
@@ -146,6 +147,13 @@ function AnalyticsSidebar() {
             ) : (
               <span>wait...</span>
             )}
+          </Typography>
+
+          <Typography className={classes.profileText}>
+            {(auth.user && !auth.isLoading) ?
+              (<VerifyButton />) :
+              (<span>wait...</span>)
+            }
           </Typography>
         </ListItem>
       </List>
