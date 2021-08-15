@@ -1,13 +1,20 @@
+/*
+* Page for register user.
+*/
+
+
+// Import Dependecies
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Grid,
 } from '@material-ui/core';
-
 import logo from '../images/logo.png';
 import RegisterForm from '../components/RegisterForm';
 import Layout from '../components/core/Layout';
 
+
+// Custom styles
 const useStyles = makeStyles((theme) => ({
     root: {
         height: '90vh',
@@ -39,7 +46,12 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }))
+
+
+// Main RegisterPage component
 function RegisterPage() {
+
+    // Invoking custom styles
     const classes = useStyles()
 
     return (

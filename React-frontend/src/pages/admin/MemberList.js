@@ -1,3 +1,7 @@
+/*
+* Component to display all the members of an admin.
+*/
+
 import React, { useEffect } from 'react'
 import Layout from '../../components/core/Layout'
 import ShowMembers from '../../components/Admin/ShowMembers';
