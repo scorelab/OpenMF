@@ -17,9 +17,11 @@ from api.helpers.users import get_current_user
 from api.extansions import db
 
 
+# Schema Creation
 task_schema = TaskSchema()
 tasks_schema = TaskSchema(many=True)
 
+# Declare Blueprint
 task = Blueprint("task", __name__, url_prefix="/task")
 
 @task.route('/all-tasks', methods=["GET"])
