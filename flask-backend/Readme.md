@@ -36,7 +36,12 @@ If you are on Windows, then use the following commands instead:
 
 ## Running the Flask Server
 
-Step 1: Set up FLASK_APP
+Step 1: Change the current directory to Flask-backend
+```sh
+(venv) $ cd flask-backend
+```
+
+Step 2: Set up FLASK_APP
 (For Linux or Mac)
 ```sh
 (venv) $ `export FLASK_APP=api`
@@ -47,12 +52,12 @@ Step 1: Set up FLASK_APP
 (venv) $ `set FLASK_APP=api`
 ```
 
-Step 2: Now, Upgrade the Migrated Database, using the following command
+Step 3: Now, Upgrade the Migrated Database, using the following command
 ```sh
 (venv) $ flask db upgrade
 ```
 
-Step 3:Start the backend server
+Step 4:Start the backend server
 To run the server use the following command:
 ```sh
 (venv) $ flask run
