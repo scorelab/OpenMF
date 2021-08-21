@@ -110,7 +110,6 @@ function AnalyticsSidebar() {
     ["Filter", <FilterListIcon color="secondary" />, "/filter"],
     ["Location", <RoomIcon color="secondary" />, "/location"],
     ["Report", <BugReportIcon color="secondary" />, "/report"],
-    ["Report", <BugReportIcon color="secondary"/>, "/report"],
     ["Compare Cases", <FeaturedPlayListIcon color="secondary" />, "/compare"],
   ];
 
