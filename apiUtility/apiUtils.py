@@ -33,6 +33,14 @@ def apiReport(case_name, tags):
 
 def apiExtactAll(case_name):
     extract_all_data_toTsv(case_name)
+    store_fb_data(case_name)
+    store_wa_data(case_name)
+    store_browser_history_data(case_name)
+    store_sms_data(case_name)
+    store_phone_data(case_name)
+    store_bluetooth_data(case_name)
+    store_location_data(case_name)
+    store_media_data(case_name)
 
 def apiExtractFb(case_name):
     dbm.start_download_databases(case_name)
