@@ -130,7 +130,7 @@ export const login = (email, password, role, remember, callback) => async dispat
           type: LOGIN_SUCCESSFULL,
           payload: {data: {auth_token: res.data.access_token}}
         })
-        callback(false)
+        if (callback) callback(false)
         dispatch(loadUser())
         dispatch(setAlert(res.data.message, 'success'))
       }
@@ -177,7 +177,7 @@ export const signUp = (username, email, password, role, history, callback) => (d
     .then((res) => {
       if(res && (res.status === 200 || res.status === 201)){
         dispatch({type: SIGNUP_SUCCESSFULL})
-        callback(false)
+        if (callback) callback(false)
         history.push('/')
         dispatch(setAlert(res.data.message, 'success'))
         window.location.reload()

@@ -35,6 +35,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import ComparePage from './pages/Management/ComparePage';
+import SearchUser from './pages/admin/SearchUser';
 
 
 // private route accessbile for only authenticated users
@@ -93,6 +94,7 @@ function App() {
           <PublicRoute path='/verify-email/:token' component={VerifyEmail} />
           <PrivateRoute path='/admin' component={AdminPage} />
           <PrivateRoute path='/list-members' exact component={MemberList} />
+          <PrivateRoute path='/search-user' exact component={SearchUser} />
           <PrivateRoute path='/list-members/member/:id' component={SelectedMember} />
           <PrivateRoute path='/task/create' exact component={CreateTask} />
           <PrivateRoute path='/task/list' exact component={ShowTasks} />

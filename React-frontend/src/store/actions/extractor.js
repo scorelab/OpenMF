@@ -69,8 +69,7 @@ export const fetch_extracted_cases = (extractor_email) => (dispatch) => {
 
             // Error response
             const res = err.response
-            console.log(err.message)
-            if(res.data && (res.status === 404 || res.status === 409 || res.status === 401 || res.status === 403)){
+            if(res && res.data && (res.status === 404 || res.status === 409 || res.status === 401 || res.status === 403)){
                 dispatch({
                     type: FETCH_EXTRACTED_CASES_FAILED,
                     payload: {

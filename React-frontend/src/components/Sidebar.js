@@ -101,7 +101,7 @@ function Sidebar() {
   // User management related list items(For Admin)
   const userManagementItems = [ ['All Members', <SupervisorAccountIcon color="secondary"/>, "/list-members"],
                                 ['Add Member', <PersonAddIcon color="secondary"/>, "/create-member"],
-                                ['Search User', <SearchIcon color="secondary" />, "/"]
+                                ['Search User', <SearchIcon color="secondary" />, "/search-user"]
                               ]
 
   // Task Management related list items(For Admin)
