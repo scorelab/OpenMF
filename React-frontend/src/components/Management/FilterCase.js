@@ -163,7 +163,8 @@ function FilterCase() {
                 <KeyboardDatePicker
                   margin="normal"
                   id="date-picker-dialog"
-                  label="From Date"
+                  // label="From Date"
+                  placeholder="From Date"
                   name="From Date"
                   format="yyyy-MM-dd"
                   variant="outlined"
@@ -183,7 +184,8 @@ function FilterCase() {
                 <KeyboardDatePicker
                   margin="normal"
                   id="date-picker-dialog"
-                  label="To Date"
+                  // label="To Date"
+                  placeholder="To Date"
                   name="To Date"
                   format="yyyy-MM-dd"
                   variant="outlined"
@@ -193,8 +195,9 @@ function FilterCase() {
                   invalidDateMessage
                   autoComplete="To Date"
                   type="text"
-                  value={to_date}
                   className={classes.date}
+                  autoFocus
+                  value={to_date}
                   onChange={(e) => setToDate(e)}
                   KeyboardButtonProps={{
                     "aria-label": "change date",
