@@ -43,7 +43,7 @@ function VerifyButton() {
     const dispatch = useDispatch()
 
     // Get auth reducer
-    const { isLoading, isVarified, isSendingLink, user } = useSelector(state => state.auth)
+    const { isLoading, isVerified, isSendingLink, user } = useSelector(state => state.auth)
 
     // Click handler
     const handleClick = ( user ) => {
@@ -61,15 +61,15 @@ function VerifyButton() {
             color="secondary"
             className={classes.buttonStyles}
             onClick={() => handleClick(user)}
-            disabled={isLoading || isSendingLink || !user.email || isVarified || user.varified}
+            disabled={isLoading || isSendingLink || !user.email || isVerified || user.verified}
             style={
-                (isVarified || user.varified) ?
+                (isVerified || user.verified) ?
                     { color: "#006400", borderColor: "#006400"}:
                     { color: "#ff0000", borderColor: "#ff0000"}
             }
         >
             {
-                // Check Varified Status
+                // Check Verified Status
                 (isLoading) ? (
                     <span
                         className={classes.buttonText}
@@ -78,15 +78,15 @@ function VerifyButton() {
                     <span
                         className={classes.buttonText}
                     >Sending...</span>
-                ) : (isVarified || (user.varified)) ? (
+                ) : (isVerified || (user.verified)) ? (
                     <span
                         className={classes.buttonText}
-                    >Varified</span>
+                    >Verified</span>
                 ) : (
                     <Tooltip title="Click to Verify">
                         <span
                             className={classes.buttonText}
-                        >Not Varified</span>
+                        >Not Verified</span>
                     </Tooltip>
                 )
             }
