@@ -9,7 +9,7 @@ import Layout from '../../components/core/Layout';
 
 
 // Main Profile Component
-const AboutPage = () => {
+const Dashboard = () => {
     return (
         <Layout sidebarBool={true}>
             <h1>Dashboard</h1>
@@ -17,4 +17,4 @@ const AboutPage = () => {
     )
 }
 
-export default AboutPage
+export default Dashboard
