@@ -181,7 +181,7 @@ export function Header () {
               <Link
                 variant="button"
                 color="textPrimary"
-                to="/profile"
+                to="/dashboard/profile"
                 component={RouterLink}
                 className={classes.link}
               >
@@ -191,7 +191,7 @@ export function Header () {
               <Link
                 variant="button"
                 color="textPrimary"
-                to="/members"
+                to="/list-members"
                 component={RouterLink}
                 className={classes.link}
               >
@@ -201,7 +201,7 @@ export function Header () {
               <Link
                 variant="button"
                 color="textPrimary"
-                to="/contact-us"
+                to="/contact"
                 component={RouterLink}
                 className={classes.link}
               >

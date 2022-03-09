@@ -35,6 +35,9 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import ComparePage from './pages/Management/ComparePage';
+import Profile from './pages/dashboard/Profile'
+import Dashboard from './pages/dashboard/Dashboard'
+
 
 
 // private route accessbile for only authenticated users
@@ -87,7 +90,9 @@ function App() {
         <Switch>
           <PublicRoute path='/' exact component={HomePage} />
           <PublicRoute path='/about' exact component={AboutPage} />
+          <PublicRoute path='/dashboard/profile' exact component={Profile} />
           <PublicRoute path='/contact' exact component={ContactPage} />
+          <PublicRoute path='/dashboard' exact component={Dashboard} />
           <PublicRoute path='/forgot-password' exact component={ForgotPassword} />
           <PublicRoute path='/reset-password/:token' component={ResetPassword} />
           <PublicRoute path='/verify-email/:token' component={VerifyEmail} />
