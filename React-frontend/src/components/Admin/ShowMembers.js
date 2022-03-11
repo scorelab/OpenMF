@@ -32,7 +32,7 @@ const columns = [
     { field: 'id', headerName: 'ID', flex: 1 },
     { field: 'name', headerName: 'Full Name', flex:1 },
     { field: 'email', headerName: 'Email', flex: 1 },
-    { field: 'varified', headerName: 'Varified', flex:1},
+    { field: 'verified', headerName: 'verified', flex:1},
     { field: 'role', headerName: 'Role', flex: 1},
 
 ]
@@ -115,7 +115,7 @@ function ShowMembers({ extractors, managements}) {
             id: index+1,
             name: member.name,
             email: member.email,
-            varified: (member.varified) ? 'Varified': 'Not Varified',
+            verified: (member.verified) ? 'verified': 'Not verified',
             role: member.role,
         }
     ))
@@ -127,7 +127,7 @@ function ShowMembers({ extractors, managements}) {
             name: member.name,
             email: member.email,
             role: member.role,
-            varified: (member.varified) ? 'Varified': 'Not Varified'
+            verified: (member.verified) ? 'verified': 'Not verified'
         }
     ))
 
@@ -206,7 +206,7 @@ function ShowMembers({ extractors, managements}) {
                                                 {row.email}
                                             </StyledTableCell>
                                             <StyledTableCell style={{ width: 160 }} align="left">
-                                                {row.varified}
+                                                {row.verified}
                                             </StyledTableCell>
                                             <StyledTableCell style={{ width: 160 }} align="left">
                                                 {row.role}
@@ -229,7 +229,7 @@ function ShowMembers({ extractors, managements}) {
                                             {row.email}
                                         </StyledTableCell>
                                         <StyledTableCell style={{ width: 160 }} align="left">
-                                            {row.varified}
+                                            {row.verified}
                                         </StyledTableCell>
                                         <StyledTableCell style={{ width: 160 }} align="left">
                                             {row.role}
