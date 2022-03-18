@@ -261,7 +261,7 @@ export function Header () {
           </Button>
           <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
             <DialogContent >
-              <LoginForm />
+              <LoginForm setOpenLogin={setOpenLogin} />
             </DialogContent>
             <DialogActions>
               <Button
