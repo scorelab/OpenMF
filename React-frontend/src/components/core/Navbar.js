@@ -283,7 +283,7 @@ export function Header () {
           </Button>
           <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
             <DialogContent >
-              <RegisterForm />
+              <RegisterForm setOpenSignUp={setOpenSignUp}/>
             </DialogContent>
             <DialogActions>
               <Button
