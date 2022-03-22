@@ -181,7 +181,7 @@ export function Header () {
               <Link
                 variant="button"
                 color="textPrimary"
-                to="/profile"
+                to="/dashboard/profile"
                 component={RouterLink}
                 className={classes.link}
               >
@@ -191,7 +191,7 @@ export function Header () {
               <Link
                 variant="button"
                 color="textPrimary"
-                to="/members"
+                to="/list-members"
                 component={RouterLink}
                 className={classes.link}
               >
@@ -201,7 +201,7 @@ export function Header () {
               <Link
                 variant="button"
                 color="textPrimary"
-                to="/contact-us"
+                to="/contact"
                 component={RouterLink}
                 className={classes.link}
               >
@@ -261,7 +261,7 @@ export function Header () {
           </Button>
           <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
             <DialogContent >
-              <LoginForm />
+              <LoginForm setOpenLogin={setOpenLogin} />
             </DialogContent>
             <DialogActions>
               <Button
@@ -283,7 +283,7 @@ export function Header () {
           </Button>
           <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
             <DialogContent >
-              <RegisterForm />
+              <RegisterForm setOpenSignUp={setOpenSignUp}/>
             </DialogContent>
             <DialogActions>
               <Button

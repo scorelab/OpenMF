@@ -104,9 +104,9 @@ function Sidebar() {
 
   // Other items
   const otherItems = [
-                      ['Home', <HomeIcon color="secondary"/>],
-                      ['Contact', <ContactSupportIcon color="secondary"/>],
-                      ['About', <InfoIcon color="secondary"/>]
+                      ['Home', <HomeIcon color="secondary"/>, "/"],
+                      ['Contact', <ContactSupportIcon color="secondary"/>, "/contact"],
+                      ['About', <InfoIcon color="secondary"/>, "/about"]
                     ]
 
   return (
@@ -195,10 +195,16 @@ function Sidebar() {
       <Divider />
       <List>
         {otherItems.map((item, index) => (
-          <ListItem button key={item[0]}>
-            <ListItemIcon>{item[1]}</ListItemIcon>
-            <ListItemText primary={item[0]}/>
-          </ListItem>
+         <ListItem
+         button key={item[0]}
+         className={
+           (location.pathname === item[2]) ? classes.activeItem : null}
+            onClick={() => history.push(item[2])
+          }
+       >
+         <ListItemIcon>{item[1]}</ListItemIcon>
+         <ListItemText primary={item[0]} />
+       </ListItem>
         ))}
       </List>
 

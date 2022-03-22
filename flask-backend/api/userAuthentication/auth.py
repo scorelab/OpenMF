@@ -270,11 +270,11 @@ def send_verify_email():
         }
         return make_response(jsonify(response)), 404
 
-    # Check if user is varified or not
-    if(user.varified):
+    # Check if user is verified or not
+    if(user.verified):
         response = {
             "success": False,
-            "message": "User is already varified."
+            "message": "User is already verified."
         }
         return make_response(jsonify(response)), 422
 
@@ -349,7 +349,7 @@ def verify_email():
             return make_response(jsonify(response)), 404
 
         # Change Varify Status
-        User.varified = True
+        User.verified = True
 
         # commit changes
         db.session.commit()

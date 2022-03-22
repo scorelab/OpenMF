@@ -22,7 +22,7 @@ class BaseUser(db.Model):
     name = db.Column(db.String(255), nullable=False, unique=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
     password_hash = db.Column(db.String(255), nullable=False)
-    varified = db.Column(db.Boolean, default=False)
+    verified = db.Column(db.Boolean, default=False)
     created_on = db.Column(db.DateTime, default=db.func.now())
     updated_on = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
     public_id = db.Column(db.String(255), nullable=False, default=lambda: str(uuid4()))
