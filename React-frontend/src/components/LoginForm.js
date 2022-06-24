@@ -25,6 +25,8 @@ import logo from '../images/logo.png';
 import { authDefault, login } from '../store/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectItem from './Utils/SelectItem';
+import { authentication } from '../Firebase/firebase-config';
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
 // Custom styles
@@ -54,13 +56,13 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.extraLight,
         margin: theme.spacing(1.5, 0),
         '&:hover': {
-          backgroundColor: theme.palette.primary.light
+            backgroundColor: theme.palette.primary.light
         }
     }
 }))
 
 
-function LoginForm({setOpenLogin}) {
+function LoginForm({ setOpenLogin }) {
 
     // Invoke custorm classes
     const classes = useStyles()
@@ -94,12 +96,26 @@ function LoginForm({setOpenLogin}) {
     const handleClickShowPassword = () => setShowPassword(!showPassword)
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
+    // Function to handle google login
+    const SignInWithFirebase = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(authentication, provider)
+            .then((re) => {
+                console.log(re);
+                const user = re.user;
+                dispatch(login(user.email, user.uid, role, remember, setOpenLogin));
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
     // Returning JSX
     return (
         <Container ccomponent="main" maxWidth="xs">
             <Card className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <img src={logo} alt="openMF" style={{width: "100%"}}/>
+                    <img src={logo} alt="openMF" style={{ width: "100%" }} />
                 </Avatar>
 
                 <Typography component="h1" variant="h5">
@@ -145,13 +161,13 @@ function LoginForm({setOpenLogin}) {
                                         onClick={handleClickShowPassword}
                                         onMouseDown={handleMouseDownPassword}
                                     >
-                                        {showPassword ? <Visibility fontSize="small"/> : <VisibilityOff fontSize="small"/>}
+                                        {showPassword ? <Visibility fontSize="small" /> : <VisibilityOff fontSize="small" />}
                                     </IconButton>
                                 </InputAdornment>
                             )
                         }}
                         autoComplete="password"
-                        type={!showPassword ? "password": "text"}
+                        type={!showPassword ? "password" : "text"}
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
@@ -164,7 +180,7 @@ function LoginForm({setOpenLogin}) {
                     />
 
                     <FormControlLabel
-                        control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} color="primary"/>}
+                        control={<Checkbox checked={remember} onChange={e => setRemember(e.target.checked)} color="primary" />}
                         label={<Typography variant="body2">Remember</Typography>}
                     />
 
@@ -173,20 +189,38 @@ function LoginForm({setOpenLogin}) {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled={ auth.isLoading ||!email || !password || !role}
+                        disabled={auth.isLoading || !email || !password || !role}
                         onClick={() => dispatch(login(email, password, role, remember, setOpenLogin))}
                     >
                         {(auth.isLoading) ? (<span>Logging...</span>) : (<span>Login</span>)}
                     </Button>
+
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={SignInWithFirebase}
+                        disabled={auth.isLoading || !role || role !== "admin"}
+                    >
+                        {(auth.isLoading) ? (<span>Logging...</span>) : (<span>Login with Google</span>)}
+                    </Button>
+
+                    {role !== "admin" &&
+                        <Typography variant="body2" align="center" color="error">
+                            <span>Google login is only for admins</span>
+                        </Typography>
+                    }
+
                 </form>
 
                 <Grid container>
-                    <Grid item style={{margin: 'auto'}}>
+                    <Grid item style={{ margin: 'auto' }}>
                         <Link component={RouterLink} to="/register" variant="body2">
                             {"Don't have accont? Register"}
                         </Link>
                     </Grid>
-                    <Grid item style={{margin: 'auto'}}>
+                    <Grid item style={{ margin: 'auto' }}>
                         <Link component={RouterLink} to="/forgot-password" variant="body2" >
                             {"Forget password ?"}
                         </Link>

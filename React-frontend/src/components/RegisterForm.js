@@ -26,6 +26,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { authDefault, signUp } from '../store/actions/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { authentication } from '../Firebase/firebase-config';
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 
 // Custom Styles
@@ -61,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function RegisterPage({setOpenSignUp}) {
+function RegisterPage({ setOpenSignUp }) {
 
     // Invoking custom styles
     const classes = useStyles()
@@ -89,11 +91,26 @@ function RegisterPage({setOpenSignUp}) {
     const handleClickShowPassword = () => setShowPassword(!showPassword)
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
+
+    // Function to handle Google Sign up
+    const SignInWithFirebase = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(authentication, provider)
+            .then((re) => {
+                console.log(re);
+                const user = re.user;
+                dispatch(signUp(user.displayName, user.email, user.uid, "admin", history, setOpenSignUp))
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
     return (
         <Container ccomponent="main" maxWidth="xs">
             <Card className={classes.paper}>
                 <Avatar className={classes.avatar}>
-                    <img src={logo} alt="openMF" style={{width: "100%"}}/>
+                    <img src={logo} alt="openMF" style={{ width: "100%" }} />
                 </Avatar>
 
                 <Typography component="h1" variant="h5">
@@ -152,19 +169,19 @@ function RegisterPage({setOpenSignUp}) {
                                         onClick={handleClickShowPassword}
                                         onMouseDown={handleMouseDownPassword}
                                     >
-                                        {showPassword ? <Visibility fontSize="small"/> : <VisibilityOff fontSize="small"/>}
+                                        {showPassword ? <Visibility fontSize="small" /> : <VisibilityOff fontSize="small" />}
                                     </IconButton>
                                 </InputAdornment>
                             )
                         }}
                         autoComplete="password"
-                        type={!showPassword ? "password": "text"}
+                        type={!showPassword ? "password" : "text"}
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
 
                     <FormControlLabel
-                        control={<Checkbox checked={accept} onChange={e => setAccept(e.target.checked)} color="primary"/>}
+                        control={<Checkbox checked={accept} onChange={e => setAccept(e.target.checked)} color="primary" />}
                         label={<Typography variant="body2">I accept the Terms of Use & Privacy Policy</Typography>}
                     />
 
@@ -178,10 +195,21 @@ function RegisterPage({setOpenSignUp}) {
                     >
                         Sign Up | Register
                     </Button>
+
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={() => SignInWithFirebase()}
+                    >
+                        Sign Up | Register with Google
+                    </Button>
+
                 </form>
 
                 <Grid container>
-                    <Grid item style={{margin: 'auto'}}>
+                    <Grid item style={{ margin: 'auto' }}>
                         <Link component={RouterLink} to="/login" variant="body2">
                             {'Already have account? Login'}
                         </Link>
