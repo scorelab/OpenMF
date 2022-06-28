@@ -29,6 +29,16 @@ If you are on Windows, then use the following commands instead:
     $ venv\Scripts\activate
     (venv) $ pip install -r requirements.txt
 
+<!-- create .env -->
+Create a new `.env` file as in `/React-frontend` folder. Add the following lines to the file:
+```
+REACT_APP_GOOGLE_CLIENT_ID=<your-google-client-id>
+```
+
+You can refer .env.example file for more details.
+
+
+
 Running
 -------
 Step1: Change directory to React-Frontend
