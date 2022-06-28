@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.extraLight,
         margin: theme.spacing(1.5, 0),
         '&:hover': {
-            backgroundColor: theme.palette.primary.light
+        backgroundColor: theme.palette.primary.light
         }
     }
 }))
@@ -189,7 +189,7 @@ function LoginForm({ setOpenLogin }) {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled={auth.isLoading || !email || !password || !role}
+                        disabled={ auth.isLoading || !email || !password || !role}
                         onClick={() => dispatch(login(email, password, role, remember, setOpenLogin))}
                     >
                         {(auth.isLoading) ? (<span>Logging...</span>) : (<span>Login</span>)}
