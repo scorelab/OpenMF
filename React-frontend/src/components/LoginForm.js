@@ -3,14 +3,11 @@
 */
 
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
-    Grid,
     Button,
     Typography,
-    Link,
     Checkbox,
     FormControlLabel,
     TextField,
@@ -56,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.primary.extraLight,
         margin: theme.spacing(1.5, 0),
         '&:hover': {
-        backgroundColor: theme.palette.primary.light
+            backgroundColor: theme.palette.primary.light
         }
     }
 }))
@@ -189,7 +186,7 @@ function LoginForm({ setOpenLogin }) {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled={ auth.isLoading || !email || !password || !role}
+                        disabled={auth.isLoading || !email || !password || !role}
                         onClick={() => dispatch(login(email, password, role, remember, setOpenLogin))}
                     >
                         {(auth.isLoading) ? (<span>Logging...</span>) : (<span>Login</span>)}
@@ -213,19 +210,6 @@ function LoginForm({ setOpenLogin }) {
                     }
 
                 </form>
-
-                <Grid container>
-                    <Grid item style={{ margin: 'auto' }}>
-                        <Link component={RouterLink} to="/register" variant="body2">
-                            {"Don't have accont? Register"}
-                        </Link>
-                    </Grid>
-                    <Grid item style={{ margin: 'auto' }}>
-                        <Link component={RouterLink} to="/forgot-password" variant="body2" >
-                            {"Forget password ?"}
-                        </Link>
-                    </Grid>
-                </Grid>
             </Card>
         </Container>
     )
