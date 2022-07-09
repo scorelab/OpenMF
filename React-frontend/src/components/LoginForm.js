@@ -198,17 +198,11 @@ function LoginForm({ setOpenLogin }) {
                         color="primary"
                         className={classes.submit}
                         onClick={SignInWithFirebase}
-                        disabled={auth.isLoading || !role || role !== "admin"}
+                        disabled={auth.isLoading || !role}
                     >
                         {(auth.isLoading) ? (<span>Logging...</span>) : (<span>Login with Google</span>)}
                     </Button>
-
-                    {role !== "admin" &&
-                        <Typography variant="body2" align="center" color="error">
-                            <span>Google login is only for admins</span>
-                        </Typography>
-                    }
-
+                    
                 </form>
             </Card>
         </Container>
