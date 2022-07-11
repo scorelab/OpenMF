@@ -155,9 +155,7 @@ function Analytics() {
               variant="body2"
               className={classes.textBody}
             >
-              Step 1: Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry. Lorem Ipsum has been the industry's standard
-              dummy text ever since the 1500s,
+              Login as either Admin, Management or Extractor based on your puspose.
             </Typography>
             <br />
             <br />
@@ -166,9 +164,12 @@ function Analytics() {
               variant="body2"
               className={classes.textBody}
             >
-              Step 2: Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry. Lorem Ipsum has been the industry's standard
-              dummy text ever since the 1500s,
+             As admin, then you can add new users, manage users and their roles. Declare and Manage tasks.
+              <br/>
+              As Management, You can access, analyse, and report on the data collected from the users.
+              <br/>
+              As Extractor, you have the ability and permissions to perform extractions on the connected devices.
+
             </Typography>
             <br />
             <br />
@@ -177,9 +178,8 @@ function Analytics() {
               variant="body2"
               className={classes.textBody}
             >
-              Step 3: Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry. Lorem Ipsum has been the industry's standard
-              dummy text ever since the 1500s,
+              OpenMF allows you to study data in various formats and perform various operations on it. With easy 
+            to use interface, you can perform various operations on the data.
             </Typography>
             <br />
             <br />
@@ -188,9 +188,7 @@ function Analytics() {
               variant="body2"
               className={classes.textBody}
             >
-              Step 4: Lorem Ipsum is simply dummy text of the printing and
-              typesetting industry. Lorem Ipsum has been the industry's standard
-              dummy text ever since the 1500s,
+            All the data is classified and seperated using tags and stored in a database, to allow easy access and analysis.
             </Typography>
           </div>
         </Grid>

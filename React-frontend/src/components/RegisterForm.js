@@ -4,14 +4,11 @@
 
 // Import Dependecies.
 import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
-    Grid,
     Button,
     Typography,
-    Link,
     Checkbox,
     FormControlLabel,
     TextField,
@@ -207,14 +204,6 @@ function RegisterPage({ setOpenSignUp }) {
                     </Button>
 
                 </form>
-
-                <Grid container>
-                    <Grid item style={{ margin: 'auto' }}>
-                        <Link component={RouterLink} to="/login" variant="body2">
-                            {'Already have account? Login'}
-                        </Link>
-                    </Grid>
-                </Grid>
             </Card>
         </Container>
     )

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import {
   AppBar,
@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
       backgroundImage: `url(${logo})`,
       backgroundPosition: 'center',
       backgroundSize: 'contain',
-      backgroundRepeat:'no-repeat',
+      backgroundRepeat: 'no-repeat',
       zIndex: 999,
     },
     '&::before': {
@@ -115,7 +115,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // Common navbar for Dashboard, Home, Simulator, Gallery, etc.
-export function Header () {
+export function Header() {
   const history = useHistory()
   const classes = useStyles()
   const dispatch = useDispatch()
@@ -249,53 +249,78 @@ export function Header () {
       {/* Display login option or user menu as per authenticated status */}
       {
         (!auth.isAuthenticated ? (
-        <>
-          <Button
-            variant="outlined"
-            className={classes.button}
-            onClick={handleOpenLogin}
-            disableRipple
-            disableTouchRipple
-          >
-            Login
-          </Button>
-          <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
-            <DialogContent >
-              <LoginForm setOpenLogin={setOpenLogin} />
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={handleCloseLogin}
-                color="primary"
-                disableRipple
-              >
-                Cancel
-              </Button>
-            </DialogActions>
-          </Dialog>
-          <Button
-            variant="outlined"
-            className={classes.button}
-            disableRipple
-            onClick={handleOpenSignUp}
-          >
-            Register
-          </Button>
-          <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
-            <DialogContent >
-              <RegisterForm setOpenSignUp={setOpenSignUp}/>
-            </DialogContent>
-            <DialogActions>
-              <Button
-                onClick={handleCloseSignUp}
-                color="primary"
-                disableRipple
-              >
-                Cancel
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>)
+          <>
+            <Button
+              variant="outlined"
+              className={classes.button}
+              onClick={handleOpenLogin}
+              disableRipple
+              disableTouchRipple
+            >
+              Login
+            </Button>
+            <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
+              <DialogContent >
+                <LoginForm setOpenLogin={setOpenLogin} />
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    setOpenLogin(false)
+                    setOpenSignUp(true)
+                  }}
+                  variant="outlined"
+                  color="primary"
+                  disableRipple
+                  disableTouchRipple
+                >
+                  Register
+                </Button>
+
+                <Button
+                  onClick={handleCloseLogin}
+                  color="primary"
+                  disableRipple
+                >
+                  Cancel
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Button
+              variant="outlined"
+              className={classes.button}
+              disableRipple
+              onClick={handleOpenSignUp}
+            >
+              Register
+            </Button>
+            <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
+              <DialogContent >
+                <RegisterForm setOpenSignUp={setOpenSignUp} />
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={() => {
+                    setOpenSignUp(false)
+                    setOpenLogin(true)
+                  }}
+                  variant="outlined"
+                  color="primary"
+                  disableRipple
+                >
+                  Login
+                </Button>
+                
+                <Button
+                  onClick={handleCloseSignUp}
+                  color="primary"
+                  disableRipple
+                >
+                  Cancel
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </>)
           : (<>
 
             <IconButton
@@ -307,7 +332,7 @@ export function Header () {
               onClick={handleClick}
             >
               <Avatar className={classes.purple}>
-                {(auth && auth.user) ? auth.user.name.charAt(0).toUpperCase(): (<span>wait...</span>)}
+                {(auth && auth.user) ? auth.user.name.charAt(0).toUpperCase() : (<span>wait...</span>)}
               </Avatar>
             </IconButton>
             <Menu
@@ -324,7 +349,7 @@ export function Header () {
                 to="/dashboard"
                 onClick={handleClose}
               >
-                <ListItemText primary={auth && auth.user && auth.user.email}/>
+                <ListItemText primary={auth && auth.user && auth.user.email} />
               </MenuItem>
               <MenuItem
                 component={RouterLink}
@@ -354,7 +379,7 @@ export function Header () {
   )
 }
 
-export default function Navbar () {
+export default function Navbar() {
   const classes = useStyles()
 
   return (
