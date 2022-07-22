@@ -7,8 +7,14 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
-    Typography
+    Typography,
+    Button
+
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateTask } from '../../store/actions/admin';
+
 
 
 // Custom styles
@@ -47,6 +53,20 @@ const useStyles = makeStyles((theme) => ({
 
 function TaskCard({id, title, description, due_on, is_completed}) {
     const classes = useStyles()
+    const auth = useSelector(state => state.auth)
+    const dispatch = useDispatch()
+    const history = useHistory()
+
+
+    // toggle is_completed true of false function
+    function toggleComplete(id, is_completed){
+        dispatch(updateTask(id, is_completed, history))
+        console.log(id, is_completed);
+    }
+
+
+
+
     return (
         <Container component="main" className={classes.root}>
             <Typography
@@ -75,6 +95,21 @@ function TaskCard({id, title, description, due_on, is_completed}) {
                         (is_completed) ? (<span>Completed</span>) : (<span>Not Completed</span>)
                     }
             </Typography>
+
+            {/* Button to mask task completed */}
+            {
+                (auth && auth.isAuthenticated) ?
+                    (<Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => toggleComplete(id, !is_completed)}>
+                            {
+                                (is_completed) ? (<span>Mark Incomplete</span>) : (<span>Mark Complete</span>)
+                            }
+                    </Button>)
+                : null
+            }
+
         </Container>
     )
 }

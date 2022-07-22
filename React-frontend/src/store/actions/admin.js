@@ -23,7 +23,10 @@ import {
     TASK_CREATE_SUCCESSFULL,
     TASK_FETCH,
     TASK_FETCH_FAILED,
-    TASK_FETCH_SUCCESSFULL
+    TASK_FETCH_SUCCESSFULL,
+    TASK_UPDATE,
+    TASK_UPDATE_FAILED,
+    TASK_UPDATE_SUCCESSFULL
 } from '../types/admin';
 
 
@@ -358,6 +361,66 @@ export const createTask = (title, description, role, memberEmail, history) => (d
         })
 }
 
+
+// Action to update task as completed
+export const updateTask = (task_id, is_completed, history) => (dispatch) => {
+    
+    // dispatch task update
+    dispatch({
+        type: TASK_UPDATE
+    })
+
+    // create request body
+    const body = {
+        task_id: task_id,
+        is_completed: is_completed
+    }
+
+    // create request header config
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // get jwt token and attach with config
+    const token = localStorage.getItem('openmf_token')
+    if(token){
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    else {
+        dispatch({
+            type: TASK_UPDATE_FAILED,
+            payload: {
+                error: 'Unauthorized, Please logged in.'
+            }
+        })
+        return
+    }
+
+    // send update request to server
+    axios.put('task/update', body, config)
+        .then((res) => {
+            history.push('/task/list')
+            dispatch({type: TASK_UPDATE_SUCCESSFULL})
+            dispatch(setAlert(res.data.message, 'success'))
+        }
+        )
+        .catch((err) => {
+            const res = err.response
+            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
+                dispatch({
+                    type: TASK_UPDATE_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+            }
+            dispatch(setAlert('Something went wrong.'))
+        }
+        )
+}
 
 // Action generator for fetch task
 export const fetchTasks = () => (dispatch) => {
