@@ -20,6 +20,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { addMember } from '../../store/actions/admin';
 import SelectItem from '../Utils/SelectItem';
+import { authentication } from '../../Firebase/firebase-config';
+import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -87,6 +89,20 @@ function AddMemberForm({toggleAddMemberModel}) {
     const [showPassword, setShowPassword] = useState(false)
     const handleClickShowPassword = () => setShowPassword(!showPassword)
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
+
+    // function to handle google signup
+    const handleGoogleSignup = () => {
+        const provider = new GoogleAuthProvider();
+        signInWithPopup(authentication, provider)
+            .then((re) => {
+                console.log(re);
+                const user = re.user;
+                dispatch(addMember(user.displayName, user.email, role, user.uid, history))
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -168,11 +184,28 @@ function AddMemberForm({toggleAddMemberModel}) {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        disabled={ !username || !email || !password || admin.isLoading}
+                        disabled={ !username || !email || !password || !role ||admin.isLoading}
                         onClick={handleAddMember}
                     >
                         Add Member
                     </Button>
+
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        disabled={admin.isLoading || !role}
+                        onClick={handleGoogleSignup}
+                    >
+                        Add Member with Google
+                    </Button>
+
+                    {!role &&
+                        <Typography variant="body2" align="center" color="error">
+                            <span>Please select a Role</span>
+                        </Typography>
+                    }
                 </form>
 
             </Card>
