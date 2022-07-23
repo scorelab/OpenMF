@@ -5,35 +5,27 @@
 */
 
 import React, { useState } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+// import { WithStyles } from '@material-ui/core';
 import {
     Container,
     TableContainer,
-    Paper,
-    Table,
-    TableHead,
-    TableBody,
-    TableRow,
-    TableCell,
-    TableFooter,
-    TablePagination,
 } from '@material-ui/core';
-import SearchBar from "material-ui-search-bar";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { selectUser } from '../../store/actions/admin';
-import TablePaginationActions from '../Utils/TablePaginationActions';
+import MUIDataTable from "mui-datatables";
 import { extractor_default, fetch_extracted_cases } from '../../store/actions/extractor';
 
-// Columns for table representation
-const columns = [
-    { field: 'id', headerName: 'ID', flex: 1 },
-    { field: 'name', headerName: 'Full Name', flex: 1 },
-    { field: 'email', headerName: 'Email', flex: 1 },
-    { field: 'verified', headerName: 'verified', flex: 1 },
-    { field: 'role', headerName: 'Role', flex: 1 },
-
+const columnsNew = [
+    { name: 'ID', options: { display: true } },
+    { name: 'Full Name', options: { display: true } },
+    { name: 'Email', options: { display: true } },
+    { name: 'verified', options: { display: false } },
+    { name: 'Role', options: { display: true } },
 ]
+
+
 
 // custom styles
 const useStyle = makeStyles((theme) => ({
@@ -68,25 +60,25 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 // Styling For cells
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
-}))(TableCell);
+// const StyledTableCell = withStyles((theme) => ({
+//     head: {
+//         backgroundColor: theme.palette.common.black,
+//         color: theme.palette.common.white,
+//     },
+//     body: {
+//         fontSize: 14,
+//     },
+// }))(TableCell);
 
 // Styling For rows
-const StyledTableRow = withStyles((theme) => ({
-    root: {
-        cursor: 'pointer',
-        "&:nth-of-type(odd)": {
-            backgroundColor: theme.palette.action.hover,
-        },
-    },
-}))(TableRow);
+// const StyledTableRow = withStyles((theme) => ({
+//     root: {
+//         cursor: 'pointer',
+//         "&:nth-of-type(odd)": {
+//             backgroundColor: theme.palette.action.hover,
+//         },
+//     },
+// }))(TableRow);
 
 function SearchUserModel({ extractors, managements }) {
 
@@ -103,24 +95,52 @@ function SearchUserModel({ extractors, managements }) {
     const [page, setPage] = useState(0);
 
     // State to store chart type
-    const [tableType] = useState('extractor')
+    // const [tableType] = useState('extractor')
 
     // Row definition for members
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+      // To get list of all users
+      const allRows = extractors.map((member, index) => (
+        {
+            id: index + 1,
+            name: member.name,
+            email: member.email,
+            verified: (member.verified) ? 'verified' : 'Not verified',
+            role: member.role,
+        }
+    )).concat(managements.map((member, index) => (
+        {
+            id: index + 1 + extractors.length,
+            name: member.name,
+            email: member.email,
+            role: member.role,
+            verified: (member.verified) ? 'verified' : 'Not verified'
+        }
+    )))
+
+    // convert data from allRows to array of arrays in const newRows
+    const newRows = allRows.map((row) => {
+        return Object.values(row)
+        }   
+    )
+
+    // const data = allRows().slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    // const [data, setData] = useState(allRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage))
+
     // Number of empty rows
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, allRows.length - page * rowsPerPage);
+    // const emptyRows = rowsPerPage - Math.min(rowsPerPage, allRows.length - page * rowsPerPage);
 
     // Handling page change
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+    // const handleChangePage = (event, newPage) => {
+    //     setPage(newPage);
+    // };
 
     // Handling Row per page change
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
+    // const handleChangeRowsPerPage = (event) => {
+    //     setRowsPerPage(parseInt(event.target.value, 10));
+    //     setPage(0);
+    // };
 
     // Function to handle Double click on any row
     function handleCellClick(gridCellParam) {
@@ -142,39 +162,37 @@ function SearchUserModel({ extractors, managements }) {
         history.push('/list-members/member/' + gridCellParam.id)
     }
 
-    const[allRows, setRows] = useState(allRows)
-    const [searched, setSearched] = useState("");
+  const [responsive, setResponsive] = useState("vertical");
+  const [tableBodyHeight, setTableBodyHeight] = useState("400px");
+  const [tableBodyMaxHeight, setTableBodyMaxHeight] = useState("");
+  const [searchBtn, setSearchBtn] = useState(true);
+  const [downloadBtn, setDownloadBtn] = useState(true);
+  const [printBtn, setPrintBtn] = useState(true);
+  const [viewColumnBtn, setViewColumnBtn] = useState(true);
+  const [filterBtn, setFilterBtn] = useState(true);
 
-        // To get list of all users
-    allRows = extractors.map((member, index) => (
-            {
-                id: index + 1,
-                name: member.name,
-                email: member.email,
-                verified: (member.verified) ? 'verified' : 'Not verified',
-                role: member.role,
+    const options = {
+        search: searchBtn,
+        download: downloadBtn,
+        // customToolbarSelect: () => {},
+        selectableRows: false,
+        print: printBtn,
+        viewColumns: viewColumnBtn,
+        filter: filterBtn,
+        filterType: "dropdown",
+        responsive,
+        tableBodyHeight,
+        tableBodyMaxHeight,
+        onTableChange: (action, state) => {
+        //   console.log(action);
+        //   console.dir(state);
+        },
+        setRowProps: () => ({
+            onClick: (e) => {
+                console.log(e)
             }
-        )).concat(managements.map((member, index) => (
-            {
-                id: index + 1 + extractors.length,
-                name: member.name,
-                email: member.email,
-                role: member.role,
-                verified: (member.verified) ? 'verified' : 'Not verified'
-            }
-        )))
 
-    // Function to handle search
-    const requestSearch = (searchedVal) => {
-        const filteredRows = allRows.filter((row) => {
-          return row.name.toLowerCase().includes(searchedVal.toLowerCase());
-        });
-        setRows(filteredRows);
-      };
-
-    const cancelSearch = () => {
-        setSearched("");
-        requestSearch(searched);
+        }),
       };
 
     return (
@@ -182,76 +200,24 @@ function SearchUserModel({ extractors, managements }) {
 
             <h1 className={classes.title}>Search User</h1>
 
-            <SearchBar
+            {/* <SearchBar
             value={searched}
             onChange={(searchVal) => requestSearch(searchVal)}
             onCancelSearch={() => cancelSearch()}
-             />
+             /> */}
 
-            <TableContainer component={Paper} style={{ marginTop: '2em' }}  >
-                <Table className={classes.table}>
-                    <TableHead>
-                        <StyledTableRow>
-                            {(columns.map((column) => {
-                                return (
-                                    <StyledTableCell align="left" key={column.field}>{column.headerName}</StyledTableCell>
-                                )
-                            }))}
-                        </StyledTableRow>
-                    </TableHead>
-                    <TableBody>
-                        {
-                            (rowsPerPage > 0
-                                ? allRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                : allRows
-                            ).map((row) => (
-                                <StyledTableRow key={row.name} onDoubleClick={() => handleCellClick(row)}>
-                                    <StyledTableCell component="th" scope="row" style={{ width: 100 }} align="left">
-                                        {row.id}
-                                    </StyledTableCell>
-                                    <StyledTableCell style={{ width: 200 }} align="left">
-                                        {row.name}
-                                    </StyledTableCell>
-                                    <StyledTableCell style={{ width: 200 }} align="left">
-                                        {row.email}
-                                    </StyledTableCell>
-                                    <StyledTableCell style={{ width: 160 }} align="left">
-                                        {row.verified}
-                                    </StyledTableCell>
-                                    <StyledTableCell style={{ width: 160 }} align="left">
-                                        {row.role}
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            ))
-                        }
-                        {emptyRows > 0 && (
-                            <StyledTableRow style={{ height: 53 * emptyRows }}>
-                                <StyledTableCell colSpan={6} />
-                            </StyledTableRow>
-                        )}
-                    </TableBody>
-
-                    <TableFooter>
-                        <StyledTableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                colSpan={5}
-                                count={(tableType === 'extractor') ? allRows.length : allRows.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                SelectProps={{
-                                    inputProps: { 'aria-label': 'rows per page' },
-                                    native: true,
-                                }}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                                ActionsComponent={TablePaginationActions}
-                            />
-                        </StyledTableRow>
-                    </TableFooter>
-
-                </Table>
+            <TableContainer >
+                <MUIDataTable
+                title={"Search User"}
+                data={newRows}
+                columns={columnsNew}
+                options={options}
+                ondoubleClick={(e, rowData, rowIndex) => handleCellClick(newRows[rowIndex])}
+                />
             </TableContainer>
+           
+
+
         </Container>
     );
 }
