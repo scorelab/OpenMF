@@ -38,7 +38,7 @@ export const fetchMembers = () => (dispatch, getState) => {
     })
 
     // Check if admin is authenticated
-    if(getState().auth && getState().auth.isAuthenticated){
+    if (getState().auth && getState().auth.isAuthenticated) {
 
         // Get token from localstorage
         const token = localStorage.getItem('openmf_token')
@@ -83,10 +83,10 @@ export const fetchMembers = () => (dispatch, getState) => {
     }
 
     // If admin not authenticated
-    else{
+    else {
         dispatch({
             type: FETCH_MEMBERS_FAILED,
-            payload: {error: 'User Not Authenticated.'}
+            payload: { error: 'User Not Authenticated.' }
         })
     }
 }
@@ -94,7 +94,7 @@ export const fetchMembers = () => (dispatch, getState) => {
 export const selectUser = (user) => (dispatch, getState) => {
     dispatch({
         type: SELECT_USER,
-        payload: {user: user}
+        payload: { user: user }
     })
 }
 
@@ -133,17 +133,17 @@ export const deleteMember = (email, history) => (dispatch) => {
 
     // send delete request to route
     // '/user/delete-user'
-    axios.post('/user/delete-user', body,config)
+    axios.post('/user/delete-user', body, config)
         .then((res) => {
             history.push('/list-members')
             dispatch({
                 type: MEMBER_DELETE_SUCCESSFULL,
             })
-            dispatch(setAlert('Member Deleted Successfully!','success'))
+            dispatch(setAlert('Member Deleted Successfully!', 'success'))
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
+            if (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403) {
                 dispatch({
                     type: MEMBER_DELETE_FAILED,
                     payload: {
@@ -196,7 +196,7 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
 
     // send post request to route
     // '/user/add-user'
-    axios.post('/user/add-user', body,config)
+    axios.post('/user/add-user', body, config)
         .then((res) => {
 
             // fetch updated members
@@ -211,11 +211,11 @@ export const addMember = (name, email, role, password, history) => (dispatch) =>
             })
 
             // dispatch successfull alert
-            dispatch(setAlert('Member Added Successfully!','success'))
+            dispatch(setAlert('Member Added Successfully!', 'success'))
         })
         .catch((err) => {
             const res = err.response
-            if(res && (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403)){
+            if (res && (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403)) {
                 dispatch({
                     type: MEMBER_ADD_FAILED,
                     payload: {
@@ -258,7 +258,7 @@ export const updateRole = (email, new_role, password, history) => (dispatch) => 
     const token = localStorage.getItem('openmf_token')
 
     // check for token and add to config
-    if(token){
+    if (token) {
         config.headers.Authorization = `Bearer ${token}`
     } else {
         history.push('/')
@@ -276,11 +276,11 @@ export const updateRole = (email, new_role, password, history) => (dispatch) => 
             dispatch({
                 type: MEMBER_ROLE_UPDATE_SUCCESSFULL,
             })
-            dispatch(setAlert('Role Updated Successfully!','success'))
+            dispatch(setAlert('Role Updated Successfully!', 'success'))
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
+            if (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403) {
                 dispatch({
                     type: MEMBER_ROLE_UPDATE_FAILED,
                     payload: {
@@ -309,10 +309,10 @@ export const createTask = (title, description, role, memberEmail, history) => (d
     }
 
     // assign email according to role
-    if(role === 'extractor'){
+    if (role === 'extractor') {
         body.extractor_email = memberEmail
         body.management_email = "none"
-    } else if(role === 'management'){
+    } else if (role === 'management') {
         body.management_email = memberEmail
         body.extractor_email = "none"
     }
@@ -326,7 +326,7 @@ export const createTask = (title, description, role, memberEmail, history) => (d
 
     // get jwt token and attach with config
     const token = localStorage.getItem('openmf_token')
-    if(token){
+    if (token) {
         config.headers.Authorization = `Bearer ${token}`
     } else {
         dispatch({
@@ -342,12 +342,12 @@ export const createTask = (title, description, role, memberEmail, history) => (d
     axios.post('task/create', body, config)
         .then((res) => {
             history.push('/task/list')
-            dispatch({type: TASK_CREATE_SUCCESSFULL})
+            dispatch({ type: TASK_CREATE_SUCCESSFULL })
             dispatch(setAlert(res.data.message, 'success'))
         })
         .catch((err) => {
             const res = err.response
-            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
+            if (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403) {
                 dispatch({
                     type: TASK_CREATE_FAILED,
                     payload: {
@@ -364,7 +364,6 @@ export const createTask = (title, description, role, memberEmail, history) => (d
 
 // Action to update task as completed
 export const updateTask = (task_id, is_completed, history) => (dispatch) => {
-    
     // dispatch task update
     dispatch({
         type: TASK_UPDATE
@@ -385,7 +384,7 @@ export const updateTask = (task_id, is_completed, history) => (dispatch) => {
 
     // get jwt token and attach with config
     const token = localStorage.getItem('openmf_token')
-    if(token){
+    if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
     else {
@@ -399,27 +398,54 @@ export const updateTask = (task_id, is_completed, history) => (dispatch) => {
     }
 
     // send update request to server
-    axios.put('task/update', body, config)
-        .then((res) => {
-            history.push('/task/list')
-            dispatch({type: TASK_UPDATE_SUCCESSFULL})
-            dispatch(setAlert(res.data.message, 'success'))
-        }
-        )
-        .catch((err) => {
-            const res = err.response
-            if(res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403){
-                dispatch({
-                    type: TASK_UPDATE_FAILED,
-                    payload: {
-                        error: res.data.message
-                    }
-                })
-                dispatch(setAlert(res.data.message))
+    (!is_completed ? (
+        axios.put(`task/mark-complete/${task_id}`, body, config)
+            .then((res) => {
+                history.push('/task/list')
+                dispatch({ type: TASK_UPDATE_SUCCESSFULL })
+                dispatch(setAlert(res.data.message, 'success'))
             }
-            dispatch(setAlert('Something went wrong.'))
-        }
-        )
+            )
+            .catch((err) => {
+                const res = err.response
+                if (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403) {
+                    dispatch({
+                        type: TASK_UPDATE_FAILED,
+                        payload: {
+                            error: res.data.message
+                        }
+                    })
+                    dispatch(setAlert(res.data.message))
+                    console.log(err);
+                }
+                dispatch(setAlert('Something went wrong.'))
+            }
+            )
+
+    ) : (
+        axios.put(`task/mark-incomplete/${task_id}`, body, config)
+            .then((res) => {
+                history.push('/task/list')
+                dispatch({ type: TASK_UPDATE_SUCCESSFULL })
+                dispatch(setAlert(res.data.message, 'success'))
+            }
+            )
+            .catch((err) => {
+                const res = err.response
+                if (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403) {
+                    dispatch({
+                        type: TASK_UPDATE_FAILED,
+                        payload: {
+                            error: res.data.message
+                        }
+                    })
+                    dispatch(setAlert(res.data.message))
+                    console.log(err);
+                }
+                dispatch(setAlert('Something went wrong.'))
+            }
+            )
+    ))
 }
 
 // Action generator for fetch task
@@ -439,7 +465,7 @@ export const fetchTasks = () => (dispatch) => {
 
     // get jwt token and attach with config
     const token = localStorage.getItem('openmf_token')
-    if(token){
+    if (token) {
         config.headers.Authorization = `Bearer ${token}`
     } else {
         dispatch({
@@ -456,7 +482,7 @@ export const fetchTasks = () => (dispatch) => {
         .then((res) => {
             dispatch({
                 type: TASK_FETCH_SUCCESSFULL,
-                payload: {tasks: res.data.tasks}
+                payload: { tasks: res.data.tasks }
             })
             return
         })
