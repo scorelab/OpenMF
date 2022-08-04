@@ -210,6 +210,37 @@ def mark_complete(id):
     }
     return make_response(jsonify(response)), status.CREATED
 
+
+@task.route('/mark-incomplete/<int:id>', methods=["PUT"])
+@token_required
+def mark_incomplete(id):
+    """
+    Route to mark a task as incomplete by a member.
+    """
+    current_user = get_current_user(mark_incomplete.role, mark_incomplete.public_id)
+    task = list(filter(lambda task: task.id == id, current_user.assigned_tasks))
+    if len(task) == 0:
+        response = {
+            "success": False,
+            "message": "Task not found."
+        }
+        return make_response(jsonify(response)), status.NOT_FOUND
+
+    if not task[0].is_completed:
+        response = {
+            "success": False,
+            "message": "Task already incomplete."
+        }
+        return make_response(jsonify(response)), status.UNPROCESSABLE_ENTITY
+
+    task[0].is_completed = False
+    db.session.commit()
+    response = {
+        "success": True,
+        "message": "Task marked as incomplete."
+    }
+    return make_response(jsonify(response)), status.CREATED
+
 @task.route('/assigned-tasks', methods=["GET"])
 @admin_token_required
 def assigned_tasks():
