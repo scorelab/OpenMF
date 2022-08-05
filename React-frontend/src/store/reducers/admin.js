@@ -21,7 +21,10 @@ import {
     TASK_CREATE_SUCCESSFULL,
     TASK_FETCH,
     TASK_FETCH_FAILED,
-    TASK_FETCH_SUCCESSFULL
+    TASK_FETCH_SUCCESSFULL,
+    TASK_UPDATE,
+    TASK_UPDATE_FAILED,
+    TASK_UPDATE_SUCCESSFULL,
 } from '../types/admin';
 
 
@@ -105,6 +108,22 @@ const adminReducer = (state = inittialState, action) => {
                 tasks: payload.tasks,
                 error: null,
             }
+        
+        case TASK_UPDATE:
+        case TASK_UPDATE_SUCCESSFULL:
+            return {
+                ...state,
+                isLoading: false,
+                error: null
+            }
+
+        case TASK_UPDATE_FAILED:
+            return {
+                ...state,
+                isLoading: false,
+                error: payload.error
+            }
+
         default:
             return state
     }
