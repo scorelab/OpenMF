@@ -73,6 +73,16 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     paddingLeft: "10px",
   },
+  caseText: {
+    fontWeight: "bold",
+  },
+  copyButton: {
+    color: theme.palette.text.secondary,
+    margin: theme.spacing(1.5, 0),
+    width: '30%',
+    "&:hover": {
+    },
+  }
 }));
 
 const StyledTableCell = withStyles((theme) => ({
@@ -151,6 +161,25 @@ function Keywordsearch() {
       }
     }
   }
+  
+  // Function to hancle copy and open file
+  function callCase(id) {
+    var caseLink = "file://" + id;
+    var copyText = document.createElement("input");
+    copyText.value = caseLink;
+    document.body.appendChild(copyText);
+    copyText.select();
+    document.execCommand("copy");
+    alert("Copied the text: \n" + copyText.value + "\nto clipboard.\n\nPlease paste in new window");
+    window.open("", "_blank");
+
+  }
+
+  // Function to return case tag
+  function getCaseName(str) {
+    return str.substring(str.lastIndexOf("/") + 1);
+  }
+
 
   return (
     <Container component="main" className={classes.root}>
@@ -251,7 +280,8 @@ function Keywordsearch() {
                 <TableHead>
                   <StyledTableRow>
                     <StyledTableCell align="left">Index</StyledTableCell>
-                    <StyledTableCell align="left">Case Files</StyledTableCell>
+                    <StyledTableCell align="left">Case Tag</StyledTableCell>
+                    <StyledTableCell align="left">Copy path to Clipboard</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
 
@@ -265,8 +295,24 @@ function Keywordsearch() {
                           </StyledTableCell>
                         }
                         {
-                          <StyledTableCell component="th" scope="row">
-                            {value}
+                          <StyledTableCell component="th" scope="row"
+                            className={classes.caseText}
+                          >
+                            {getCaseName(value)}
+                          </StyledTableCell>
+                        }
+                        {
+                          <StyledTableCell component="th" scope="row" className={classes.copyButton}>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              className={classes.submit}
+                              style={{ width: "10%" }}
+                              onClick={() => {
+                                callCase(value)}}
+                            >
+                              Copy
+                            </Button>
                           </StyledTableCell>
                         }
                       </StyledTableRow>
