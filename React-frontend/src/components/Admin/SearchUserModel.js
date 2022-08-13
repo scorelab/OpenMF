@@ -129,7 +129,6 @@
          // call handleCellClick for each row on double click
          columns.forEach((column) => {
              column.options.customBodyRender = (data, type, row) => {
-                 console.log("data, type, row", data, type, row);
                  return <pre onDoubleClick={() => handleCellClick(row)}>{data}</pre>;
              };
          });
@@ -158,7 +157,6 @@
              return Object.values(row);
          });
     
-         console.log(newRows);
          return (
              <Container className={classes.root}>
                  <h1 className={classes.title}>Search User</h1>
