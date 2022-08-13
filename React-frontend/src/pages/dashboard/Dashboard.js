@@ -1,32 +1,69 @@
 /*
 * Dashboard Page Component
 */
-
 // Import Dependecies
 import React from 'react';
 import Layout from '../../components/core/Layout';
-import MemberList from '../admin/MemberList';
-import { useSelector, useDispatch } from 'react-redux';
-import ShowMembers from '../../components/Admin/ShowMembers';
-import { fetchMembers } from '../../store/actions/admin';
-import UsersList from '../admin/UsersList';
+import { useSelector } from 'react-redux';
+import ProfileCard from './ProfileCard';
+import { makeStyles } from '@material-ui/core';
+import {
+    Container,
+    Typography,
+    Box
+} from '@material-ui/core';
 
+// custom styles
+const useStyle = makeStyles((theme) => ({
+    root: {
+        marginTop: '10vh',
+        height: '82.5vh',
+        padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start'
+    },
+    TaskList: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+    }
+}))
 
-// Main Profile Component
 const Dashboard = () => {
-// get user details
 
-     // auth reducer
-     const auth = useSelector(state => state.auth)
-     const dispatch = useDispatch()
-     const {extractors, managements, isLoading} = useSelector(state => state.admin)
- 
-    return (
+    // auth reducer
+    // const auth = useSelector(state => state.auth)
+    const classes = useStyle()
+
+
+
+    // if(auth && auth.isAuthenticated){
+    //     return (
+    //         <Layout sidebarBool={true}>
+    //             {/* <TaskList /> */}
+    //             <ProfileCard />
+    //         </Layout>
+    //     )
+    // }
+    // return (
+    //     <Layout sidebarBool={false}>
+    //         {/* <HomeLogo /> */}
+    //     </Layout>
+    // )
+    return(
         <Layout sidebarBool={true}>
-                <ShowMembers extractors={extractors} managements={managements} isLoading={isLoading}/>
-                <br></br>
-                <UsersList />
+        <Container component="main" className={classes.root}>
+            <Typography component="h1" variant="h5">
+                Dashboard
+            </Typography>
+            <Box component="div" className={classes.TaskList}>
+                <ProfileCard />
+            </Box>
+        </Container>
         </Layout>
+        
     )
 }
 
