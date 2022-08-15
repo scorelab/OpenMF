@@ -37,6 +37,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import ComparePage from './pages/Management/ComparePage';
 import Profile from './pages/dashboard/Profile'
 import Dashboard from './pages/dashboard/Dashboard'
+import SearchUser from './pages/admin/SearchUsers';
 
 
 
@@ -118,6 +119,7 @@ function App() {
           <PrivateRoute path='/filter' exact component={FilterCasePage} />
           <PrivateRoute path='/location' exact component={LocationPage} />
           <PrivateRoute path='/compare' exact component={ComparePage} />
+          <PrivateRoute path='/search-user' exact component={SearchUser} />
           <PublicRoute restricted={false} component={NotFound} />
         </Switch>
       </div>
