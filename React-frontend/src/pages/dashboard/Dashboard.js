@@ -4,7 +4,6 @@
 // Import Dependecies
 import React from 'react';
 import Layout from '../../components/core/Layout';
-import { useSelector } from 'react-redux';
 import ProfileCard from './ProfileCard';
 import { makeStyles } from '@material-ui/core';
 import {
