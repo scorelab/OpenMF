@@ -31,38 +31,19 @@ const useStyle = makeStyles((theme) => ({
 }))
 
 const Dashboard = () => {
-
-    // auth reducer
-    // const auth = useSelector(state => state.auth)
     const classes = useStyle()
-
-
-
-    // if(auth && auth.isAuthenticated){
-    //     return (
-    //         <Layout sidebarBool={true}>
-    //             {/* <TaskList /> */}
-    //             <ProfileCard />
-    //         </Layout>
-    //     )
-    // }
-    // return (
-    //     <Layout sidebarBool={false}>
-    //         {/* <HomeLogo /> */}
-    //     </Layout>
-    // )
-    return(
+    return (
         <Layout sidebarBool={true}>
-        <Container component="main" className={classes.root}>
-            <Typography component="h1" variant="h5">
-                Dashboard
-            </Typography>
-            <Box component="div" className={classes.TaskList}>
-                <ProfileCard />
-            </Box>
-        </Container>
+            <Container component="main" className={classes.root}>
+                <Typography component="h1" variant="h5">
+                    Dashboard
+                </Typography>
+                <Box component="div" className={classes.TaskList}>
+                    <ProfileCard />
+                </Box>
+            </Container>
         </Layout>
-        
+
     )
 }
 
