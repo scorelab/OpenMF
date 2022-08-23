@@ -48,6 +48,12 @@ const useStyles = makeStyles((theme) => ({
         fontSize: theme.spacing(1.4),
         fontWeight: '400',
         marginBottom: theme.spacing(1)
+    },
+    icons: {
+        fontSize: '2.3vh'
+    },
+    button: {
+        marginLeft: theme.spacing(1)
     }
 }))
 
@@ -96,7 +102,6 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                 }
             </Typography>
 
-            {/* Button to mask task completed */}
             {
                 (auth.user.role === "admin") ?
                     (<div>
@@ -105,10 +110,16 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                             variant="contained"
                             color="primary"
                             onClick={() => toggleComplete(id, is_completed)}
-                            style={{ fontSize: '1.3vh' }}
                         >
                             {
-                                (is_completed) ? (<CheckCircleIcon />) : (<CheckCircleOutlineIcon />)
+                                (is_completed) ? (<CheckCircleIcon
+                                    className={classes.icons}
+
+                                />)
+                                    : (
+                                        <CheckCircleOutlineIcon
+                                            className={classes.icons}
+                                        />)
                             }
                         </Button>
                         {/* Edit Task Button */}
@@ -116,9 +127,9 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                             variant="contained"
                             color="primary"
                             onClick={() => { console.log('edit task', id) }}
-                            style={{ marginLeft: '10px' }}
+                            className={classes.button}
                         >
-                            <CreateIcon style={{ fontSize: '2vh' }} />
+                            <CreateIcon className={classes.icons} />
                         </Button>
                     </div>
                     )
