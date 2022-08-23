@@ -131,8 +131,7 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                                 </Tooltip>
                             )
                         }
-
-                        {/* Edit Task Button */}
+                        {/* Task Edit Button */}
                         <Tooltip title="Edit" placement="bottom-end">
 
                             <Button
@@ -141,7 +140,6 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                                 onClick={() => { console.log('edit task', id) }}
                                 className={classes.button}
                             >
-                                {/* <Tooltip title="Edit" placement="bottom-start"> */}
                                 <CreateIcon className={classes.icons} />
                             </Button>
                         </Tooltip>
