@@ -9,8 +9,10 @@ import {
     Container,
     Typography,
     Button
-
 } from '@material-ui/core';
+import CreateIcon from '@material-ui/icons/Create';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateTask } from '../../store/actions/admin';
@@ -45,9 +47,10 @@ const useStyles = makeStyles((theme) => ({
     bodyText: {
         fontSize: theme.spacing(1.4),
         fontWeight: '400',
-        marginBottom: theme.spacing(.3)
+        marginBottom: theme.spacing(1)
     }
 }))
+
 
 
 
@@ -96,14 +99,29 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
             {/* Button to mask task completed */}
             {
                 (auth.user.role === "admin") ?
-                    (<Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => toggleComplete(id, is_completed)}>
-                        {
-                            (is_completed) ? (<span>Mark Incomplete</span>) : (<span>Mark Complete</span>)
-                        }
-                    </Button>)
+                    (<div>
+                        {/* Task Completed Button */}
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => toggleComplete(id, is_completed)}
+                            style={{ fontSize: '1.3vh' }}
+                        >
+                            {
+                                (is_completed) ? (<CheckCircleIcon />) : (<CheckCircleOutlineIcon />)
+                            }
+                        </Button>
+                        {/* Edit Task Button */}
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => { console.log('edit task', id) }}
+                            style={{ marginLeft: '10px' }}
+                        >
+                            <CreateIcon style={{ fontSize: '2vh' }} />
+                        </Button>
+                    </div>
+                    )
                     : null
             }
 
