@@ -10,13 +10,13 @@ import {
     Typography,
     Button
 } from '@material-ui/core';
+import Tooltip from '@mui/material/Tooltip';
 import CreateIcon from '@material-ui/icons/Create';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateTask } from '../../store/actions/admin';
-
 
 
 // Custom styles
@@ -57,15 +57,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-
-
-
 function TaskCard({ id, title, description, due_on, is_completed }) {
     const classes = useStyles()
     const auth = useSelector(state => state.auth)
     const dispatch = useDispatch()
     const history = useHistory()
-
 
     // toggle is_completed true of false function
     function toggleComplete(id, is_completed) {
@@ -105,32 +101,50 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
             {
                 (auth.user.role === "admin") ?
                     (<div>
-                        {/* Task Completed Button */}
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => toggleComplete(id, is_completed)}
-                        >
-                            {
-                                (is_completed) ? (<CheckCircleIcon
-                                    className={classes.icons}
-
-                                />)
-                                    : (
+                        {/* Task Completed status Button */}
+                        {
+                            (is_completed) ? (
+                                <Tooltip title="Mark as Not Completed" placement="bottom-start">
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => toggleComplete(id, is_completed)}
+                                        className={classes.button}
+                                    >
+                                        <CheckCircleIcon
+                                            className={classes.icons}
+                                        />
+                                    </Button>
+                                </Tooltip>
+                            ) : (
+                                <Tooltip title="Mark as Completed" placement="bottom-start">
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => toggleComplete(id, is_completed)}
+                                        className={classes.button}
+                                    >
                                         <CheckCircleOutlineIcon
                                             className={classes.icons}
-                                        />)
-                            }
-                        </Button>
+                                        />
+                                    </Button>
+                                </Tooltip>
+                            )
+                        }
+
                         {/* Edit Task Button */}
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => { console.log('edit task', id) }}
-                            className={classes.button}
-                        >
-                            <CreateIcon className={classes.icons} />
-                        </Button>
+                        <Tooltip title="Edit" placement="bottom-end">
+
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => { console.log('edit task', id) }}
+                                className={classes.button}
+                            >
+                                {/* <Tooltip title="Edit" placement="bottom-start"> */}
+                                <CreateIcon className={classes.icons} />
+                            </Button>
+                        </Tooltip>
                     </div>
                     )
                     : null
