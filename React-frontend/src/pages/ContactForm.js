@@ -5,9 +5,6 @@
 // Import Dependencies
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { useParams } from 'react-router';
 import {
     Container,
     Typography,
@@ -16,7 +13,9 @@ import {
     Button,
     Box
 } from '@material-ui/core';
-import Layout from '../components/core/Layout';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router';
 
 
 // Custom Styles
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 }))
-
 
 
 function ContactForm() {
@@ -109,79 +107,78 @@ function ContactForm() {
                 } else {
                     alert('Message Sent!')
                     history.push('/')
-                }})
+                }
+            })
     }
 
     return (
-            <Layout sidebarBool={true}>
-                <Container className={classes.root}>
-                    <Typography
-                        component="h1"
-                        variant="h5"
-                        className={classes.titleText}
-                    >
-                        Contact Us
+        <Container className={classes.root}>
+            <Typography
+                component="h1"
+                variant="h5"
+                className={classes.titleText}
+            >
+                Contact Us
 
-                    </Typography>
-                    <Divider style={{ width: '100%', margin: '2em 0' }} />
-                    <Box className={classes.inputs}>
-                        <TextField
-                            fullWidth
-                            label="Name"
-                            name="name"
-                            value={name}
-                            onChange={handleChange}
-                            variant="outlined"
-                            className={classes.inputLabel}
-                            margin="normal"
-                            size="small"
-                            type="text"
-                            required
-                        />
-                        <TextField
-                            fullWidth
-                            label="Email"
-                            name="email"
-                            value={email}
-                            onChange={handleChange}
-                            variant="outlined"
-                            className={classes.inputLabel}
-                            margin="normal"
-                            size="small"
-                            type="email"
-                            required
-                        />
-                        <TextField
-                            fullWidth
-                            label="Message"
-                            name="message"
-                            value={message}
-                            onChange={handleChange}
-                            variant="outlined"
-                            className={classes.inputLabel}
-                            margin="normal"
-                            size="small"
-                            type="text"
-                            required
-                        />
-                    </Box>
-                    <Box className={classes.buttonStyle}>
-                        <Button
-                            variant='contained'
-                            size='small'
-                            disableRipple
-                            disableElevation
-                            color='secondary'
-                            disabled={isSendingMessage}
-                            onClick={handleSubmit}
-                        >
-                            {
-                                (isSendingMessage) ? (<span>Sending...</span>) : (<span>Send Message</span>)
-                            }
-                        </Button>
-                    </Box>
-                </Container>
-            </Layout>
+            </Typography>
+            <Divider style={{ width: '100%', margin: '2em 0' }} />
+            <Box className={classes.inputs}>
+                <TextField
+                    fullWidth
+                    label="Name"
+                    name="name"
+                    value={name}
+                    onChange={handleChange}
+                    variant="outlined"
+                    className={classes.inputLabel}
+                    margin="normal"
+                    size="small"
+                    type="text"
+                    required
+                />
+                <TextField
+                    fullWidth
+                    label="Email"
+                    name="email"
+                    value={email}
+                    onChange={handleChange}
+                    variant="outlined"
+                    className={classes.inputLabel}
+                    margin="normal"
+                    size="small"
+                    type="email"
+                    required
+                />
+                <TextField
+                    fullWidth
+                    label="Message"
+                    name="message"
+                    value={message}
+                    onChange={handleChange}
+                    variant="outlined"
+                    className={classes.inputLabel}
+                    margin="normal"
+                    size="small"
+                    type="text"
+                    required
+                />
+            </Box>
+            <Box className={classes.buttonStyle}>
+                <Button
+                    variant='contained'
+                    size='small'
+                    disableRipple
+                    disableElevation
+                    color='secondary'
+                    disabled={isSendingMessage}
+                    onClick={handleSubmit}
+                >
+                    {
+                        (isSendingMessage) ? (<span>Sending...</span>) : (<span>Send Message</span>)
+                    }
+                </Button>
+            </Box>
+        </Container>
     )
 }
 

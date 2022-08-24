@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
-import ContactPage from './pages/ContactForm';
+import ContactPage from './pages/ContactPage';
 import AdminPage from './pages/admin/AdminPage';
 import Alert from './components/core/Alert';
 import { loadUser } from './store/actions/auth';
