@@ -137,7 +137,6 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                             <Button
                                 variant="contained"
                                 color="primary"
-                                onClick={() => { console.log('edit task', id) }}
                                 className={classes.button}
                             >
                                 <CreateIcon className={classes.icons} />
