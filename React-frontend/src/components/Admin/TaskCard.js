@@ -156,11 +156,8 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                     isOpen={isTaskUpdateModelOpen}
                     toggleUpdateTaskModel={setToggleShowTaskUpdateModel}
                     key="roleUpdateModel"
-                    id={id}
-                    title={title}
-                    description={description}
-                    due_on={due_on}
-                    is_completed={is_completed}
+                    // send task details
+                    task={{ id, title, description, due_on, is_completed }}
 
                 />
 

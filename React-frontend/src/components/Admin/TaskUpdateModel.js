@@ -22,7 +22,9 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 // Add member model
-function TaskUpdateModel({isOpen, toggleUpdateTaskModel}) {
+function TaskUpdateModel({isOpen, toggleUpdateTaskModel, task}) {
+
+    console.log(task);
 
   return (
     <div>
@@ -37,7 +39,10 @@ function TaskUpdateModel({isOpen, toggleUpdateTaskModel}) {
         <DialogTitle id="alert-dialog-slide-title">Task Update Form</DialogTitle>
         <DialogContent>
             <DialogContentText >Update Task Details</DialogContentText>
-            <TaskUpdateForm toggleUpdateTaskModel={toggleUpdateTaskModel} />
+            <TaskUpdateForm
+                toggleUpdateTaskModel={toggleUpdateTaskModel} 
+                task={task}
+                />
         </DialogContent>
         <DialogActions>
 

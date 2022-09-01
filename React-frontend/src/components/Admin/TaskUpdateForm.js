@@ -50,7 +50,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-function TaskUpdateForm({toggleUpdateRoleModel}) {
+function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
+
+    console.log("task id", task.id);
+    console.log("task title", task.title);
+    console.log("task description", task.description);
+    console.log("task due_on", task.due_on);
+    console.log("task is_completed", task.is_completed);
+
 
     // invoking custom styles
     const classes = useStyles()
@@ -62,15 +69,15 @@ function TaskUpdateForm({toggleUpdateRoleModel}) {
     const admin = useSelector(state => state.admin)
 
     // Get selected member from admin reducer
-    const member= useSelector(state => state.admin.selected_user)
+    const member = useSelector(state => state.admin.selected_user)
 
     // dispatcher
     const dispatch = useDispatch()
 
     // function to handle add member request
-    function handleUpdateRole(){
+    function handleUpdateRole() {
         // ner role
-        const new_role = (member.role === 'extractor') ? 'management': 'extractor'
+        const new_role = (member.role === 'extractor') ? 'management' : 'extractor'
         dispatch(updateRole(member.email, new_role, password, history))
         toggleUpdateRoleModel(false)
     }
@@ -127,12 +134,14 @@ function TaskUpdateForm({toggleUpdateRoleModel}) {
                     </Button> */}
 
                     <TextField
+                        disabled
                         variant="outlined"
                         margin="normal"
                         fullWidth={true}
-                        label="Task Title"
+                        label="Task ID"
                         className={classes.inputs}
-                        name="title"
+                        name="task_id"
+                        defaultValue={task.id}
                     />
 
                     <TextField
@@ -142,34 +151,64 @@ function TaskUpdateForm({toggleUpdateRoleModel}) {
                         label="Task Title"
                         className={classes.inputs}
                         name="title"
+                        defaultValue={task.title}
                     />
 
                     <TextField
                         variant="outlined"
                         margin="normal"
                         fullWidth={true}
-                        label="Task Title"
+                        label="Task Description"
                         className={classes.inputs}
-                        name="title"
+                        name="description"
+                        defaultValue={task.description}
                     />
 
                     <TextField
+                    contentEditable={true}
+                        name="dueDate"
+                        label="Due Date"
                         variant="outlined"
+                        id="dueDate"
                         margin="normal"
-                        fullWidth={true}
-                        label="Task Title"
-                        className={classes.inputs}
-                        name="title"
+                        size="medium"
+                        fullWidth
+                        autoComplete="dueDate"
+                        type="datetime-local"
+                        // value={task.due_on}
+                        defaultValue={task.due_on}
+                        InputLabelProps={{
+                            shrink: true
+                        }}
                     />
 
                     <TextField
+                        disabled
                         variant="outlined"
                         margin="normal"
                         fullWidth={true}
-                        label="Task Title"
+                        label="Task Status"
                         className={classes.inputs}
-                        name="title"
+                        name="status"
+                        defaultValue={task.is_completed ? "Completed" : "Pending"}
                     />
+
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={() => {
+                            console.log("Task ID", document.getElementsByName("task_id")[0].value);
+                            console.log("Task Title", document.getElementsByName("title")[0].value);
+                            console.log("Task Description", document.getElementsByName("description")[0].value);
+                            console.log("Task Due Date", document.getElementsByName("dueDate")[0].value);
+                            console.log("Task Status", document.getElementsByName("status")[0].value);
+                        }}
+                    >
+                        Update Task
+                    </Button>
+
                 </form>
 
             </Card>
