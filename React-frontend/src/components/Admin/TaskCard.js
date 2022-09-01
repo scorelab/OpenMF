@@ -3,7 +3,7 @@
     individual tasks inside a card.
 */
 
-import React from 'react'
+import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import CreateIcon from '@material-ui/icons/Create';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import TaskUpdateModel from './TaskUpdateModel';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateTask } from '../../store/actions/admin';
@@ -68,6 +69,9 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
         dispatch(updateTask(id, is_completed, history))
         history.push('amdin/task/list')
     }
+
+    const [isTaskUpdateModelOpen, setToggleShowTaskUpdateModel] = useState(false)
+
 
     return (
         <Container component="main" className={classes.root}>
@@ -138,6 +142,7 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
+                                onClick={() => setToggleShowTaskUpdateModel(true)}
                             >
                                 <CreateIcon className={classes.icons} />
                             </Button>
@@ -147,7 +152,19 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                     : null
             }
 
-        </Container>
+             <TaskUpdateModel
+                    isOpen={isTaskUpdateModelOpen}
+                    toggleUpdateTaskModel={setToggleShowTaskUpdateModel}
+                    key="roleUpdateModel"
+                    id={id}
+                    title={title}
+                    description={description}
+                    due_on={due_on}
+                    is_completed={is_completed}
+
+                />
+
+        </Container>        
     )
 }
 
