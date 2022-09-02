@@ -20,6 +20,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { updateRole } from '../../store/actions/admin';
+import { updateTask } from '../../store/actions/admin';
+
 // import { addMember } from '../../store/actions/admin';
 
 const useStyles = makeStyles((theme) => ({
@@ -88,8 +90,13 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
     const handleClickShowPassword = () => setShowPassword(!showPassword)
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
+    function handleTaskUpdate(){
+        // dispatch(updateTask(task.id, task.title, task.description, task.due_on, task.is_completed, history))
+    }
+
     return (
         <Container component="main" maxWidth="xs">
+            suppressContentEditableWarning={true}
             <Card className={classes.paper}>
 
                 <Typography variant="body1" align="center" color="error">
@@ -135,6 +142,7 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
 
                     <TextField
                         disabled
+                    style={{ width: "50%" }}
                         variant="outlined"
                         margin="normal"
                         fullWidth={true}
@@ -144,29 +152,48 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
                         defaultValue={task.id}
                     />
 
+                     <TextField
+                    // set width 50% of parent
+                    style={{ width: "50%" }}
+                        disabled
+                        variant="outlined"
+                        margin="normal"
+                        fullWidth={true}
+                        label="Task Status"
+                        className={classes.inputs}
+                        name="task_status"
+                        defaultValue={task.is_completed ? "Completed" : "Pending"}
+                    />
+
                     <TextField
+                    required
                         variant="outlined"
                         margin="normal"
                         fullWidth={true}
                         label="Task Title"
                         className={classes.inputs}
-                        name="title"
+                        name="task_title"
                         defaultValue={task.title}
                     />
 
                     <TextField
+                    required
+
                         variant="outlined"
                         margin="normal"
                         fullWidth={true}
                         label="Task Description"
                         className={classes.inputs}
-                        name="description"
+                        name="task_description"
+                        id="description"
                         defaultValue={task.description}
                     />
 
                     <TextField
+                    required
+
                     contentEditable={true}
-                        name="dueDate"
+                        name="task_dueDate"
                         label="Due Date"
                         variant="outlined"
                         id="dueDate"
@@ -182,16 +209,6 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
                         }}
                     />
 
-                    <TextField
-                        disabled
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth={true}
-                        label="Task Status"
-                        className={classes.inputs}
-                        name="status"
-                        defaultValue={task.is_completed ? "Completed" : "Pending"}
-                    />
 
                     <Button
                         fullWidth
@@ -199,12 +216,16 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
                         color="primary"
                         className={classes.submit}
                         onClick={() => {
+                            console.log("Ye bhi chala");
                             console.log("Task ID", document.getElementsByName("task_id")[0].value);
-                            console.log("Task Title", document.getElementsByName("title")[0].value);
-                            console.log("Task Description", document.getElementsByName("description")[0].value);
-                            console.log("Task Due Date", document.getElementsByName("dueDate")[0].value);
-                            console.log("Task Status", document.getElementsByName("status")[0].value);
+                            console.log("Task Title", document.getElementsByName("task_title")[0].value);
+                            console.log("Task Description", document.getElementsByName("task_description")[0].value);
+                            console.log("Task Due Date", document.getElementsByName("task_dueDate")[0].value);
+                            console.log("Task Status", document.getElementsByName("task_status")[0].value);
+                            handleTaskUpdate();
                         }}
+
+
                     >
                         Update Task
                     </Button>

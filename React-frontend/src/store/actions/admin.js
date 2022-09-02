@@ -363,15 +363,20 @@ export const createTask = (title, description, role, memberEmail, history) => (d
 
 
 // Action to update task as completed
-export const updateTask = (task_id, is_completed, history) => (dispatch) => {
+export const updateTask = (task_id, _title, _description, due_on, is_completed, history) => (dispatch) => {
     // dispatch task update
     dispatch({
         type: TASK_UPDATE
     })
 
+    console.log("Via admin.js", task_id, _title, _description, due_on, is_completed);
+
     // create request body
     const body = {
         task_id: task_id,
+        title: _title,
+        description: _description,
+        due_on: due_on,
         is_completed: is_completed
     }
 

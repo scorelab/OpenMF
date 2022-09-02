@@ -28,7 +28,9 @@ function TaskUpdateModel({isOpen, toggleUpdateTaskModel, task}) {
 
   return (
     <div>
+        
       <Dialog
+      suppressContentEditableWarning={true}
         open={isOpen}
         TransitionComponent={Transition}
         keepMounted

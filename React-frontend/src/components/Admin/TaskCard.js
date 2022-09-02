@@ -64,17 +64,24 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
     const dispatch = useDispatch()
     const history = useHistory()
 
-    // toggle is_completed true of false function
-    function toggleComplete(id, is_completed) {
-        dispatch(updateTask(id, is_completed, history))
-        history.push('amdin/task/list')
+    // toggle is_completed true of false function 
+    function toggleComplete(id, title, description, due_on, is_completed) {
+        dispatch(updateTask(id, title, description, due_on, is_completed, history))
+        history.push('admin/task/list')
+        // console.log("toggleComplete", id, title, description, due_on, is_completed);
+        console.log("The ID is ", id);
+        console.log("The title is ", title);
+        console.log("The description is ", description);
+        console.log("The due_on is ", due_on);
+        console.log("The is_completed is ", is_completed);
+
     }
 
     const [isTaskUpdateModelOpen, setToggleShowTaskUpdateModel] = useState(false)
 
 
     return (
-        <Container component="main" className={classes.root}>
+        <Container component="main" className={classes.root} suppressContentEditableWarning={true}>
             <Typography
                 variant="h5"
                 component="h2"
@@ -112,7 +119,7 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => toggleComplete(id, is_completed)}
+                                        onClick={() => toggleComplete(id, title, description, due_on, is_completed)}
                                         className={classes.button}
                                     >
                                         <CheckCircleIcon
@@ -125,7 +132,7 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => toggleComplete(id, is_completed)}
+                                        onClick={() => toggleComplete(id, title, description, due_on, is_completed)}
                                         className={classes.button}
                                     >
                                         <CheckCircleOutlineIcon
@@ -153,6 +160,7 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
             }
 
              <TaskUpdateModel
+             suppressContentEditableWarning={true}
                     isOpen={isTaskUpdateModelOpen}
                     toggleUpdateTaskModel={setToggleShowTaskUpdateModel}
                     key="roleUpdateModel"

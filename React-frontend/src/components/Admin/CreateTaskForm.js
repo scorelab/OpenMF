@@ -76,11 +76,11 @@ function CreateTaskForm() {
     }
 
     return (
-        <Container component="main" className={classes.root}>
+        <Container component="main" className={classes.root} suppressContentEditableWarning={true}>
             <Typography variant="h5" component="h1">
                 Create Task
             </Typography>
-            <Box component="form" className={classes.form}>
+            <Box component="form" className={classes.form} suppressContentEditableWarning={true}>
 
                 <TextField
                     name="title"
@@ -94,6 +94,7 @@ function CreateTaskForm() {
                     onChange={(e) => setTitle(e.target.value)}
                     autoComplete="title"
                     required
+                    suppressContentEditableWarning={true}
                 />
 
                 <TextField
@@ -110,6 +111,7 @@ function CreateTaskForm() {
                     required
                     rows={4}
                     multiline
+                    suppressContentEditableWarning={true}
                 />
 
                 <TextField
@@ -127,6 +129,7 @@ function CreateTaskForm() {
                     InputLabelProps={{
                         shrink: true
                     }}
+                    suppressContentEditableWarning={true}
                 />
 
                 <FormControl component="fieldset" margin="normal">
@@ -156,6 +159,7 @@ function CreateTaskForm() {
                     autoComplete="memberEmail"
                     type="email"
                     required
+                    suppressContentEditableWarning={true}
                 />
 
                 <Button
@@ -163,6 +167,7 @@ function CreateTaskForm() {
                     variant="contained"
                     color="secondary"
                     className={classes.btn}
+                    suppressContentEditableWarning={true}
                     onClick={handleSubmitForm}>
                     Create
                 </Button>
