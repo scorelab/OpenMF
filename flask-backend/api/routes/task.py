@@ -326,4 +326,44 @@ def edit_title():
     }
     return make_response(jsonify(response)), status.CREATED
 
+# Edit task title, description, due date, 
+@task.route('/edit-task', methods=["PUT"])
+@admin_token_required
+def edit_task():
+    """
+    Route to edit a task.
+    """
+    try:
+        req = request.get_json()
+        id = int(req['id'])
+        title = str(req['title'])
+        description = str(req['description'])
+        due_date = str(req['due_date'])
 
+    except Exception as e:
+        print(e)
+        response = {
+            "success": False,
+            "message": "Please provide all details."
+        }
+        return make_response(jsonify(response)), status.UNPROCESSABLE_ENTITY
+
+    current_user = get_current_user(edit_task.role, edit_task.public_id)
+    task = list(filter(lambda task: task.id == id, current_user.assigned_tasks))
+
+    if len(task) == 0:
+        response = {
+            "success": False,
+            "message": "Task not found."
+        }
+        return make_response(jsonify(response)), status.NOT_FOUND
+
+    task[0].title = title
+    task[0].description = description
+    task[0].due_date = due_date
+    db.session.commit()
+    response = {
+        "success": True,
+        "message": "Task updated."
+    }
+    return make_response(jsonify(response)), status.CREATED

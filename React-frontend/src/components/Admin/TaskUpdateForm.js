@@ -91,7 +91,13 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
     function handleTaskUpdate(){
-        // dispatch(updateTask(task.id, task.title, task.description, task.due_on, task.is_completed, history))
+        dispatch(updateTask(task.id, task.title, task.description, task.due_on, task.is_completed, history))
+        console.log("task id", task.id);
+        console.log("task title", task.title);
+        console.log("task description", task.description);
+        console.log("task due_on", task.due_on);
+        console.log("task is_completed", task.is_completed);
+
     }
 
     return (
@@ -217,12 +223,20 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
                         className={classes.submit}
                         onClick={() => {
                             console.log("Ye bhi chala");
-                            console.log("Task ID", document.getElementsByName("task_id")[0].value);
-                            console.log("Task Title", document.getElementsByName("task_title")[0].value);
-                            console.log("Task Description", document.getElementsByName("task_description")[0].value);
-                            console.log("Task Due Date", document.getElementsByName("task_dueDate")[0].value);
-                            console.log("Task Status", document.getElementsByName("task_status")[0].value);
-                            handleTaskUpdate();
+                            // console.log("Task ID", document.getElementsByName("task_id")[0].value);
+                            // console.log("Task Title", document.getElementsByName("task_title")[0].value);
+                            // console.log("Task Description", document.getElementsByName("task_description")[0].value);
+                            // console.log("Task Due Date", document.getElementsByName("task_dueDate")[0].value);
+                            // console.log("Task Status", document.getElementsByName("task_status")[0].value);
+
+                            var newTaskId = document.getElementsByName("task_id")[0].value;
+                            var newTaskTitle = document.getElementsByName("task_title")[0].value;
+                            var newTaskDescription = document.getElementsByName("task_description")[0].value;
+                            var newTaskDueDate = document.getElementsByName("task_dueDate")[0].value;
+                            var newTaskStatus = document.getElementsByName("task_status")[0].value;
+
+                            handleTaskUpdate(newTaskId, newTaskTitle, newTaskDescription, newTaskDueDate, newTaskStatus);
+
                         }}
 
 

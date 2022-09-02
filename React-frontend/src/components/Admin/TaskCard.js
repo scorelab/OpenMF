@@ -65,15 +65,12 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
     const history = useHistory()
 
     // toggle is_completed true of false function 
-    function toggleComplete(id, title, description, due_on, is_completed) {
-        dispatch(updateTask(id, title, description, due_on, is_completed, history))
+    function toggleComplete(id, is_completed) {
+        dispatch(updateTask(id, is_completed, history))
         history.push('admin/task/list')
-        // console.log("toggleComplete", id, title, description, due_on, is_completed);
-        console.log("The ID is ", id);
-        console.log("The title is ", title);
-        console.log("The description is ", description);
-        console.log("The due_on is ", due_on);
-        console.log("The is_completed is ", is_completed);
+        console.log("TASKCARD task id", id);
+        console.log("TASKCARD task is_completed", is_completed);
+
 
     }
 
@@ -119,7 +116,7 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => toggleComplete(id, title, description, due_on, is_completed)}
+                                        onClick={() => toggleComplete(id, is_completed)}
                                         className={classes.button}
                                     >
                                         <CheckCircleIcon
@@ -132,7 +129,7 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => toggleComplete(id, title, description, due_on, is_completed)}
+                                        onClick={() => toggleComplete(id, is_completed)}
                                         className={classes.button}
                                     >
                                         <CheckCircleOutlineIcon

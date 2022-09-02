@@ -362,21 +362,18 @@ export const createTask = (title, description, role, memberEmail, history) => (d
 }
 
 
+
+
 // Action to update task as completed
-export const updateTask = (task_id, _title, _description, due_on, is_completed, history) => (dispatch) => {
+export const updateTask = (task_id, is_completed, history) => (dispatch) => {
     // dispatch task update
     dispatch({
         type: TASK_UPDATE
     })
 
-    console.log("Via admin.js", task_id, _title, _description, due_on, is_completed);
-
     // create request body
     const body = {
         task_id: task_id,
-        title: _title,
-        description: _description,
-        due_on: due_on,
         is_completed: is_completed
     }
 
@@ -451,6 +448,67 @@ export const updateTask = (task_id, _title, _description, due_on, is_completed, 
             }
             )
     ))
+}
+
+// Action to Edit Task
+export const editTask = (task_id, title, description, history) => (dispatch) => {
+    // dispatch task update
+    dispatch({
+        type: TASK_UPDATE
+    })
+
+    // create request body
+    const body = {
+        task_id: task_id,
+        title: title,
+        description: description
+    }
+
+    // create request header config
+    const config = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }
+
+    // get jwt token and attach with config
+    const token = localStorage.getItem('openmf_token')
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    else {
+        dispatch({
+            type: TASK_UPDATE_FAILED,
+            payload: {
+                error: 'Unauthorized, Please logged in.'
+            }
+        })
+        return
+    }
+
+    // send update request to server
+    axios.put(`task/edit/${task_id}`, body, config)
+        .then((res) => {
+            history.push('/task/list')
+            dispatch({ type: TASK_UPDATE_SUCCESSFULL })
+            dispatch(setAlert(res.data.message, 'success'))
+        }
+        )
+        .catch((err) => {
+            const res = err.response
+            if (res.status === 401 || res.status === 422 || res.status === 501 || res.status === 403) {
+                dispatch({
+                    type: TASK_UPDATE_FAILED,
+                    payload: {
+                        error: res.data.message
+                    }
+                })
+                dispatch(setAlert(res.data.message))
+                console.log(err);
+            }
+            dispatch(setAlert('Something went wrong.'))
+        }
+        )
 }
 
 // Action generator for fetch task
