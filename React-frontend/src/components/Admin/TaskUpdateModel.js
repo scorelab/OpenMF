@@ -35,15 +35,14 @@ function TaskUpdateModel({ isOpen, toggleUpdateTaskModel, task }) {
         <DialogTitle id="alert-dialog-slide-title">Task Update Form</DialogTitle>
         <DialogContent>
           <DialogContentText >Update Task Details</DialogContentText>
-
           <TaskUpdateForm
             toggleUpdateTaskModel={toggleUpdateTaskModel}
             toggleEditTaskModel={toggleUpdateTaskModel}
             task={task}
           />
-          
+
         </DialogContent>
-        
+
         <DialogActions>
           <Button
             color="primary"

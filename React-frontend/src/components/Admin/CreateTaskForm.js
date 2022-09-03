@@ -38,9 +38,8 @@ const useStyle = makeStyles((theme) => ({
         width: '60vw',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems:'flex-start',
+        alignItems: 'flex-start',
         padding: theme.spacing(2),
-        // border: '1px solid #000'
     },
     btn: {
         marginTop: theme.spacing(2)
@@ -71,7 +70,7 @@ function CreateTaskForm() {
     const admin = useSelector(state => state.admin)
 
     // submit form handler
-    function handleSubmitForm(){
+    function handleSubmitForm() {
         dispatch(createTask(title, description, role, memberEmail, history))
     }
 

@@ -61,7 +61,6 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
     // Function to handle form submit
     function handleTaskUpdate(newTaskId, newTaskTitle, newTaskDescription, newTaskDueDate) {
         dispatch(editTask(newTaskId, newTaskTitle, newTaskDescription, newTaskDueDate, history))
-
     }
 
     return (
@@ -146,11 +145,15 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
                         color="primary"
                         className={classes.submit}
                         onClick={() => {
+                            // New task details
                             var newTaskId = document.getElementsByName("task_id")[0].value;
                             var newTaskTitle = document.getElementsByName("task_title")[0].value;
                             var newTaskDescription = document.getElementsByName("task_description")[0].value;
                             var newTaskDueDate = document.getElementsByName("task_dueDate")[0].value;
+
                             handleTaskUpdate(newTaskId, newTaskTitle, newTaskDescription, newTaskDueDate);
+                            
+                            // Close modal and refresh page
                             toggleUpdateRoleModel = false
                             history.push('admin/task/list')
                         }}

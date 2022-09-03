@@ -326,6 +326,7 @@ def edit_title():
     }
     return make_response(jsonify(response)), status.CREATED
 
+
 @task.route('/edit-task/<int:id>', methods=["PUT"])
 @admin_token_required
 def edit_task(id):
@@ -337,7 +338,6 @@ def edit_task(id):
         id = int(req['task_id'])
         title = str(req['title'])
         description = str(req['description'])
-        due_on = str(req['due_on'])
 
     except Exception as e:
         print(e)
@@ -359,7 +359,6 @@ def edit_task(id):
 
     task[0].title = title
     task[0].description = description
-    task[0].due_on = due_on
     db.session.commit()
     response = {
         "success": True,
