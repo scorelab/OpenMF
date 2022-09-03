@@ -327,18 +327,18 @@ def edit_title():
     return make_response(jsonify(response)), status.CREATED
 
 # Edit task title, description, due date, 
-@task.route('/edit-task', methods=["PUT"])
+@task.route('/edit-task/<int:id>', methods=["PUT"])
 @admin_token_required
-def edit_task():
+def edit_task(id):
     """
     Route to edit a task.
     """
     try:
         req = request.get_json()
-        id = int(req['id'])
+        id = int(req['task_id'])
         title = str(req['title'])
         description = str(req['description'])
-        due_date = str(req['due_date'])
+        due_on = str(req['due_on'])
 
     except Exception as e:
         print(e)
@@ -360,10 +360,40 @@ def edit_task():
 
     task[0].title = title
     task[0].description = description
-    task[0].due_date = due_date
+    task[0].due_on = due_on
     db.session.commit()
     response = {
         "success": True,
         "message": "Task updated."
     }
     return make_response(jsonify(response)), status.CREATED
+
+# @task.route('/mark-incomplete/<int:id>', methods=["PUT"])
+# @token_required
+# def mark_incomplete(id):
+#     """
+#     Route to mark a task as incomplete by a member.
+#     """
+#     current_user = get_current_user(mark_incomplete.role, mark_incomplete.public_id)
+#     task = list(filter(lambda task: task.id == id, current_user.assigned_tasks))
+#     if len(task) == 0:
+#         response = {
+#             "success": False,
+#             "message": "Task not found."
+#         }
+#         return make_response(jsonify(response)), status.NOT_FOUND
+
+#     if not task[0].is_completed:
+#         response = {
+#             "success": False,
+#             "message": "Task already incomplete."
+#         }
+#         return make_response(jsonify(response)), status.UNPROCESSABLE_ENTITY
+
+#     task[0].is_completed = False
+#     db.session.commit()
+#     response = {
+#         "success": True,
+#         "message": "Task marked as incomplete."
+#     }
+#     return make_response(jsonify(response)), status.CREATED

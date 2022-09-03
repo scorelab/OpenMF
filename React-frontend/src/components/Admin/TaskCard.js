@@ -68,8 +68,8 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
     function toggleComplete(id, is_completed) {
         dispatch(updateTask(id, is_completed, history))
         history.push('admin/task/list')
-        console.log("TASKCARD task id", id);
-        console.log("TASKCARD task is_completed", is_completed);
+        // console.log("TASKCARD task id", id);
+        // console.log("TASKCARD task is_completed", is_completed);
 
 
     }

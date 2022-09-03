@@ -20,7 +20,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { updateRole } from '../../store/actions/admin';
-import { updateTask } from '../../store/actions/admin';
+import { editTask } from '../../store/actions/admin';
 
 // import { addMember } from '../../store/actions/admin';
 
@@ -54,11 +54,11 @@ const useStyles = makeStyles((theme) => ({
 
 function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
 
-    console.log("task id", task.id);
-    console.log("task title", task.title);
-    console.log("task description", task.description);
-    console.log("task due_on", task.due_on);
-    console.log("task is_completed", task.is_completed);
+    // console.log("task id", task.id);
+    // console.log("task title", task.title);
+    // console.log("task description", task.description);
+    // console.log("task due_on", task.due_on);
+    // console.log("task is_completed", task.is_completed);
 
 
     // invoking custom styles
@@ -91,12 +91,12 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
     const handleMouseDownPassword = () => setShowPassword(!showPassword)
 
     function handleTaskUpdate(){
-        dispatch(updateTask(task.id, task.title, task.description, task.due_on, task.is_completed, history))
-        console.log("task id", task.id);
-        console.log("task title", task.title);
-        console.log("task description", task.description);
-        console.log("task due_on", task.due_on);
-        console.log("task is_completed", task.is_completed);
+        dispatch(editTask(task.id, task.title, task.description, task.due_on, history))
+        // console.log("task id", task.id);
+        // console.log("task title", task.title);
+        // console.log("task description", task.description);
+        // console.log("task due_on", task.due_on);
+        // console.log("task is_completed", task.is_completed);
 
     }
 
@@ -236,6 +236,7 @@ function TaskUpdateForm({ toggleUpdateRoleModel, task }) {
                             var newTaskStatus = document.getElementsByName("task_status")[0].value;
 
                             handleTaskUpdate(newTaskId, newTaskTitle, newTaskDescription, newTaskDueDate, newTaskStatus);
+                            console.log("From form: ", newTaskTitle);
 
                         }}
 

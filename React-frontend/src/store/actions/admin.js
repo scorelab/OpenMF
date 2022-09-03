@@ -451,7 +451,7 @@ export const updateTask = (task_id, is_completed, history) => (dispatch) => {
 }
 
 // Action to Edit Task
-export const editTask = (task_id, title, description, history) => (dispatch) => {
+export const editTask = (task_id, title, description, due_on, history) => (dispatch) => {
     // dispatch task update
     dispatch({
         type: TASK_UPDATE
@@ -461,7 +461,8 @@ export const editTask = (task_id, title, description, history) => (dispatch) => 
     const body = {
         task_id: task_id,
         title: title,
-        description: description
+        description: description,
+        due_on: due_on
     }
 
     // create request header config
@@ -487,11 +488,12 @@ export const editTask = (task_id, title, description, history) => (dispatch) => 
     }
 
     // send update request to server
-    axios.put(`task/edit/${task_id}`, body, config)
+    axios.put(`task/edit-task/${task_id}`, body, config)
         .then((res) => {
             history.push('/task/list')
             dispatch({ type: TASK_UPDATE_SUCCESSFULL })
             dispatch(setAlert(res.data.message, 'success'))
+            console.log("Fucking Finally");
         }
         )
         .catch((err) => {
@@ -510,6 +512,8 @@ export const editTask = (task_id, title, description, history) => (dispatch) => 
         }
         )
 }
+
+    
 
 // Action generator for fetch task
 export const fetchTasks = () => (dispatch) => {
