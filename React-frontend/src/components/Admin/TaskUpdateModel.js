@@ -1,6 +1,5 @@
 /*
- Functional model component to render
- role update form
+ Functional model to Edit Task
 */
 import React from 'react';
 import {
@@ -19,18 +18,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 })
 
-
-
 // Add member model
-function TaskUpdateModel({isOpen, toggleUpdateTaskModel, task}) {
-
-    console.log(task);
+function TaskUpdateModel({ isOpen, toggleUpdateTaskModel, task }) {
 
   return (
     <div>
-        
       <Dialog
-      suppressContentEditableWarning={true}
+        suppressContentEditableWarning={true}
         open={isOpen}
         TransitionComponent={Transition}
         keepMounted
@@ -40,14 +34,17 @@ function TaskUpdateModel({isOpen, toggleUpdateTaskModel, task}) {
       >
         <DialogTitle id="alert-dialog-slide-title">Task Update Form</DialogTitle>
         <DialogContent>
-            <DialogContentText >Update Task Details</DialogContentText>
-            <TaskUpdateForm
-                toggleUpdateTaskModel={toggleUpdateTaskModel} 
-                task={task}
-                />
-        </DialogContent>
-        <DialogActions>
+          <DialogContentText >Update Task Details</DialogContentText>
 
+          <TaskUpdateForm
+            toggleUpdateTaskModel={toggleUpdateTaskModel}
+            toggleEditTaskModel={toggleUpdateTaskModel}
+            task={task}
+          />
+          
+        </DialogContent>
+        
+        <DialogActions>
           <Button
             color="primary"
             variant="outlined"

@@ -157,8 +157,6 @@ export const deleteMember = (email, history) => (dispatch) => {
 }
 
 
-
-
 // action generator to add a member
 export const addMember = (name, email, role, password, history) => (dispatch) => {
 
@@ -493,7 +491,6 @@ export const editTask = (task_id, title, description, due_on, history) => (dispa
             history.push('/task/list')
             dispatch({ type: TASK_UPDATE_SUCCESSFULL })
             dispatch(setAlert(res.data.message, 'success'))
-            console.log("Fucking Finally");
         }
         )
         .catch((err) => {
@@ -512,8 +509,6 @@ export const editTask = (task_id, title, description, due_on, history) => (dispa
         }
         )
 }
-
-    
 
 // Action generator for fetch task
 export const fetchTasks = () => (dispatch) => {

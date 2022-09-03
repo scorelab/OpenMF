@@ -3,7 +3,7 @@
     individual tasks inside a card.
 */
 
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import {
     Container,
@@ -68,10 +68,6 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
     function toggleComplete(id, is_completed) {
         dispatch(updateTask(id, is_completed, history))
         history.push('admin/task/list')
-        // console.log("TASKCARD task id", id);
-        // console.log("TASKCARD task is_completed", is_completed);
-
-
     }
 
     const [isTaskUpdateModelOpen, setToggleShowTaskUpdateModel] = useState(false)
@@ -156,17 +152,16 @@ function TaskCard({ id, title, description, due_on, is_completed }) {
                     : null
             }
 
-             <TaskUpdateModel
-             suppressContentEditableWarning={true}
-                    isOpen={isTaskUpdateModelOpen}
-                    toggleUpdateTaskModel={setToggleShowTaskUpdateModel}
-                    key="roleUpdateModel"
-                    // send task details
-                    task={{ id, title, description, due_on, is_completed }}
+            {/* Task Update Model */}
+            <TaskUpdateModel
+                suppressContentEditableWarning={true}
+                isOpen={isTaskUpdateModelOpen}
+                toggleUpdateTaskModel={setToggleShowTaskUpdateModel}
+                key="roleUpdateModel"
+                task={{ id, title, description, due_on, is_completed }}
+            />
 
-                />
-
-        </Container>        
+        </Container>
     )
 }
 
