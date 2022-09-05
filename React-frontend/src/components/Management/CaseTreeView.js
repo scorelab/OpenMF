@@ -147,12 +147,42 @@ function CaseTreeView() {
         </TreeItem>
     )
 
+    // Manage JsonPretty component
+    function getJSON() {
+        const data = document.getElementById('PrettyJSON').innerText
+        const dataToSave = data.slice(20, data.length)
+        const blob = new Blob([dataToSave], { type: 'text/plain;charset=utf-8' })
+        saveAs(blob, 'caseTree.json')
+    }
+
     // Save case function
     function saveAs(blob, fileName) {
         const link = document.createElement('a')
         link.href = window.URL.createObjectURL(blob)
         link.download = fileName
         link.click()
+    }
+
+    // Convert to XML function
+    function OBJtoXML(obj) {
+        var xml = '';
+        for (var prop in obj) {
+            xml += obj[prop] instanceof Array ? '' : "<" + prop + ">";
+            if (obj[prop] instanceof Array) {
+                for (var array in obj[prop]) {
+                    xml += "<" + prop + ">";
+                    xml += OBJtoXML(new Object(obj[prop][array]));
+                    xml += "</" + prop + ">";
+                }
+            } else if (typeof obj[prop] == "object") {
+                xml += OBJtoXML(new Object(obj[prop]));
+            } else {
+                xml += obj[prop];
+            }
+            xml += obj[prop] instanceof Array ? '' : "</" + prop + ">";
+        }
+        var xml = xml.replace(/<\/?[0-9]{1,}>/g, '');
+        return xml
     }
 
     // Check if case reducer is loaded or not
@@ -231,6 +261,19 @@ function CaseTreeView() {
 
                     <div style={{ height: '1vh' }}></div>
 
+                    {/* Download as JSON */}
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        disableElevation
+                        disableRipple
+                        disableFocusRipple
+                        onClick={() => getJSON()}
+                    >
+                        Download as JSON
+                    </Button>
+
+                    {/* Download as XML */}
                     <Button
                         variant="contained"
                         color="secondary"
@@ -239,13 +282,13 @@ function CaseTreeView() {
                         disableFocusRipple
                         onClick={() => {
                             const data = document.getElementById('PrettyJSON').innerText
-                            // Remove "Pretty Json Format" from data
                             const dataToSave = data.slice(20, data.length)
-                            const blob = new Blob([dataToSave], { type: 'text/plain;charset=utf-8' })
-                            saveAs(blob, 'caseTree.json')
+                            const blob = new Blob([OBJtoXML(JSON.parse(dataToSave))],
+                                { type: 'text/plain;charset=utf-8' })
+                            saveAs(blob, 'caseTree.xml')
                         }}
                     >
-                        Download as JSON
+                        Download as XML
                     </Button>
                 </Grid>
             </Grid>
