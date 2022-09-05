@@ -280,6 +280,7 @@ function CaseTreeView() {
                         disableElevation
                         disableRipple
                         disableFocusRipple
+                        style={{ marginLeft: '1rem' }}
                         onClick={() => {
                             const data = document.getElementById('PrettyJSON').innerText
                             const dataToSave = data.slice(20, data.length)
