@@ -178,7 +178,7 @@ export function Header() {
                 Home
               </Link>
 
-              <Link
+              {/* <Link
                 variant="button"
                 color="textPrimary"
                 to="/dashboard/profile"
@@ -186,7 +186,7 @@ export function Header() {
                 className={classes.link}
               >
                 Profile
-              </Link>
+              </Link> */}
 
               <Link
                 variant="button"
@@ -351,13 +351,13 @@ export function Header() {
               >
                 <ListItemText primary={auth && auth.user && auth.user.email} />
               </MenuItem>
-              <MenuItem
+              {/* <MenuItem
                 component={RouterLink}
                 to="/dashboard/profile"
                 onClick={handleClose}
               >
                 My Profile
-              </MenuItem>
+              </MenuItem> */}
               <MenuItem
                 component={RouterLink}
                 to="/dashboard"
