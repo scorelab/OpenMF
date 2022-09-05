@@ -133,7 +133,7 @@ function CaseTreeView() {
             label={
                 <>
                     <Tooltip title={nodes.name} arrow>
-                        <span style={{fontSize: '.8rem'}}>{nodes.name}</span>
+                        <span style={{ fontSize: '.8rem' }}>{nodes.name}</span>
                     </Tooltip>
                     <span className={classes.dullText}>
                         {nodes.size}
@@ -146,6 +146,14 @@ function CaseTreeView() {
             {Array.isArray(nodes.children) ? nodes.children.map((node) => renderTree(node)) : null}
         </TreeItem>
     )
+
+    // Save case function
+    function saveAs(blob, fileName) {
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = fileName
+        link.click()
+    }
 
     // Check if case reducer is loaded or not
     return (
@@ -176,7 +184,7 @@ function CaseTreeView() {
                                     setCaseName('')
                                 }}
                             >
-                                {(!caseReducer.isLoading) ? (<span>Create Case Tree </span>): (<span>Creating...</span>)}
+                                {(!caseReducer.isLoading) ? (<span>Create Case Tree </span>) : (<span>Creating...</span>)}
                             </Button>
                         </InputAdornment>
                     )
@@ -198,27 +206,47 @@ function CaseTreeView() {
                                 {renderTree(caseReducer.caseTree)}
                             </TreeView>
                         ) : (caseReducer.error) ? (
-                            <span style={{fontSize: '.8rem'}}>{caseReducer.error}</span>
+                            <span style={{ fontSize: '.8rem' }}>{caseReducer.error}</span>
                         ) : (
-                            <span style={{fontSize: '.8rem'}}>Please Provide Case Name.</span>
+                            <span style={{ fontSize: '.8rem' }}>Please Provide Case Name.</span>
                         )
                     }
 
                 </Grid>
-                <Grid item xs={12} md={10} className={classes.rightUpperPart}>
+                <Grid item xs={12} md={10} className={classes.rightUpperPart} >
 
                     {/* Render CaseTree in Pretty Json format */}
-                    {
-                        (caseReducer.isLoading || !caseReducer.caseTree ||fileReducer.isLoading || !fileReducer.file || !fileReducer.fileType) ? (
-                            <JsonPretty data={caseReducer.caseTree}/>
-                        ) : (fileReducer.fileType === 'report' || fileReducer.fileType === 'txt') ? (
-                            <ShowTXT data={fileReducer.file} className={classes.rightPart}/>
-                        ) : (fileReducer.fileType === 'tsv') ? (
-                            <ShowTSV data={fileReducer.file} className={classes.rightPart}/>) : (
+                    <div id="PrettyJSON">
+                        {
+                            (caseReducer.isLoading || !caseReducer.caseTree || fileReducer.isLoading || !fileReducer.file || !fileReducer.fileType) ? (
+                                <JsonPretty data={caseReducer.caseTree} />
+                            ) : (fileReducer.fileType === 'report' || fileReducer.fileType === 'txt') ? (
+                                <ShowTXT data={fileReducer.file} className={classes.rightPart} />
+                            ) : (fileReducer.fileType === 'tsv') ? (
+                                <ShowTSV data={fileReducer.file} className={classes.rightPart} />) : (
                                 <pre className={classes.preStyle}>{fileReducer.file}</pre>
                             )
-                    }
+                        }
+                    </div>
 
+                    <div style={{ height: '1vh' }}></div>
+
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        disableElevation
+                        disableRipple
+                        disableFocusRipple
+                        onClick={() => {
+                            const data = document.getElementById('PrettyJSON').innerText
+                            // Remove "Pretty Json Format" from data
+                            const dataToSave = data.slice(20, data.length)
+                            const blob = new Blob([dataToSave], { type: 'text/plain;charset=utf-8' })
+                            saveAs(blob, 'caseTree.json')
+                        }}
+                    >
+                        Download as JSON
+                    </Button>
                 </Grid>
             </Grid>
 
