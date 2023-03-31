@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import {
   AppBar,
   Button,
@@ -14,7 +13,9 @@ import {
   MenuItem,
   Dialog,
   DialogContent,
-  DialogActions
+  DialogActions,
+  useMediaQuery,
+  useTheme,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
@@ -24,15 +25,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../store/actions/auth';
 import RegisterForm from '../RegisterForm';
 import LoginForm from '../LoginForm';
+import MenuIcon from '@mui/icons-material/Menu';
+
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    height: '8vh',
+    height: '10vh',
     borderBottom: `1px solid ${theme.palette.divider}`,
     backgroundColor: '#0f0f0f',
     color: '#fff',
     position: 'fixed',
   },
+
   toolbar: {
     flexWrap: 'wrap'
   },
@@ -49,13 +53,34 @@ const useStyles = makeStyles((theme) => ({
       color: '#fff',
     }
   },
+  responsnav: {
+    // marginTop:'2px',
+    background: '#818081',
+    height: '40vh',
+    width: '100%',
+    position: 'absolute',
+    top: '59px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    transition:'0.2s',
+    transform:' translateX(1.5em)',
+    ['@media (min-width:599px)']: { // eslint-disable-line no-useless-computed-key
+      display: 'none',
+    },
+  },
   link: {
     margin: theme.spacing(1, 1.5),
     color: '#fff',
     '&:hover': {
       TextDecoration: 'none',
       color: '#fff'
-    }
+    },
+    ['@media (max-width:599px)']: { // eslint-disable-line no-useless-computed-key
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems:'center'
+    },
   },
   button: {
     marginRight: theme.spacing(0.7),
@@ -68,7 +93,16 @@ const useStyles = makeStyles((theme) => ({
     },
     '&:focus': {
       outline: 'none'
-    }
+    },
+    ['@media (max-width:599px)']: { // eslint-disable-line no-useless-computed-key
+      marginTop: theme.spacing(0.7),
+    },
+  },
+  avatarButton:{
+    marginLeft:'auto',
+    ['@media (max-width:599px)']: { // eslint-disable-line no-useless-computed-key
+      marginLeft:'0px'
+    },
   },
   small: {
     position: 'relative',
@@ -123,6 +157,10 @@ export function Header() {
   const auth = useSelector(state => state.auth)
   const [openLogin, setOpenLogin] = useState(false)
   const [openSignUp, setOpenSignUp] = useState(false)
+  const [resDrowp, setresDrowp] = useState(false)
+
+  const theme = useTheme()
+
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -144,6 +182,12 @@ export function Header() {
   const handleCloseSignUp = () => {
     setOpenSignUp(false)
   }
+
+  const handleDrowDown = () => {
+    setresDrowp(!resDrowp)
+  }
+
+
   return (
     <>
       {/* Display logo */}
@@ -164,21 +208,22 @@ export function Header() {
       </Typography>
 
       {/* Display relative link to other pages */}
-      <nav>
-        {
-          (auth.isAuthenticated
-            ? (<>
-              <Link
-                variant="button"
-                color="textPrimary"
-                to="/"
-                component={RouterLink}
-                className={classes.link}
-              >
-                Home
-              </Link>
+      {resDrowp ? <div className={classes.responsnav}>
+        <nav>
+          {
+            (auth.isAuthenticated
+              ? (<>
+                <Link
+                  variant="button"
+                  color="textPrimary"
+                  to="/"
+                  component={RouterLink}
+                  className={classes.link}
+                >
+                  Home
+                </Link>
 
-              {/* <Link
+                {/* <Link
                 variant="button"
                 color="textPrimary"
                 to="/dashboard/profile"
@@ -188,200 +233,425 @@ export function Header() {
                 Profile
               </Link> */}
 
-              <Link
-                variant="button"
-                color="textPrimary"
-                to="/list-members"
-                component={RouterLink}
-                className={classes.link}
-              >
-                Members
-              </Link>
+                <Link
+                  variant="button"
+                  color="textPrimary"
+                  to="/list-members"
+                  component={RouterLink}
+                  className={classes.link}
+                >
+                  Members
+                </Link>
 
-              <Link
-                variant="button"
-                color="textPrimary"
-                to="/contact"
-                component={RouterLink}
-                className={classes.link}
-              >
-                Contact us
-              </Link>
+                <Link
+                  variant="button"
+                  color="textPrimary"
+                  to="/contact"
+                  component={RouterLink}
+                  className={classes.link}
+                >
+                  Contact us
+                </Link>
 
-              <Link
-                variant="button"
-                color="textPrimary"
-                to="/dashboard"
-                component={RouterLink}
-                className={classes.link}
+                <Link
+                  variant="button"
+                  color="textPrimary"
+                  to="/dashboard"
+                  component={RouterLink}
+                  className={classes.link}
+                >
+                  Dashboard
+                </Link>
+              </>)
+              : (<>
+                <Link
+                  variant="button"
+                  color="textPrimary"
+                  to="/"
+                  component={RouterLink}
+                  style={{ marginRight: '20px' }}
+                  className={classes.link}
+                >
+                  Home
+                </Link>
+
+                <Link
+                  variant="button"
+                  color="textPrimary"
+                  to="/https://github.com/scorelab/OpenMF/"
+                  component={RouterLink}
+                  style={{ marginRight: '20px' }}
+                  className={classes.link}
+                >
+                  Help
+                </Link>
+              </>
+              )
+            )
+          }
+        </nav>
+
+{/* // we done the responsive section */}
+
+
+        {/* Display login option or user menu as per authenticated status */}
+        {
+          (!auth.isAuthenticated ? (
+            <>
+              <Button
+                variant="outlined"
+                className={classes.button}
+                onClick={handleOpenLogin}
+                disableRipple
+                disableTouchRipple
               >
-                Dashboard
-              </Link>
+                Login
+              </Button>
+              <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
+                <DialogContent >
+                  <LoginForm setOpenLogin={setOpenLogin} />
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {
+                      setOpenLogin(false)
+                      setOpenSignUp(true)
+                    }}
+                    variant="outlined"
+                    color="primary"
+                    disableRipple
+                    disableTouchRipple
+                  >
+                    Register
+                  </Button>
+
+                  <Button
+                    onClick={handleCloseLogin}
+                    color="primary"
+                    disableRipple
+                  >
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </Dialog>
+              <Button
+                variant="outlined"
+                className={classes.button}
+                disableRipple
+                onClick={handleOpenSignUp}
+              >
+                Register
+              </Button>
+              <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
+                <DialogContent >
+                  <RegisterForm setOpenSignUp={setOpenSignUp} />
+                </DialogContent>
+                <DialogActions>
+                  <Button
+                    onClick={() => {
+                      setOpenSignUp(false)
+                      setOpenLogin(true)
+                    }}
+                    variant="outlined"
+                    color="primary"
+                    disableRipple
+                  >
+                    Login
+                  </Button>
+
+                  <Button
+                    onClick={handleCloseSignUp}
+                    color="primary"
+                    disableRipple
+                  >
+                    Cancel
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </>)
             : (<>
-              <Link
-                variant="button"
-                color="textPrimary"
-                to="/"
-                component={RouterLink}
-                style={{ marginRight: '20px' }}
-                className={classes.link}
+
+              <IconButton
+                edge="start"
+                // style={{ marginLeft: 'auto' }}
+                color="primary"
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+                className= {classes.avatarButton}
               >
-                Home
-              </Link>
-
-              <Link
-                variant="button"
-                color="textPrimary"
-                to="/https://github.com/scorelab/OpenMF/"
-                component={RouterLink}
-                style={{ marginRight: '20px' }}
-                className={classes.link}
+                <Avatar className={classes.purple}>
+                  {(auth && auth.user) ? auth.user.name.charAt(0).toUpperCase() : (<span>wait...</span>)}
+                </Avatar>
+              </IconButton>
+              <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                TransitionComponent={Fade}
+                style={{ marginTop: '25px' }}
               >
-                Help
-              </Link>
-            </>
-            )
-          )
-        }
-      </nav>
-
-      {/* Display login option or user menu as per authenticated status */}
-      {
-        (!auth.isAuthenticated ? (
-          <>
-            <Button
-              variant="outlined"
-              className={classes.button}
-              onClick={handleOpenLogin}
-              disableRipple
-              disableTouchRipple
-            >
-              Login
-            </Button>
-            <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
-              <DialogContent >
-                <LoginForm setOpenLogin={setOpenLogin} />
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    setOpenLogin(false)
-                    setOpenSignUp(true)
-                  }}
-                  variant="outlined"
-                  color="primary"
-                  disableRipple
-                  disableTouchRipple
+                <MenuItem
+                  component={RouterLink}
+                  to="/dashboard"
+                  onClick={handleClose}
                 >
-                  Register
-                </Button>
-
-                <Button
-                  onClick={handleCloseLogin}
-                  color="primary"
-                  disableRipple
-                >
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
-            <Button
-              variant="outlined"
-              className={classes.button}
-              disableRipple
-              onClick={handleOpenSignUp}
-            >
-              Register
-            </Button>
-            <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
-              <DialogContent >
-                <RegisterForm setOpenSignUp={setOpenSignUp} />
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => {
-                    setOpenSignUp(false)
-                    setOpenLogin(true)
-                  }}
-                  variant="outlined"
-                  color="primary"
-                  disableRipple
-                >
-                  Login
-                </Button>
-                
-                <Button
-                  onClick={handleCloseSignUp}
-                  color="primary"
-                  disableRipple
-                >
-                  Cancel
-                </Button>
-              </DialogActions>
-            </Dialog>
-          </>)
-          : (<>
-
-            <IconButton
-              edge="start"
-              style={{ marginLeft: 'auto' }}
-              color="primary"
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <Avatar className={classes.purple}>
-                {(auth && auth.user) ? auth.user.name.charAt(0).toUpperCase() : (<span>wait...</span>)}
-              </Avatar>
-            </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              TransitionComponent={Fade}
-              style={{ marginTop: '25px' }}
-            >
-              <MenuItem
-                component={RouterLink}
-                to="/dashboard"
-                onClick={handleClose}
-              >
-                <ListItemText primary={auth && auth.user && auth.user.email} />
-              </MenuItem>
-              {/* <MenuItem
+                  <ListItemText primary={auth && auth.user && auth.user.email} />
+                </MenuItem>
+                {/* <MenuItem
                 component={RouterLink}
                 to="/dashboard/profile"
                 onClick={handleClose}
               >
                 My Profile
               </MenuItem> */}
-              <MenuItem
+                <MenuItem
+                  component={RouterLink}
+                  to="/dashboard"
+                  onClick={handleClose}
+                >
+                  Dashboard
+                </MenuItem>
+                <MenuItem onClick={() => {
+                  dispatch(logout(history))
+                }}>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </>
+            )
+          )
+        }
+      </div> : <div></div>}
+      {
+        useMediaQuery(theme.breakpoints.up("sm")) ?
+          <>
+            <nav>
+              {
+                (auth.isAuthenticated
+                  ? (<>
+                    <Link
+                      variant="button"
+                      color="textPrimary"
+                      to="/"
+                      component={RouterLink}
+                      className={classes.link}
+                    >
+                      Home
+                    </Link>
+
+                    {/* <Link
+                variant="button"
+                color="textPrimary"
+                to="/dashboard/profile"
                 component={RouterLink}
-                to="/dashboard"
+                className={classes.link}
+              >
+                Profile
+              </Link> */}
+
+                    <Link
+                      variant="button"
+                      color="textPrimary"
+                      to="/list-members"
+                      component={RouterLink}
+                      className={classes.link}
+                    >
+                      Members
+                    </Link>
+
+                    <Link
+                      variant="button"
+                      color="textPrimary"
+                      to="/contact"
+                      component={RouterLink}
+                      className={classes.link}
+                    >
+                      Contact us
+                    </Link>
+
+                    <Link
+                      variant="button"
+                      color="textPrimary"
+                      to="/dashboard"
+                      component={RouterLink}
+                      className={classes.link}
+                    >
+                      Dashboard
+                    </Link>
+                  </>)
+                  : (<>
+                    <Link
+                      variant="button"
+                      color="textPrimary"
+                      to="/"
+                      component={RouterLink}
+                      style={{ marginRight: '20px' }}
+                      className={classes.link}
+                    >
+                      Home
+                    </Link>
+
+                    <Link
+                      variant="button"
+                      color="textPrimary"
+                      to="/https://github.com/scorelab/OpenMF/"
+                      component={RouterLink}
+                      style={{ marginRight: '20px' }}
+                      className={classes.link}
+                    >
+                      Help
+                    </Link>
+                  </>
+                  )
+                )
+              }
+            </nav>
+
+            {/* Display login option or user menu as per authenticated status */}
+            {
+              (!auth.isAuthenticated ? (
+                <>
+                  <Button
+                    variant="outlined"
+                    className={classes.button}
+                    onClick={handleOpenLogin}
+                    disableRipple
+                    disableTouchRipple
+                  >
+                    Login
+                  </Button>
+                  <Dialog open={openLogin} aria-labelledby="login-form" scroll="body">
+                    <DialogContent >
+                      <LoginForm setOpenLogin={setOpenLogin} />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={() => {
+                          setOpenLogin(false)
+                          setOpenSignUp(true)
+                        }}
+                        variant="outlined"
+                        color="primary"
+                        disableRipple
+                        disableTouchRipple
+                      >
+                        Register
+                      </Button>
+
+                      <Button
+                        onClick={handleCloseLogin}
+                        color="primary"
+                        disableRipple
+                      >
+                        Cancel
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                  <Button
+                    variant="outlined"
+                    className={classes.button}
+                    disableRipple
+                    onClick={handleOpenSignUp}
+                  >
+                    Register
+                  </Button>
+                  <Dialog open={openSignUp} aria-labelledby="signup-form" scroll="body">
+                    <DialogContent >
+                      <RegisterForm setOpenSignUp={setOpenSignUp} />
+                    </DialogContent>
+                    <DialogActions>
+                      <Button
+                        onClick={() => {
+                          setOpenSignUp(false)
+                          setOpenLogin(true)
+                        }}
+                        variant="outlined"
+                        color="primary"
+                        disableRipple
+                      >
+                        Login
+                      </Button>
+
+                      <Button
+                        onClick={handleCloseSignUp}
+                        color="primary"
+                        disableRipple
+                      >
+                        Cancel
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                </>)
+                : (<>
+
+                  <IconButton
+                    edge="start"
+                    style={{ marginLeft: 'auto' }}
+                    color="primary"
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                  >
+                    <Avatar className={classes.purple}>
+                      {(auth && auth.user) ? auth.user.name.charAt(0).toUpperCase() : (<span>wait...</span>)}
+                    </Avatar>
+                  </IconButton>
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    TransitionComponent={Fade}
+                    style={{ marginTop: '25px' }}
+                  >
+                    <MenuItem
+                      component={RouterLink}
+                      to="/dashboard"
+                      onClick={handleClose}
+                    >
+                      <ListItemText primary={auth && auth.user && auth.user.email} />
+                    </MenuItem>
+                    {/* <MenuItem
+                component={RouterLink}
+                to="/dashboard/profile"
                 onClick={handleClose}
               >
-                Dashboard
-              </MenuItem>
-              <MenuItem onClick={() => {
-                dispatch(logout(history))
-              }}>
-                Logout
-              </MenuItem>
-            </Menu>
+                My Profile
+              </MenuItem> */}
+                    <MenuItem
+                      component={RouterLink}
+                      to="/dashboard"
+                      onClick={handleClose}
+                    >
+                      Dashboard
+                    </MenuItem>
+                    <MenuItem onClick={() => {
+                      dispatch(logout(history))
+                    }}>
+                      Logout
+                    </MenuItem>
+                  </Menu>
+                </>
+                )
+              )
+            }
+          </> :
+          <>
+            <Typography>
+              <MenuIcon onClick={handleDrowDown}></MenuIcon>
+            </Typography>
           </>
-          )
-        )
       }
+
     </>
   )
 }
-
 export default function Navbar() {
   const classes = useStyles()
-
   return (
     <AppBar
       position="static"
@@ -390,7 +660,6 @@ export default function Navbar() {
       className={classes.appBar}
     >
       <Toolbar variant="dense" color="default" className={classes.toolbar}>
-
         <Header />
       </Toolbar>
     </AppBar>
